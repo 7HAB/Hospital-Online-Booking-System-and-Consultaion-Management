@@ -31,6 +31,7 @@ namespace graduationProject.DAL
 
         public int SaveChanges()
         {
+            Console.Writeline("vasdf");
             return _context.SaveChanges();
         }
     }
