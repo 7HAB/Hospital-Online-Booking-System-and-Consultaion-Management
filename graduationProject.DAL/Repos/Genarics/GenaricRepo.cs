@@ -31,6 +31,7 @@ namespace graduationProject.DAL
 
         public int SaveChanges()
         {
+            Console.Writeline("bgcgncvnb");
             return _context.SaveChanges();
         }
     }
