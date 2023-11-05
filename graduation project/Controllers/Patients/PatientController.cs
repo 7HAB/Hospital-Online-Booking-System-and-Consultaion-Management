@@ -85,7 +85,8 @@ namespace graduation_project.Controllers
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
-                DateOfBirth = registerDto.DateOfBirth
+                DateOfBirth = registerDto.DateOfBirth,
+                Name = registerDto.Name,
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
