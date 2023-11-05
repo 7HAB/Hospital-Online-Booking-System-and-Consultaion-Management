@@ -167,7 +167,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("ReceptionsId");
 
-                    b.ToTable("PatientReception");
+                    b.ToTable("PatientReception", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Admin", b =>
@@ -196,7 +196,7 @@ namespace graduationProject.DAL.Migrations
                         .IsUnique()
                         .HasFilter("[SpecializationId] IS NOT NULL");
 
-                    b.ToTable("Admins");
+                    b.ToTable("Admins", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
@@ -227,7 +227,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("DoctorId");
 
-                    b.ToTable("WeekSchedules");
+                    b.ToTable("WeekSchedules", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Doctor", b =>
@@ -287,7 +287,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("specializationId");
 
-                    b.ToTable("Doctors");
+                    b.ToTable("Doctors", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.MedicaHistory", b =>
@@ -359,7 +359,7 @@ namespace graduationProject.DAL.Migrations
                         .IsUnique()
                         .HasFilter("[PatientId] IS NOT NULL");
 
-                    b.ToTable("MedicaHistories");
+                    b.ToTable("MedicaHistories", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Patient", b =>
@@ -472,7 +472,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("PatientVisits");
+                    b.ToTable("PatientVisits", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.PatientVisitsWithDoctor", b =>
@@ -500,7 +500,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("PatientVisitId");
 
-                    b.ToTable("patientVisitsWithDoctors");
+                    b.ToTable("patientVisitsWithDoctors", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Reception", b =>
@@ -521,7 +521,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("AdminId");
 
-                    b.ToTable("Receptions");
+                    b.ToTable("Receptions", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Specialization", b =>
@@ -537,7 +537,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Specializations");
+                    b.ToTable("Specializations", (string)null);
                 });
 
             modelBuilder.Entity("graduationProject.DAL.VisitCount", b =>
@@ -564,7 +564,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasIndex("WeekScheduleId");
 
-                    b.ToTable("VisitCount");
+                    b.ToTable("VisitCount", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -7,13 +7,16 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.EntityFrameworkCore;
 using ServiceStack.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace graduationProject.DAL
 {
     public class Patient : IdentityUser
     {
-        public string? Id { get; set; } //by auto genrating
-        /*public string? Name { get; set; }*/
+        /*        [Key]
+                [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+                public string? Id { get; set; } //by auto genrating*/
+        public string? Name { get; set; }
         public string? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
         [Unique]

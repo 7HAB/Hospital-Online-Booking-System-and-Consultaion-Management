@@ -30,17 +30,19 @@ namespace graduation_project.Controllers
         public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
         {
             #region Username and Password verification
-
+            
             Patient? user = await _userManager.FindByNameAsync(credentials.PhoneNumber);
+
             if (user is null)
             {
-                return Unauthorized();
+                return Content("null");
             }
 
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
-                return Unauthorized();
+                //  return Unauthorized();
+                return Content("password wrong");
             }
 
             #endregion
@@ -79,8 +81,9 @@ namespace graduation_project.Controllers
         {
             var user = new Patient
             {
+
                 PhoneNumber = registerDto.PhoneNumber,
-                UserName = registerDto.Name,
+                UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
                 DateOfBirth = registerDto.DateOfBirth
             };
@@ -94,11 +97,12 @@ namespace graduation_project.Controllers
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Patient"),
-            new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
+            new Claim(ClaimTypes.Name, user.UserName)
+        //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
 
-            return NoContent();
+            return Ok();
         }
 
         #endregion

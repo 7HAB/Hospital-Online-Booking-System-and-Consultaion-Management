@@ -10,7 +10,7 @@ namespace GraduationProject.BL.Dtos
 {
     public class RegisterDto
     {
-        public String PhoneNumber { get; set; } = string.Empty; //by auto genrating
+        public string PhoneNumber { get; set; } = string.Empty; 
         public string? Name { get; set; }
         public string? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
