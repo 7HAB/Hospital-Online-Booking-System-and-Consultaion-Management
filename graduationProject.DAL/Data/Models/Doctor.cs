@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using ServiceStack.DataAnnotations;
 using System;
 using System.Collections.Generic;
@@ -8,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public class Doctor
+    public class Doctor : IdentityUser
     {
-        public int Id { get; set; }
-
-        [Required]
+      /*  public int Id { get; set; }
+*/
+       /* [Required]*/
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
@@ -25,7 +26,7 @@ namespace graduationProject.DAL
         public DateTime DateOfBirth { get; set; }
 
         [Unique]
-        public int PhoneNumber { get; set; }
+       /* public int PhoneNumber { get; set; }*/
 
         public int AssistantID { get; set; }
 
