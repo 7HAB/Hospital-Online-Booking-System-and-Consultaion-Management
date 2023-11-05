@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,13 @@ namespace graduation_project.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<Patient> _userManager;
+        private readonly IPatientManager _patientManager;
         public PatientController(IConfiguration configuration, 
-            UserManager<Patient> userManager)
+            UserManager<Patient> userManager, IPatientManager patientManager)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _patientManager = patientManager;
         }
         #region Login
 
@@ -106,6 +109,20 @@ namespace graduation_project.Controllers
             return Ok();
         }
 
+        #endregion
+
+        #region GetAllDoctors
+        [HttpGet]
+        public ActionResult<List<GetAllDoctorsDto>?> GetAllDoctors()
+        {
+
+          /* List<GetAllDoctorsDto>? getAllDoctorsDto = _patientManager.GetAllDoctors();
+
+            if(getAllDoctorsDto == null) { return BadRequest(); }
+
+            return getAllDoctorsDto;*/
+          return _patientManager.GetAllDoctors();
+        }
         #endregion
     }
 }
