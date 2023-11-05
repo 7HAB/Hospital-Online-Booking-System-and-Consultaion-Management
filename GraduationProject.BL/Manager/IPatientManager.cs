@@ -8,7 +8,7 @@ namespace GraduationProject.BL
 {
     public interface IPatientManager
     {
-        public List<GetAllDoctorsDto>? GetAllDoctors();
+        public List<GetAllDoctorsDto> GetAllDoctors();
 
     }
 

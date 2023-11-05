@@ -2,6 +2,7 @@ using graduationProject.DAL;
 using GraduationProject.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,12 @@ builder.Services.AddIdentity<Patient, IdentityRole>(options =>
 #region Repos
 
 builder.Services.AddScoped<IPatientRepo, PatientRepo>();
+
+#endregion
+
+#region Unit of work
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 #endregion
 #region Managers

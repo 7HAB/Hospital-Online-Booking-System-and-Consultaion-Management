@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,15 @@ namespace GraduationProject.BL
 {
     public class PatientManager : IPatientManager
     {
-        private readonly PatientRepo _patientRepo;
-        public PatientManager(PatientRepo patientRepo)
+        // private readonly PatientRepo _patientRepo;
+        private readonly IUnitOfWork _unitOfWork;
+        public PatientManager(IUnitOfWork unitOfWork)
         {
-            _patientRepo = patientRepo;
+            _unitOfWork = unitOfWork;
         }
-        public List<GetAllDoctorsDto>? GetAllDoctors()
+        public List<GetAllDoctorsDto> GetAllDoctors()
         {
-            List<Doctor> doctors = _patientRepo.GetAllDoctors();
+            List<Doctor> doctors =_unitOfWork.patientRepo.GetAllDoctors();
 
             return doctors.Select(d => new GetAllDoctorsDto
             {
@@ -30,5 +32,6 @@ namespace GraduationProject.BL
 
 
         }
+       
     }
 }

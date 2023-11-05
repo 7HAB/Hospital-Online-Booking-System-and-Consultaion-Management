@@ -19,7 +19,7 @@ namespace graduationProject.DAL
         {
           return  _context.Set<Doctor>().ToList();
         }
-
+       
 
     }
 }
