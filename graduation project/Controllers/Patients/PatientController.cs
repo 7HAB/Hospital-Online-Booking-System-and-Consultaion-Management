@@ -81,7 +81,7 @@ namespace graduation_project.Controllers
         {
             var user = new Patient
             {
-                Name = registerDto.Name
+                Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
