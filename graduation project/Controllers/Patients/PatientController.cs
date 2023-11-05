@@ -81,12 +81,12 @@ namespace graduation_project.Controllers
         {
             var user = new Patient
             {
-
+                Name = registerDto.Name
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
                 DateOfBirth = registerDto.DateOfBirth,
-                Name = registerDto.Name,
+                
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
