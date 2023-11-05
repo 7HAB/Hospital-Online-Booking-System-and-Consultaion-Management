@@ -9,7 +9,7 @@ namespace graduationProject.DAL
 {
     public class Reception : IdentityUser
     {
-       /* public int Id { get; set; }*/
+        public int Id { get; set; }
         public string? Name { get; set; }
         public ICollection<Patient> Patients { get; set; } = new HashSet<Patient>();
         public Admin? Admin { get; set; }
