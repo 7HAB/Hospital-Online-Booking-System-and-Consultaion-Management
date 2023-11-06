@@ -11,11 +11,12 @@ namespace graduationProject.DAL
     { private readonly HospitalContext _context;
 
         public IPatientRepo patientRepo {  get;  }
-
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo)
+        public IDoctorRepo doctorRepo { get; }
+        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo)
         {
             _context = context;
             patientRepo = PatientRepo;
+            doctorRepo = DoctorRepo;
         }
         public int SaveChanges()
         {

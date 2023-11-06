@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public class PatientRepo : GenaricRepo<Patient>, IPatientRepo
+    public class DoctorRepo : GenaricRepo<Doctor>, IDoctorRepo
     {
         private readonly HospitalContext _context;
 
-        public PatientRepo(HospitalContext context) : base(context)
+        public DoctorRepo(HospitalContext context) : base(context)
         {
             _context = context;
         }
 
+        public List<Doctor> GetAllDoctors()
+        {
+            return _context.Set<Doctor>().ToList();
+        }
 
 
     }

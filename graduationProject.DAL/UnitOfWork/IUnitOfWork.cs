@@ -9,6 +9,7 @@ namespace graduationProject.DAL
     public interface IUnitOfWork
     {
         public IPatientRepo patientRepo { get; }
+        public IDoctorRepo doctorRepo { get; }
         int SaveChanges();
     }
 }

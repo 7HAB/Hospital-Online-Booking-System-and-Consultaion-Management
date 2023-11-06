@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public interface IPatientRepo : IGenaricRepo<Patient>
+    public interface IDoctorRepo : IGenaricRepo<Doctor>
     {
-       /* public List<Doctor> GetAllDoctors();*/
-
+        public List<Doctor> GetAllDoctors();
     }
 }

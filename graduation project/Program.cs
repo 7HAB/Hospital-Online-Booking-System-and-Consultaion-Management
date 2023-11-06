@@ -33,6 +33,8 @@ builder.Services.AddIdentity<Patient, IdentityRole>(options =>
 
 builder.Services.AddScoped<IPatientRepo, PatientRepo>();
 
+builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
+
 #endregion
 
 #region Unit of work
@@ -42,6 +44,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 #endregion
 #region Managers
 builder.Services.AddScoped<IPatientManager, PatientManager>();
+
+builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
 #endregion
 
