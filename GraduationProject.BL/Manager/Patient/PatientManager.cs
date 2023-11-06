@@ -1,10 +1,12 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.PatientDtos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -80,10 +82,44 @@ namespace GraduationProject.BL
                 Other = medicalHistory.Other
             };
 
-
-            #endregion
-
         }
+        #endregion
+
+
+        #region GetPatientVisitsByPhone
+        public GetPatientForPatientV? GetPatientVisitsByPhoneNumber(string phoneNumber)
+        {
+            /*                List<PatientVisit>? patientVisit = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber).ToList();
+            */               /* if (patientVisit = ) { return ; }*/
+            Patient? patient = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber);
+            if (patient == null) { return null; }
+
+            return new GetPatientForPatientV
+            {
+                Name = patient.Name,
+
+                PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsByPhoneDTO
+                {
+                    DateOfVisit = p.DateOfVisit,
+                    Comments = p.Comments,
+                    Symptoms = p.Symptoms,
+                    VisitStatus = p.VisitStatus,
+                    ArrivalTime = p.ArrivalTime,
+                    VisitStartTime = p.VisitStartTime,
+                    VisitEndTime = p.VisitEndTime,
+                    Prescription = p.Prescription
+
+
+                }).ToList()
+            };
+        }
+
+
+
+
+        #endregion
     }
-}  
+
+}
+
     

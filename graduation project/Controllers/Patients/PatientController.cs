@@ -137,5 +137,14 @@ namespace graduation_project.Controllers
         }
         #endregion
 
+        [HttpGet]
+        [Route("patient_visits/{phoneNumber}")]
+        public ActionResult<GetPatientForPatientV> GetPatientVisitsByPhone(string phoneNumber)
+        {
+            GetPatientForPatientV? patient = _patientManager.GetPatientVisitsByPhoneNumber(phoneNumber);
+            if (patient == null) { return NotFound(); }
+            return Ok(patient);
+
+        }
     }
 }
