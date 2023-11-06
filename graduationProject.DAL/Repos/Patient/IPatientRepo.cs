@@ -8,7 +8,8 @@ namespace graduationProject.DAL
 {
     public interface IPatientRepo : IGenaricRepo<Patient>
     {
-       /* public List<Doctor> GetAllDoctors();*/
+        /* public List<Doctor> GetAllDoctors();*/
+        public Patient? GetPatientByPhoneNumber(string phoneNumber);
 
     }
 }

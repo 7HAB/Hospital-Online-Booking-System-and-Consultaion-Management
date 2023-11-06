@@ -112,6 +112,19 @@ namespace graduation_project.Controllers
 
         #endregion
 
-       
+        #region GetPatientByPhone
+        [HttpGet]
+        [Route("{phoneNumber}")]
+        public ActionResult<GetPatientByPhoneDTO> GetPatientByPhone(string phoneNumber) {
+        GetPatientByPhoneDTO? patient = _patientManager.getPatientByPhoneDTO(phoneNumber);
+            if (patient == null) { return NotFound(); }
+            return Ok(patient);
+        }
+
+
+        #endregion
+
+
+
     }
 }

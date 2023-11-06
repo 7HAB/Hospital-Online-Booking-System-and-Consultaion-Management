@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,10 @@ namespace graduationProject.DAL
             _context = context;
         }
 
-
+        public Patient? GetPatientByPhoneNumber(string phoneNumber)
+        {
+            return _context.Set<Patient>().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+        }
 
     }
 }

@@ -18,22 +18,39 @@ namespace GraduationProject.BL
         }
 
 
-        public List<GetAllDoctorsDto> GetAllDoctors()
+
+
+        //public List<GetAllDoctorsDto> GetAllDoctors()
+        //{
+        //    List<Doctor> doctors = _unitOfWork.doctorRepo.GetAllDoctors();
+
+        //    return doctors.Select(d => new GetAllDoctorsDto
+        //    {
+        //        Name = d.Name,
+        //        Title = d.Title,
+        //        Description = d.Description,
+        //        Specialization = d.Specialization,
+        //        PerformanceRate = d.PerformanceRate,
+        //        weeks = d.weeks
+        //    }).ToList();
+
+
+        //}
+        #region GetPatientByPhone
+        public GetPatientByPhoneDTO? getPatientByPhoneDTO(string phoneNumber)
         {
-            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAllDoctors();
+           Patient? patient = _unitOfWork.patientRepo.GetPatientByPhoneNumber(phoneNumber);
 
-            return doctors.Select(d => new GetAllDoctorsDto
+            if (patient == null) { return null; }
+            return  new GetPatientByPhoneDTO
             {
-                Name = d.Name,
-                Title = d.Title,
-                Description = d.Description,
-                Specialization = d.Specialization,
-                PerformanceRate = d.PerformanceRate,
-                weeks = d.weeks
-            }).ToList();
-
-
+                Name = patient.Name,
+                PhoneNumber = phoneNumber, 
+                Gender = patient.Gender,
+                DateOfBirth = patient.DateOfBirth,
+            };
         }
+        #endregion
 
     }
 }  
