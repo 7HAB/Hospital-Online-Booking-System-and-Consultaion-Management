@@ -1,5 +1,7 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
+using GraduationProject.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -16,11 +18,13 @@ namespace graduation_project.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<Patient> _userManager;
-        public PatientController(IConfiguration configuration, 
-            UserManager<Patient> userManager)
+        private readonly IPatientManager _patientManager;
+        public PatientController(IConfiguration configuration,
+            UserManager<Patient> userManager, IPatientManager patientManager)
         {
             _configuration = configuration;
             _userManager = userManager;
+            _patientManager = patientManager;
         }
         #region Login
 
@@ -30,7 +34,7 @@ namespace graduation_project.Controllers
         public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
         {
             #region Username and Password verification
-            
+
             Patient? user = await _userManager.FindByNameAsync(credentials.PhoneNumber);
 
             if (user is null)
@@ -86,7 +90,7 @@ namespace graduation_project.Controllers
                 UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
                 DateOfBirth = registerDto.DateOfBirth,
-                
+
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
@@ -107,5 +111,7 @@ namespace graduation_project.Controllers
         }
 
         #endregion
+
+       
     }
 }

@@ -1,16 +1,19 @@
 using graduationProject.DAL;
+using GraduationProject.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ServiceStack;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+#region Default
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#endregion
 
 #region DataBase
 string? connectionString = builder.Configuration.GetConnectionString("Hospital");
@@ -24,7 +27,30 @@ builder.Services.AddIdentity<Patient, IdentityRole>(options =>
     })
     .AddEntityFrameworkStores<HospitalContext>();
 #endregion
+
+
+#region Repos
+
+builder.Services.AddScoped<IPatientRepo, PatientRepo>();
+
+builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
+
+#endregion
+
+#region Unit of work
+
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+#endregion
+#region Managers
+builder.Services.AddScoped<IPatientManager, PatientManager>();
+
+builder.Services.AddScoped<IDoctorManager, DoctorManager>();
+
+#endregion
+
 var app = builder.Build();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
