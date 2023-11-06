@@ -21,7 +21,7 @@ builder.Services.AddDbContext<HospitalContext>(options =>
     options.UseSqlServer(connectionString));
 #endregion
 #region Asp Identity 
-builder.Services.AddIdentity<Patient, IdentityRole>(options =>
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     {
         options.Password.RequiredLength = 8;
     })

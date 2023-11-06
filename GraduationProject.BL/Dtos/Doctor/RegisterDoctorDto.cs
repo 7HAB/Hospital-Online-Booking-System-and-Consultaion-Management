@@ -1,24 +1,20 @@
-﻿using graduationProject.DAL.Data.Models;
-using Microsoft.AspNetCore.Identity;
-using ServiceStack.DataAnnotations;
+﻿using ServiceStack.DataAnnotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace graduationProject.DAL
+namespace GraduationProject.BL.Dtos
 {
-    public class Doctor : IdentityUser
+    public class RegisterDoctorDto
     {
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
         //public string Specialization { get; set; } = "";
         public decimal Salary { get; set; }
-        public int PerformanceRate { get; set; }
-
-        public string? Review { get; set; }
+        public string? PhoneNumber { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
@@ -31,8 +27,6 @@ namespace graduationProject.DAL
         public int AssistantPhoneNumber { get; set; }
 
         public DateTime AssistantDateOfBirth { get; set; }
-        public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();
-        public ICollection<PatientVisitsWithDoctor> patientVisits { get; set; } = new HashSet<PatientVisitsWithDoctor>();
-        public Specialization? specialization {  get; set; }
+        public string Password { get; set; } = string.Empty;
     }
 }

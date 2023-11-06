@@ -8,7 +8,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
-using GraduationProject.BL.Dtos.PatientDtos;
 
 namespace graduation_project.Controllers
 {
@@ -17,10 +16,10 @@ namespace graduation_project.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<Patient> _userManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly IPatientManager _patientManager;
         public PatientController(IConfiguration configuration,
-            UserManager<Patient> userManager, IPatientManager patientManager)
+            UserManager<IdentityUser> userManager, IPatientManager patientManager)
         {
             _configuration = configuration;
             _userManager = userManager;
@@ -35,7 +34,7 @@ namespace graduation_project.Controllers
         {
             #region Username and Password verification
 
-            Patient? user = await _userManager.FindByNameAsync(credentials.PhoneNumber);
+            IdentityUser? user = await _userManager.FindByNameAsync(credentials.PhoneNumber);
 
             if (user is null)
             {
@@ -81,7 +80,7 @@ namespace graduation_project.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> Register(RegisterDto registerDto)
+        public async Task<ActionResult> Register(RegisterPatientDto registerDto)
         {
             var user = new Patient
             {

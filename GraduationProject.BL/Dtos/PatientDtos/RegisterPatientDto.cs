@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.BL.Dtos
 {
-    public class RegisterDto
+    public class RegisterPatientDto
     {
-        public string PhoneNumber { get; set; } = string.Empty; 
+        public string PhoneNumber { get; set; } = string.Empty;
         public string? Name { get; set; }
         public string? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
