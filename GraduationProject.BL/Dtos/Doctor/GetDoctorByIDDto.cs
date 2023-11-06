@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GraduationProject.BL.Dtos.Doctor;
 
 namespace GraduationProject.BL
 {
-    public interface IPatientManager
+    public class GetDoctorByIDDto
     {
-        public List<GetAllDoctorsDto> GetAllDoctors();
 
     }
-
 }

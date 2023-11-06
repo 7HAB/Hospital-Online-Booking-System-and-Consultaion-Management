@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace GraduationProject.BL
 
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
-            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAllDoctors();
+            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
 
             return doctors.Select(d => new GetAllDoctorsDto
             {

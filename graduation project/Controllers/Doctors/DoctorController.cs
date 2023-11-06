@@ -1,4 +1,6 @@
-﻿using GraduationProject.BL;
+﻿using graduationProject.DAL;
+using GraduationProject.BL;
+using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.AspNetCore.Mvc;
 
 namespace graduation_project.Controllers.Doctors
@@ -27,6 +29,18 @@ namespace graduation_project.Controllers.Doctors
             // if (getAllDoctorsDto.Count()==0) { return BadRequest(); }
 
             return _doctorManager.GetAllDoctors();
+        }
+        #endregion
+        #region GetDoctorBySpecification
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<List<GetDoctorsBySpecializationDto>> GetBySpecialization(int id)
+        {
+            List<GetDoctorsBySpecializationDto> DoctorWithSpecialization = _doctorManager.GetDoctorsBySpecialization(id);
+            if (DoctorWithSpecialization is null)
+                return NotFound();
+
+            return DoctorWithSpecialization;
         }
         #endregion
     }

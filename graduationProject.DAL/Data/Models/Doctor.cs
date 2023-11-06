@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public class Doctor : IdentityUser
+    public class Doctor 
     {
-      /*  public int Id { get; set; }
-*/
-       /* [Required]*/
+        public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }

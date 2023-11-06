@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,11 +16,10 @@ namespace graduationProject.DAL
             _context = context;
         }
 
-        public List<Doctor> GetAllDoctors()
-        {
-            return _context.Set<Doctor>().ToList();
+        public List<Specialization> GetDoctorsBySpecialization(int SpeializationId)
+        { 
+            var doctors = _context.Specializations.Include(d => d.Doctors).Where(s => s.Id == SpeializationId).ToList();
+            return doctors;
         }
-
-
     }
 }
