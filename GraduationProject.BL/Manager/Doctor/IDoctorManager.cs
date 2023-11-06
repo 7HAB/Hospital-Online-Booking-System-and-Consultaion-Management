@@ -11,6 +11,7 @@ namespace GraduationProject.BL
     public interface IDoctorManager
     {
         public List<GetAllDoctorsDto> GetAllDoctors();
+        public GetDoctorByIDDto GetDoctorBYId(string id);
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id);
     }
 }

@@ -30,6 +30,19 @@ namespace GraduationProject.BL
                 weeks = d.weeks
             }).ToList();
         }
+        public GetDoctorByIDDto GetDoctorBYId(string id) 
+        {
+            Doctor? dbDoctor = _unitOfWork.doctorRepo.GetById(id);
+            if (dbDoctor is null)
+                return null!;
+            return new GetDoctorByIDDto
+            {
+                Name = dbDoctor.Name,
+                Title = dbDoctor.Title,
+                Description = dbDoctor.Description,
+                Specialization = dbDoctor.Specialization
+            };
+        }
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);

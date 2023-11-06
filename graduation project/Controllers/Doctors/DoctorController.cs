@@ -12,7 +12,7 @@ namespace graduation_project.Controllers.Doctors
         private readonly IConfiguration _configuration;
         private readonly IDoctorManager _doctorManager;
 
-        public DoctorController(IConfiguration configuration,IDoctorManager doctorManager)
+        public DoctorController(IConfiguration configuration, IDoctorManager doctorManager)
         {
             _configuration = configuration;
             _doctorManager = doctorManager;
@@ -31,9 +31,20 @@ namespace graduation_project.Controllers.Doctors
             return _doctorManager.GetAllDoctors();
         }
         #endregion
+        #region GetDoctorById
+        [HttpGet]
+        [Route("doctors/{DoctorId}")]
+        public ActionResult<GetDoctorByIDDto> GetDoctorById(string DoctorId)
+        {
+            GetDoctorByIDDto? GetDOctorById = _doctorManager.GetDoctorBYId(DoctorId);
+            if (GetDOctorById == null) 
+                return NotFound(); 
+            return GetDOctorById;
+        }
+        #endregion
         #region GetDoctorBySpecification
         [HttpGet]
-        [Route("{id}")]
+        [Route("doctors/specialization/{id}")]
         public ActionResult<List<GetDoctorsBySpecializationDto>> GetBySpecialization(int id)
         {
             List<GetDoctorsBySpecializationDto> DoctorWithSpecialization = _doctorManager.GetDoctorsBySpecialization(id);
