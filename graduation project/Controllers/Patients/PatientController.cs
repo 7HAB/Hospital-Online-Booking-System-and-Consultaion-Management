@@ -1,7 +1,6 @@
 ﻿using graduationProject.DAL;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
-using GraduationProject.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -9,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
+using GraduationProject.BL.Dtos.PatientDtos;
 
 namespace graduation_project.Controllers
 {
@@ -114,9 +114,10 @@ namespace graduation_project.Controllers
 
         #region GetPatientByPhone
         [HttpGet]
-        [Route("{phoneNumber}")]
-        public ActionResult<GetPatientByPhoneDTO> GetPatientByPhone(string phoneNumber) {
-        GetPatientByPhoneDTO? patient = _patientManager.getPatientByPhoneDTO(phoneNumber);
+        [Route("patient/{phoneNumber}")]
+        public ActionResult<GetPatientByPhoneDTO> GetPatientByPhone(string phoneNumber)
+        {
+            GetPatientByPhoneDTO? patient = _patientManager.getPatientByPhoneDTO(phoneNumber);
             if (patient == null) { return NotFound(); }
             return Ok(patient);
         }
@@ -124,7 +125,17 @@ namespace graduation_project.Controllers
 
         #endregion
 
+        #region GetMedicalHistory
+        [HttpGet]
+        [Route("medical_history/{phoneNumber}")]
+        public ActionResult<GetMedicalHistoryByPhoneDto> GetMedicalHistoryByPhone(string phoneNumber)
+        {
+            GetMedicalHistoryByPhoneDto? medicalHistory = _patientManager.GetMedicalHistoryByPhoneNumber(phoneNumber);
 
+            if (medicalHistory == null) { return NotFound(); }
+            return Ok(medicalHistory);
+        }
+        #endregion
 
     }
 }

@@ -11,5 +11,6 @@ namespace graduationProject.DAL
         /* public List<Doctor> GetAllDoctors();*/
         public Patient? GetPatientByPhoneNumber(string phoneNumber);
 
+        public MedicaHistory? GetMedicaHistoryByPhoneNumber(string phoneNumber);
     }
 }

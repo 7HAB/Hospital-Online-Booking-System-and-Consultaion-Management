@@ -16,10 +16,22 @@ namespace graduationProject.DAL
             _context = context;
         }
 
+        #region GetPatientByPhone
         public Patient? GetPatientByPhoneNumber(string phoneNumber)
         {
             return _context.Set<Patient>().FirstOrDefault(x => x.PhoneNumber == phoneNumber);
         }
 
+        #endregion
+
+        #region GetMedicalHistoryByPhoneNumber
+        public MedicaHistory? GetMedicaHistoryByPhoneNumber(string phoneNumber)
+        {
+            Patient? patient = _context.Set<Patient>().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+            if (patient == null) { return null; }
+            return patient.MedicaHistory;
+        }
+
+        #endregion
     }
 }
