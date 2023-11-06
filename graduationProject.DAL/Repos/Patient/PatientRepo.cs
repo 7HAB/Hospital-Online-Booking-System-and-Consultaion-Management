@@ -36,13 +36,22 @@ namespace graduationProject.DAL
 
         #endregion
         #region GetPatientVisitsByPhoneNumber
-        public Patient GetPatientVisitsByPhoneNumber(string phoneNumber)
+        public Patient? GetPatientVisitsByPhoneNumber(string phoneNumber)
         {
             Patient? patient = _context.Set<Patient>().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
             if (patient == null) { return null; }
             return patient;
         }
         #endregion
+        //#region GetPatientVisitsByPhoneNumber
+        //public List<PatientVisit> GetPatientVisitsByPhoneNumber(string phoneNumber)
+        //{
+        //    Patient? patient = _context.Set<Patient>().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+        //   List<PatientVisit>? patientVisit = _context.Set<PatientVisit>().Where(p=>p.Patient.Id == patient.Id).ToList();
+        //    if (patient == null) { return null; }
+        //    return patientVisit;
+        //}
+        //#endregion
 
 
     }
