@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraduationProject.BL
+namespace GraduationProject.BL.Dtos.Doctor
 {
     public class GetAllDoctorsDto
     {

@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL.Dtos.Doctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +18,7 @@ namespace GraduationProject.BL
         }
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
-            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAllDoctors();
+            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
 
             return doctors.Select(d => new GetAllDoctorsDto
             {
@@ -28,10 +29,22 @@ namespace GraduationProject.BL
                 PerformanceRate = d.PerformanceRate,
                 weeks = d.weeks
             }).ToList();
-
-
         }
-
+        public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
+        {
+            var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
+            return dbSpecializationDoctors.Select(s => new GetDoctorsBySpecializationDto
+            {
+                Name = s.Name,
+                ChildDoctorOfSpecializations = s.Doctors
+                .Select(d => new ChildDoctorOfSpecializationDto 
+                {
+                    Name = d.Name,
+                    Title = d.Title,
+                    Description = d.Description
+                }).ToList()
+            }).ToList();
+        }
 
     }
     }
