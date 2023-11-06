@@ -16,13 +16,13 @@ namespace graduation_project.Controllers
     public class PatientController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        private readonly UserManager<Patient> _userManager;
+        private readonly UserManager<Doctor> _userManager;
         private readonly IPatientManager _patientManager;
         public PatientController(IConfiguration configuration, 
             UserManager<Patient> userManager, IPatientManager patientManager)
         {
             _configuration = configuration;
-            _userManager = userManager;
+          //  _userManager = 
             _patientManager = patientManager;
         }
         #region Login
@@ -82,12 +82,11 @@ namespace graduation_project.Controllers
         [Route("register")]
         public async Task<ActionResult> Register(RegisterDto registerDto)
         {
-            var user = new Patient
+            var user = new Doctor
             {
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
-                Gender = registerDto.Gender,
                 DateOfBirth = registerDto.DateOfBirth,
                 
             };
@@ -100,7 +99,7 @@ namespace graduation_project.Controllers
             var claimsList = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Role, "Patient"),
+            new Claim(ClaimTypes.Role, "Doctor"),
             new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
