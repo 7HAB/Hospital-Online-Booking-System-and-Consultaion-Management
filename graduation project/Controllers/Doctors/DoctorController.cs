@@ -46,8 +46,8 @@ namespace graduation_project.Controllers.Doctors
         public ActionResult<GetDoctorByIDDto> GetDoctorById(string DoctorId)
         {
             GetDoctorByIDDto? GetDOctorById = _doctorManager.GetDoctorBYId(DoctorId);
-            if (GetDOctorById == null) 
-                return NotFound(); 
+            if (GetDOctorById == null)
+                return NotFound();
             return GetDOctorById;
         }
         #endregion
@@ -121,7 +121,7 @@ namespace graduation_project.Controllers.Doctors
         {
             var user = new Doctor
             {
-                
+
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
@@ -236,7 +236,7 @@ namespace graduation_project.Controllers.Doctors
             return Ok();
         }
         #endregion
-    }
+
         #region admin login
         [HttpPost]
         [Route("Admins/login")]
@@ -320,4 +320,5 @@ namespace graduation_project.Controllers.Doctors
 
         #endregion
     }
+
 }
