@@ -20,25 +20,6 @@ namespace GraduationProject.BL
             _unitOfWork = unitOfWork;
         }
 
-
-
-
-        //public List<GetAllDoctorsDto> GetAllDoctors()
-        //{
-        //    List<Doctor> doctors = _unitOfWork.doctorRepo.GetAllDoctors();
-
-        //    return doctors.Select(d => new GetAllDoctorsDto
-        //    {
-        //        Name = d.Name,
-        //        Title = d.Title,
-        //        Description = d.Description,
-        //        Specialization = d.Specialization,
-        //        PerformanceRate = d.PerformanceRate,
-        //        weeks = d.weeks
-        //    }).ToList();
-
-
-        //}
         #region GetPatientByPhone
         public GetPatientByPhoneDTO? getPatientByPhoneDTO(string phoneNumber)
         {
@@ -86,18 +67,18 @@ namespace GraduationProject.BL
 
 
         #region GetPatientVisitsByPhone
-        public GetPatientForPatientV? GetPatientVisitsByPhoneNumber(string phoneNumber)
+        public GetPatientVisitDto? GetPatientVisitsByPhoneNumber(string phoneNumber)
         {
             /*                List<PatientVisit>? patientVisit = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber).ToList();
             */               /* if (patientVisit = ) { return ; }*/
             Patient? patient = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber);
             if (patient == null) { return null; }
 
-            return new GetPatientForPatientV
+            return new GetPatientVisitDto
             {
                 Name = patient.Name,
 
-                PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsByPhoneDTO
+                PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsChildDTO
                 {
                     DateOfVisit = p.DateOfVisit,
                     Comments = p.Comments,

@@ -38,7 +38,7 @@ namespace graduationProject.DAL
         #region GetPatientVisitsByPhoneNumber
         public Patient? GetPatientVisitsByPhoneNumber(string phoneNumber)
         {
-            Patient? patient = _context.Set<Patient>().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+            Patient? patient = _context.Set<Patient>().Include(p => p.PatientVisits).FirstOrDefault(p => p.PhoneNumber == phoneNumber);
             if (patient == null) { return null; }
             return patient;
         }

@@ -11,6 +11,6 @@ namespace GraduationProject.BL
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public string Specialization { get; set; } = "";
+        public string SpecializationName { get; set; } = "";
     }
 }

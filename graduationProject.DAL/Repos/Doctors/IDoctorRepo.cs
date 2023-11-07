@@ -8,6 +8,7 @@ namespace graduationProject.DAL
 {
     public interface IDoctorRepo : IGenaricRepo<Doctor>
     {
+        public Doctor? GetById(string? id);
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId);
     }
 }

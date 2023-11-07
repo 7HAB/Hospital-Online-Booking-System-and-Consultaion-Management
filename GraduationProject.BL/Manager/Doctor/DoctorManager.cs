@@ -39,6 +39,7 @@ namespace GraduationProject.BL
                 Name = dbDoctor.Name,
                 Title = dbDoctor.Title,
                 Description = dbDoctor.Description,
+                SpecializationName = dbDoctor.specialization.Name
             };
         }
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)

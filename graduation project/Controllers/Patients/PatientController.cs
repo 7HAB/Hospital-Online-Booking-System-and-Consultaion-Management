@@ -138,9 +138,9 @@ namespace graduation_project.Controllers
 
         [HttpGet]
         [Route("patient_visits/{phoneNumber}")]
-        public ActionResult<GetPatientForPatientV> GetPatientVisitsByPhone(string phoneNumber)
+        public ActionResult<GetPatientVisitDto> GetPatientVisitsByPhone(string phoneNumber)
         {
-            GetPatientForPatientV? patient = _patientManager.GetPatientVisitsByPhoneNumber(phoneNumber);
+            GetPatientVisitDto? patient = _patientManager.GetPatientVisitsByPhoneNumber(phoneNumber);
             if (patient == null) { return NotFound(); }
             return Ok(patient);
 

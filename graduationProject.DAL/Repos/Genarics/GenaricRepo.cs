@@ -24,10 +24,10 @@ namespace graduationProject.DAL
             return _context.Set<TEntity>().ToList();
         }
 
-        public TEntity? GetById(string? id)
+/*        public TEntity? GetById(string? id)
         {
             return _context.Set<TEntity>().Find(id);
-        }
+        }*/
 
         public int SaveChanges()
         {

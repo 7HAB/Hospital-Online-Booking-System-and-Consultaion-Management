@@ -6,15 +6,8 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.BL.Dtos
 {
-    public class GetPatientForPatientV
+    public class GetPatientVisitsChildDTO
     {
-        public string? Name { get; set; }
-        public List<GetPatientVisitsByPhoneDTO>? PatientVisits { get; set; } = new();
-    }
-    public class GetPatientVisitsByPhoneDTO
-    {
-       
-        
         public int Id { get; set; }
         public DateTime DateOfVisit { get; set; }
         public string? Comments { get; set; }

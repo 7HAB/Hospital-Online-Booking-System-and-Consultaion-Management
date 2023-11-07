@@ -14,7 +14,7 @@ namespace GraduationProject.BL
         public GetPatientByPhoneDTO getPatientByPhoneDTO(string phoneNumber);
 
         public GetMedicalHistoryByPhoneDto? GetMedicalHistoryByPhoneNumber(string phoneNumber);
-        public GetPatientForPatientV? GetPatientVisitsByPhoneNumber(string phoneNumber);
+        public GetPatientVisitDto? GetPatientVisitsByPhoneNumber(string phoneNumber);
     }
 
 }
