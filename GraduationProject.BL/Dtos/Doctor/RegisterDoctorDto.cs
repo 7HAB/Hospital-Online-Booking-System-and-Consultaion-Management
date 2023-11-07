@@ -12,7 +12,7 @@ namespace GraduationProject.BL.Dtos
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
-        //public string Specialization { get; set; } = "";
+        public int SpecializationId { get; set; } = 0;
         public decimal Salary { get; set; }
         public string? PhoneNumber { get; set; }
 

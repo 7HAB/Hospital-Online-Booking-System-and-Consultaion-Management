@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdatedDatabase : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,7 +221,7 @@ namespace graduationProject.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Specialization = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    SpecializationId = table.Column<int>(type: "int", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     PerformanceRate = table.Column<int>(type: "int", nullable: false),
                     Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -229,8 +229,7 @@ namespace graduationProject.DAL.Migrations
                     AssistantID = table.Column<int>(type: "int", nullable: false),
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AssistantPhoneNumber = table.Column<int>(type: "int", nullable: false),
-                    AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    specializationId = table.Column<int>(type: "int", nullable: true)
+                    AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -242,8 +241,8 @@ namespace graduationProject.DAL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Doctors_Specializations_specializationId",
-                        column: x => x.specializationId,
+                        name: "FK_Doctors_Specializations_SpecializationId",
+                        column: x => x.SpecializationId,
                         principalTable: "Specializations",
                         principalColumn: "Id");
                 });
@@ -477,9 +476,9 @@ namespace graduationProject.DAL.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Doctors_specializationId",
+                name: "IX_Doctors_SpecializationId",
                 table: "Doctors",
-                column: "specializationId");
+                column: "SpecializationId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MedicaHistories_PatientId",

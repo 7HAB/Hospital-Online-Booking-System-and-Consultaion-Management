@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231106203926_UpdatedDatabase")]
-    partial class UpdatedDatabase
+    [Migration("20231107083727_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -510,17 +510,13 @@ namespace graduationProject.DAL.Migrations
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Specialization")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("SpecializationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("specializationId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("specializationId");
+                    b.HasIndex("SpecializationId");
 
                     b.ToTable("Doctors");
                 });
@@ -706,7 +702,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasOne("graduationProject.DAL.Specialization", "specialization")
                         .WithMany("Doctors")
-                        .HasForeignKey("specializationId");
+                        .HasForeignKey("SpecializationId");
 
                     b.Navigation("specialization");
                 });

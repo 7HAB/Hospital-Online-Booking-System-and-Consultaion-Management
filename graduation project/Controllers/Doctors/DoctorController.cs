@@ -114,14 +114,14 @@ namespace graduation_project.Controllers.Doctors
         }
         #endregion
         #region Register
-/*
+
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> Register(RegisterDoctorDto registerDto, DoctorSpecializationRegisterDto registerDto2)
+        public async Task<ActionResult> Register(RegisterDoctorDto registerDto)
         {
             var user = new Doctor
             {
-                //specialization = registerDto2,
+                
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
@@ -132,7 +132,7 @@ namespace graduation_project.Controllers.Doctors
                 AssistantID = registerDto.AssistantID,
                 AssistantPhoneNumber = registerDto.AssistantPhoneNumber,
                 AssistantDateOfBirth = registerDto.AssistantDateOfBirth,
-                
+                SpecializationId = registerDto.SpecializationId
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
@@ -151,7 +151,7 @@ namespace graduation_project.Controllers.Doctors
 
             return Ok();
         }
-*/
+
         #endregion
 
     }

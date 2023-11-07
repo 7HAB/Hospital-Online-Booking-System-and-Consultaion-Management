@@ -14,8 +14,8 @@ namespace graduationProject.DAL
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
-        //public string Specialization { get; set; } = "";
-        public decimal Salary { get; set; }
+        public int? SpecializationId { get; set; } = 0;
+        public decimal Salary { get; set; } 
         public int PerformanceRate { get; set; }
 
         public string? Review { get; set; }
