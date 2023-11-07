@@ -1,6 +1,5 @@
 ﻿using graduationProject.DAL;
 using GraduationProject.BL.Dtos;
-using GraduationProject.BL.Dtos.PatientDtos;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

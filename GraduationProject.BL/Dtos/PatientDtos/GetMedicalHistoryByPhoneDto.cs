@@ -4,16 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraduationProject.BL { 
-
- /*   public class GetPatientDetailsMedicalHistory
-{
-    public string Name { get; set; } = string.Empty;
-        public string? Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string? PhoneNumber { get; set; }
-        public GetMedicalHistoryByPhoneDto getMedicalHistoryByPhoneDto { get; set; } = new();
-}*/
+namespace GraduationProject.BL 
+{ 
     public class GetMedicalHistoryByPhoneDto
     {
         public bool MartialStatus { get; set; }

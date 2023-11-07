@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL.Data.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public class HospitalContext : IdentityDbContext<Patient>
+    public class HospitalContext : IdentityDbContext
     {
-        //public DbSet<Patient> Patients { get; set; }
+        public DbSet<Patient> Patients { get; set; }
         public DbSet<PatientVisit> PatientVisits { get; set; }
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Admin> Admins { get; set; }
@@ -21,9 +22,13 @@ namespace graduationProject.DAL
         public DbSet<WeekSchedule> WeekSchedules { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         public DbSet<VisitCount> VisitCount { get; set; }
-
         public HospitalContext(DbContextOptions options) : base(options) { }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<IdentityUser>().UseTptMappingStrategy();
+        }
         //protected override void OnModelCreating(ModelBuilder builder)
         //{
 
@@ -185,7 +190,7 @@ namespace graduationProject.DAL
         //                    HighBloodPressure = false,
         //                    LowBloodPressure = false,
         //                    Asthma = true,
-                           
+
         //                    HeartDisease = false,
         //                    AnxityOrPanicDisorder = true,
         //                    Depression = false,
@@ -426,7 +431,7 @@ namespace graduationProject.DAL
         //    //                StartTime = new DateTime(2023, 5, 15, 9, 0, 0),
         //    //                EndTime = new DateTime(2023, 5, 15, 17, 0, 0),
         //    //                IsAvailable = true,
-                           
+
         //    //            },
         //    //            new WeekSchedule
         //    //            {

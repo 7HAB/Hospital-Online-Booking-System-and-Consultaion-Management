@@ -9,22 +9,18 @@ using System.Threading.Tasks;
 
 namespace graduationProject.DAL
 {
-    public class Doctor 
+    public class Doctor : IdentityUser
     {
-        public string Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public string Specialization { get; set; } = "";
-        public decimal Salary { get; set; }
+        public int? SpecializationId { get; set; } = 0;
+        public decimal Salary { get; set; } 
         public int PerformanceRate { get; set; }
 
         public string? Review { get; set; }
 
         public DateTime DateOfBirth { get; set; }
-
-        [Unique]
-       /* public int PhoneNumber { get; set; }*/
 
         public int AssistantID { get; set; }
 

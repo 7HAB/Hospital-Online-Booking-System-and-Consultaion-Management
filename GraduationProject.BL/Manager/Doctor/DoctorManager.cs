@@ -25,7 +25,6 @@ namespace GraduationProject.BL
                 Name = d.Name,
                 Title = d.Title,
                 Description = d.Description,
-                Specialization = d.Specialization,
                 PerformanceRate = d.PerformanceRate,
                 weeks = d.weeks
             }).ToList();
@@ -40,7 +39,6 @@ namespace GraduationProject.BL
                 Name = dbDoctor.Name,
                 Title = dbDoctor.Title,
                 Description = dbDoctor.Description,
-                Specialization = dbDoctor.Specialization
             };
         }
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
@@ -58,6 +56,5 @@ namespace GraduationProject.BL
                 }).ToList()
             }).ToList();
         }
-
     }
     }
