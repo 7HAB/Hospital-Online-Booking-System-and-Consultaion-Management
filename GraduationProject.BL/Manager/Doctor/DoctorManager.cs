@@ -56,6 +56,5 @@ namespace GraduationProject.BL
                 }).ToList()
             }).ToList();
         }
-
     }
     }

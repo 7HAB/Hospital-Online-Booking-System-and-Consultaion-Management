@@ -63,10 +63,10 @@ namespace graduation_project.Controllers.Doctors
             return DoctorWithSpecialization;
         }
         #endregion
-        #region Login
+        #region doctor Login
 
         [HttpPost]
-        [Route("login")]
+        [Route("Doctor/login")]
         //=> /api/users/static-login
         public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
         {
@@ -113,10 +113,10 @@ namespace graduation_project.Controllers.Doctors
 
         }
         #endregion
-        #region Register
+        #region doctor Register
 
         [HttpPost]
-        [Route("register")]
+        [Route("Doctor/register")]
         public async Task<ActionResult> Register(RegisterDoctorDto registerDto)
         {
             var user = new Doctor
@@ -154,5 +154,87 @@ namespace graduation_project.Controllers.Doctors
 
         #endregion
 
+        #region admin login
+        [HttpPost]
+        [Route("Admins/login")]
+        //=> /api/users/static-login
+        public async Task<ActionResult<TokenDto>> AdminLogin(LoginDto credentials)
+        {
+            #region Username and Password verification
+
+            IdentityUser? user = await _userManager.FindByNameAsync(credentials.PhoneNumber);
+
+            if (user is null)
+            {
+                return Content("null");
+            }
+
+            bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
+            if (!isPasswordCorrect)
+            {
+                //  return Unauthorized();
+                return Content("password wrong");
+            }
+
+            #endregion
+
+            #region Generate Token
+
+            var claimsList = await _userManager.GetClaimsAsync(user);
+            string secretKey = _configuration.GetValue<string>("SecretKey")!;
+            var algorithm = SecurityAlgorithms.HmacSha256Signature;
+
+            var keyInBytes = Encoding.ASCII.GetBytes(secretKey);
+            var key = new SymmetricSecurityKey(keyInBytes);
+            var signingCredentials = new SigningCredentials(key, algorithm);
+
+            var token = new JwtSecurityToken(
+                claims: claimsList,
+                signingCredentials: signingCredentials,
+                expires: DateTime.Now.AddMinutes(10));
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            return new TokenDto
+            {
+                Token = tokenHandler.WriteToken(token),
+            };
+
+            #endregion
+
+        }
+        #endregion
+        #region admin register
+
+        [HttpPost]
+        [Route("Admins/register")]
+        public async Task<ActionResult> AdminRegister(RegisterAdminDto registerDto)
+        {
+            var user = new Admin
+            {
+
+                Name = registerDto.Name,
+                PhoneNumber = registerDto.PhoneNumber,
+                UserName = registerDto.PhoneNumber,
+                SpecializationId = registerDto.SpecializationId
+            };
+            var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
+            if (!creationResult.Succeeded)
+            {
+                return BadRequest(creationResult.Errors);
+            }
+
+            var claimsList = new List<Claim>
+        {
+            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Role, "Admin"),
+            new Claim(ClaimTypes.Name, user.UserName)
+        //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
+        };
+            await _userManager.AddClaimsAsync(user, claimsList);
+
+            return Ok();
+        }
+
+        #endregion
     }
 }
