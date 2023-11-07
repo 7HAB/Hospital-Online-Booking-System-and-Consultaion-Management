@@ -19,6 +19,10 @@ namespace graduationProject.DAL
         {
             return _context.Set<Doctor>().Include(d => d.specialization).FirstOrDefault(d => d.Id == id);
         }
+        public List<Doctor> GetAll()
+        {
+            return _context.Set<Doctor>().Include(d => d.specialization).ToList();
+        }
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId)
         { 
             var doctors = _context.Specializations.Include(d => d.Doctors).Where(s => s.Id == SpeializationId).ToList();

@@ -19,10 +19,10 @@ namespace graduationProject.DAL
             _context.Set<TEntity>().Add(enity);
         }
 
-        public List<TEntity> GetAll()
+/*        public List<TEntity> GetAll()
         {
             return _context.Set<TEntity>().ToList();
-        }
+        }*/
 
 /*        public TEntity? GetById(string? id)
         {

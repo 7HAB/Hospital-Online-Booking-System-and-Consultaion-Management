@@ -8,7 +8,7 @@ namespace graduationProject.DAL
 {
     public interface IGenaricRepo<TEnity> where TEnity : class
     {
-        List<TEnity> GetAll();
+/*        List<TEnity> GetAll();*/
         /*TEnity? GetById(string? id);*/
         void Add(TEnity enity);
         int SaveChanges();

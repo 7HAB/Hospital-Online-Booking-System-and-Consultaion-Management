@@ -26,7 +26,8 @@ namespace GraduationProject.BL
                 Title = d.Title,
                 Description = d.Description,
                 PerformanceRate = d.PerformanceRate,
-                weeks = d.weeks
+                weeks = d.weeks,
+                SpecializationName = d.specialization.Name
             }).ToList();
         }
         public GetDoctorByIDDto GetDoctorBYId(string id) 
