@@ -30,7 +30,10 @@ namespace GraduationProject.BL
                 SpecializationName = d.specialization.Name
             }).ToList();
         }
-        public GetDoctorByIDDto GetDoctorBYId(string id) 
+
+
+
+        public GetDoctorByIDDto GetDoctorBYId(string id)
         {
             Doctor? dbDoctor = _unitOfWork.doctorRepo.GetById(id);
             if (dbDoctor is null)
@@ -50,7 +53,7 @@ namespace GraduationProject.BL
             {
                 Name = s.Name,
                 ChildDoctorOfSpecializations = s.Doctors
-                .Select(d => new ChildDoctorOfSpecializationDto 
+                .Select(d => new ChildDoctorOfSpecializationDto
                 {
                     Name = d.Name,
                     Title = d.Title,
@@ -58,5 +61,22 @@ namespace GraduationProject.BL
                 }).ToList()
             }).ToList();
         }
+
+        public GetAllWeekScheduleDto? GetAllWeekScheduleByDoctorId(string id)
+        {
+            var doctor = _unitOfWork.weekScheduleRepo.GetAllWeekSchedule(id);
+            return new GetAllWeekScheduleDto
+            {
+
+                Name = doctor.Name,
+                WeekSchedule = doctor.weeks.Select(d => new GetAllWeekScheduleChildDto
+                {
+                    DayOfWeek = d.DayOfWeek,
+                    IsAvailable = d.IsAvailable,
+                    StartTime = d.StartTime,
+                    EndTime = d.EndTime,
+                }).ToList()
+            };
+        }
     }
-    }
+}

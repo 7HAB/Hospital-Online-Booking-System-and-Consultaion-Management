@@ -12,11 +12,15 @@ namespace graduationProject.DAL
 
         public IPatientRepo patientRepo {  get;  }
         public IDoctorRepo doctorRepo { get; }
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo)
+
+        public IWeekScheduleRepo weekScheduleRepo { get; }
+
+        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo)
         {
             _context = context;
             patientRepo = PatientRepo;
             doctorRepo = DoctorRepo;
+            weekScheduleRepo = WeekScheduleRepo;
         }
         public int SaveChanges()
         {
