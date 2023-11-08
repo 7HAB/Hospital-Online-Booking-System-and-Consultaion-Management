@@ -123,7 +123,18 @@ namespace graduation_project.Controllers
 
 
         #endregion
- 
+        #region adding rate
+        [HttpPut]
+        public ActionResult Update(VisitReviewAndRateDto VisitDto)
+        {
+            bool result = _patientManager.ReviewAndRate(VisitDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return NoContent();
+        }
+        #endregion
         #region GetMedicalHistory
         [HttpGet]
         [Route("medical_history/{phoneNumber}")]
@@ -135,7 +146,7 @@ namespace graduation_project.Controllers
             return Ok(medicalHistory);
         }
         #endregion
-
+        #region get patient visit
         [HttpGet]
         [Route("patient_visits/{phoneNumber}")]
         public ActionResult<GetPatientVisitDto> GetPatientVisitsByPhone(string phoneNumber)
@@ -145,5 +156,6 @@ namespace graduation_project.Controllers
             return Ok(patient);
 
         }
+        #endregion
     }
 }
