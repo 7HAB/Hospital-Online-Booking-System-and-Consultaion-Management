@@ -28,8 +28,9 @@ namespace graduationProject.DAL
         public int AssistantPhoneNumber { get; set; }
 
         public DateTime AssistantDateOfBirth { get; set; }
+
+        public ICollection<PatientVisit> patientVisits { get; set; } = new HashSet<PatientVisit>();
         public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();
-        public ICollection<PatientVisitsWithDoctor> patientVisits { get; set; } = new HashSet<PatientVisitsWithDoctor>();
         public Specialization? specialization {  get; set; }
     }
 }

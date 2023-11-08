@@ -13,7 +13,6 @@ namespace graduationProject.DAL
         public IPatientRepo patientRepo {  get;  }
         public IDoctorRepo doctorRepo { get; }
         public IVisitReviewAndRateRepo visitReviewAndRateRepo { get; }
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IVisitReviewAndRateRepo visitReviewAndRateRepo)
 
         public IWeekScheduleRepo weekScheduleRepo { get; }
 
