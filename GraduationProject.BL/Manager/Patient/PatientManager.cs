@@ -106,6 +106,7 @@ namespace GraduationProject.BL
             dbVisit.Review = dto.Review;
             dbVisit.Rate = dto.Rate;
             _unitOfWork.visitReviewAndRateRepo.Update(dbVisit);
+            _unitOfWork.SaveChanges();
             return true;
         }
         #endregion
