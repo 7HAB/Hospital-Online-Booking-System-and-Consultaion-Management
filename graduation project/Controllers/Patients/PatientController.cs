@@ -123,18 +123,7 @@ namespace graduation_project.Controllers
 
 
         #endregion
-        #region adding rate
-        [HttpPut]
-        public ActionResult Update(VisitReviewAndRateDto VisitDto)
-        {
-            bool result = _patientManager.ReviewAndRate(VisitDto);
-            if (!result)
-            {
-                return NotFound();
-            }
-            return Ok("Updated");
-        }
-        #endregion
+ 
         #region GetMedicalHistory
         [HttpGet]
         [Route("medical_history/{phoneNumber}")]

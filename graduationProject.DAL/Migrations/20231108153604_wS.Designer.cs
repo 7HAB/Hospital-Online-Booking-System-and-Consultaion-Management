@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231107095649_logins")]
-    partial class logins
+    [Migration("20231108153604_wS")]
+    partial class wS
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

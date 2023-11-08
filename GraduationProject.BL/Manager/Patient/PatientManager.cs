@@ -98,18 +98,7 @@ namespace GraduationProject.BL
 
 
         #endregion
-        #region Review and Rate
-        public bool ReviewAndRate(VisitReviewAndRateDto dto)
-        {
-            PatientVisitsWithDoctor? dbVisit = _unitOfWork.visitReviewAndRateRepo.GetById(dto.Id);
-            if (dbVisit == null) { return false;}
-            dbVisit.Review = dto.Review;
-            dbVisit.Rate = dto.Rate;
-            _unitOfWork.visitReviewAndRateRepo.Update(dbVisit);
-            _unitOfWork.SaveChanges();
-            return true;
-        }
-        #endregion
+  
     }
 
 }
