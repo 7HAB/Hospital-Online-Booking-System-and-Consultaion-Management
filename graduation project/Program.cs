@@ -35,6 +35,7 @@ builder.Services.AddScoped<IPatientRepo, PatientRepo>();
 
 builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
 builder.Services.AddScoped<IVisitReviewAndRateRepo, VisitReviewAndRateRepo>();
+builder.Services.AddScoped<IWeekScheduleRepo, WeekScheduleRepo>();
 
 #endregion
 

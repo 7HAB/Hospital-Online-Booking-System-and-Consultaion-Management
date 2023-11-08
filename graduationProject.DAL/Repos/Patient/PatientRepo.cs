@@ -28,6 +28,7 @@ namespace graduationProject.DAL
         public MedicaHistory? GetMedicaHistoryByPhoneNumber(string phoneNumber)
         {
             Patient? patient = _context.Set<Patient>().FirstOrDefault(p => p.PhoneNumber == phoneNumber);
+            if (patient == null) { return null; }
             MedicaHistory? medicaHistory = _context.Set<MedicaHistory>().FirstOrDefault(m => m.PatientId == patient.Id);
             if (medicaHistory == null) { return null; }
 

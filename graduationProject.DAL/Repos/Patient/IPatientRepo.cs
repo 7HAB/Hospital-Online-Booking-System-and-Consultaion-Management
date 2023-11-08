@@ -1,4 +1,5 @@
-﻿using System;
+﻿using graduationProject.DAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace graduationProject.DAL
         public MedicaHistory? GetMedicaHistoryByPhoneNumber(string phoneNumber);
         //public List<PatientVisit>?  GetPatientVisitsByPhoneNumber(string phoneNumber);
         public Patient? GetPatientVisitsByPhoneNumber(string phoneNumber);
+        
 
     }
 }
