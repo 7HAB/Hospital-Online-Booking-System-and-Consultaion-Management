@@ -8,7 +8,7 @@ namespace graduationProject.DAL
 {
     public interface IVisitReviewAndRateRepo
     {
-        public void Update(PatientVisitsWithDoctor entity);
-        public PatientVisitsWithDoctor? GetById(int? id);
+        public void Update(PatientVisit entity);
+        public PatientVisit? GetById(int? id);
     }
 }

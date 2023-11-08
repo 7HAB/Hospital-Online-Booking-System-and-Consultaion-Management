@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231108132823_updatingReview")]
-    partial class updatingReview
+    [Migration("20231108175729_db")]
+    partial class db
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -361,10 +361,19 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("DateOfVisit")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("PatientId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Prescription")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Review")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Symptoms")
@@ -381,43 +390,11 @@ namespace graduationProject.DAL.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("PatientVisits");
-                });
-
-            modelBuilder.Entity("graduationProject.DAL.PatientVisitsWithDoctor", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DoctorId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PatientId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("PatientVisitId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("Rate")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Review")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("DoctorId");
 
                     b.HasIndex("PatientId");
 
-                    b.HasIndex("PatientVisitId");
-
-                    b.ToTable("patientVisitsWithDoctors");
+                    b.ToTable("PatientVisits");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Specialization", b =>
@@ -640,32 +617,17 @@ namespace graduationProject.DAL.Migrations
 
             modelBuilder.Entity("graduationProject.DAL.PatientVisit", b =>
                 {
-                    b.HasOne("graduationProject.DAL.Patient", "Patient")
-                        .WithMany("PatientVisits")
-                        .HasForeignKey("PatientId");
-
-                    b.Navigation("Patient");
-                });
-
-            modelBuilder.Entity("graduationProject.DAL.PatientVisitsWithDoctor", b =>
-                {
                     b.HasOne("graduationProject.DAL.Doctor", "Doctor")
                         .WithMany("patientVisits")
                         .HasForeignKey("DoctorId");
 
                     b.HasOne("graduationProject.DAL.Patient", "Patient")
-                        .WithMany("patientVisitsWithDoctors")
-                        .HasForeignKey("PatientId");
-
-                    b.HasOne("graduationProject.DAL.PatientVisit", "PatientVisit")
                         .WithMany("PatientVisits")
-                        .HasForeignKey("PatientVisitId");
+                        .HasForeignKey("PatientId");
 
                     b.Navigation("Doctor");
 
                     b.Navigation("Patient");
-
-                    b.Navigation("PatientVisit");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.VisitCount", b =>
@@ -736,11 +698,6 @@ namespace graduationProject.DAL.Migrations
                     b.Navigation("VisitCount");
                 });
 
-            modelBuilder.Entity("graduationProject.DAL.PatientVisit", b =>
-                {
-                    b.Navigation("PatientVisits");
-                });
-
             modelBuilder.Entity("graduationProject.DAL.Specialization", b =>
                 {
                     b.Navigation("Admin");
@@ -765,8 +722,6 @@ namespace graduationProject.DAL.Migrations
                     b.Navigation("MedicaHistory");
 
                     b.Navigation("PatientVisits");
-
-                    b.Navigation("patientVisitsWithDoctors");
                 });
 #pragma warning restore 612, 618
         }

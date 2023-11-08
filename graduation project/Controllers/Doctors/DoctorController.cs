@@ -323,9 +323,9 @@ namespace graduation_project.Controllers.Doctors
         #region WeekSchedule
         [HttpGet]
         [Route("DoctorVisit/{id}")]
-        public ActionResult<GetAllWeekScheduleDto> GetAllWeekScheduleByDoctorId(string id)
+        public ActionResult<GetAllWeekScheduleDto> GetAllWeekScheduleByDoctorId(string? id)
         {
-            GetAllWeekScheduleDto weekschedule = _doctorManager.GetAllWeekScheduleByDoctorId(id);
+            GetAllWeekScheduleDto? weekschedule = _doctorManager.GetAllWeekScheduleByDoctorId(id);
             if(weekschedule == null) { return NotFound(); }
             return Ok(weekschedule);
         }

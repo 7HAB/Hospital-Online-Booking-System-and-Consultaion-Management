@@ -19,7 +19,6 @@ namespace graduationProject.DAL
        public MedicaHistory? MedicaHistory { get; set; }
         public ICollection<Reception>? Receptions { set; get; } = new HashSet<Reception>();
         public ICollection<PatientVisit> PatientVisits { set; get; } = new HashSet<PatientVisit>();
-        public ICollection<PatientVisitsWithDoctor> patientVisitsWithDoctors { set; get; }= new HashSet<PatientVisitsWithDoctor>();
 
     }
 }

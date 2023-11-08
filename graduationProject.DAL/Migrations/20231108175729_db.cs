@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class db : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -223,8 +223,6 @@ namespace graduationProject.DAL.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SpecializationId = table.Column<int>(type: "int", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    PerformanceRate = table.Column<int>(type: "int", nullable: false),
-                    Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AssistantID = table.Column<int>(type: "int", nullable: false),
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -283,32 +281,6 @@ namespace graduationProject.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PatientVisits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    DateOfVisit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    VisitStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VisitStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VisitEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Prescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PatientVisits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PatientVisits_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Receptions",
                 columns: table => new
                 {
@@ -333,6 +305,40 @@ namespace graduationProject.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PatientVisits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DateOfVisit = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Symptoms = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    VisitStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ArrivalTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VisitStartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    VisitEndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Prescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Review = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rate = table.Column<int>(type: "int", nullable: true),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PatientVisits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PatientVisits_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PatientVisits_Patients_PatientId",
+                        column: x => x.PatientId,
+                        principalTable: "Patients",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WeekSchedules",
                 columns: table => new
                 {
@@ -353,36 +359,6 @@ namespace graduationProject.DAL.Migrations
                         principalTable: "Doctors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "patientVisitsWithDoctors",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    PatientVisitId = table.Column<int>(type: "int", nullable: true),
-                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_patientVisitsWithDoctors", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_patientVisitsWithDoctors_Doctors_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "Doctors",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_patientVisitsWithDoctors_PatientVisits_PatientVisitId",
-                        column: x => x.PatientVisitId,
-                        principalTable: "PatientVisits",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_patientVisitsWithDoctors_Patients_PatientId",
-                        column: x => x.PatientId,
-                        principalTable: "Patients",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -493,24 +469,14 @@ namespace graduationProject.DAL.Migrations
                 column: "ReceptionsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PatientVisits_PatientId",
+                name: "IX_PatientVisits_DoctorId",
                 table: "PatientVisits",
-                column: "PatientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_patientVisitsWithDoctors_DoctorId",
-                table: "patientVisitsWithDoctors",
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_patientVisitsWithDoctors_PatientId",
-                table: "patientVisitsWithDoctors",
+                name: "IX_PatientVisits_PatientId",
+                table: "PatientVisits",
                 column: "PatientId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_patientVisitsWithDoctors_PatientVisitId",
-                table: "patientVisitsWithDoctors",
-                column: "PatientVisitId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Receptions_AdminId",
@@ -553,7 +519,7 @@ namespace graduationProject.DAL.Migrations
                 name: "PatientReception");
 
             migrationBuilder.DropTable(
-                name: "patientVisitsWithDoctors");
+                name: "PatientVisits");
 
             migrationBuilder.DropTable(
                 name: "VisitCount");
@@ -565,16 +531,13 @@ namespace graduationProject.DAL.Migrations
                 name: "Receptions");
 
             migrationBuilder.DropTable(
-                name: "PatientVisits");
+                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "WeekSchedules");
 
             migrationBuilder.DropTable(
                 name: "Admins");
-
-            migrationBuilder.DropTable(
-                name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "Doctors");

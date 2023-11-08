@@ -17,7 +17,6 @@ namespace graduationProject.DAL
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<MedicaHistory> MedicaHistories { get; set; }
-        public DbSet<PatientVisitsWithDoctor> patientVisitsWithDoctors { get; set; }
         public DbSet<Reception> Receptions { get; set; }
         public DbSet<WeekSchedule> WeekSchedules { get; set; }
         public DbSet<Specialization> Specializations { get; set; }

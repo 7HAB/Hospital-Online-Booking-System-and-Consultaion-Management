@@ -15,13 +15,13 @@ namespace graduationProject.DAL
         {
             _context = context;
         }
-        public void Update(PatientVisitsWithDoctor entity)
+        public void Update(PatientVisit entity)
         {
-            _context.Set<PatientVisitsWithDoctor>().Update(entity);
+            _context.Set<PatientVisit>().Update(entity);
         }
-        public PatientVisitsWithDoctor? GetById(int? id)
+        public PatientVisit? GetById(int? id)
         {
-            return _context.Set<PatientVisitsWithDoctor>().FirstOrDefault(d => d.Id == id);
+            return _context.Set<PatientVisit>().FirstOrDefault(d => d.Id == id);
         }
     }
 }
