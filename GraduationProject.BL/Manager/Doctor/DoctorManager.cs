@@ -25,7 +25,6 @@ namespace GraduationProject.BL
                 Name = d.Name,
                 Title = d.Title,
                 Description = d.Description,
-                PerformanceRate = d.PerformanceRate,
                 weeks = d.weeks,
                 SpecializationName = d.specialization.Name
             }).ToList();

@@ -10,6 +10,7 @@ namespace graduationProject.DAL
     {
         public IPatientRepo patientRepo { get; }
         public IDoctorRepo doctorRepo { get; }
+        public IVisitReviewAndRateRepo visitReviewAndRateRepo { get; }
         int SaveChanges();
     }
 }

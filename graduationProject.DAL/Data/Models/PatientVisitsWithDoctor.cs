@@ -10,6 +10,8 @@ namespace graduationProject.DAL
     public class PatientVisitsWithDoctor
     {
         public int Id { get; set; }
+        public string? Review { get; set; }
+        public int? Rate { get; set; }
         public Patient? Patient { get; set; }
         public PatientVisit? PatientVisit { get; set; }
         public Doctor? Doctor { get; set; }
