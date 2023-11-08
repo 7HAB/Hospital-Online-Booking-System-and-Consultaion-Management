@@ -12,6 +12,7 @@ namespace GraduationProject.BL
     {
         // public List<GetAllDoctorsDto> GetAllDoctors();
         public GetPatientByPhoneDTO getPatientByPhoneDTO(string phoneNumber);
+        public bool ReviewAndRate(VisitReviewAndRateDto dto);
 
         public GetMedicalHistoryByPhoneDto? GetMedicalHistoryByPhoneNumber(string phoneNumber);
         public GetPatientVisitDto? GetPatientVisitsByPhoneNumber(string phoneNumber);

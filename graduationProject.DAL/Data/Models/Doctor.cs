@@ -16,9 +16,6 @@ namespace graduationProject.DAL
         public string? Description { get; set; }
         public int? SpecializationId { get; set; } = 0;
         public decimal Salary { get; set; } 
-        public int PerformanceRate { get; set; }
-
-        public string? Review { get; set; }
 
         public DateTime DateOfBirth { get; set; }
 
