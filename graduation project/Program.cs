@@ -49,6 +49,7 @@ builder.Services.AddScoped<IPatientManager, PatientManager>();
 
 builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
+
 #endregion
 
 var app = builder.Build();
