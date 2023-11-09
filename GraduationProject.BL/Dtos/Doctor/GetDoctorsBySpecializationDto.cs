@@ -10,7 +10,6 @@ namespace GraduationProject.BL
     public class GetDoctorsBySpecializationDto
     {
         public string? Name { get; set; }
-
         public List<ChildDoctorOfSpecializationDto>? ChildDoctorOfSpecializations { get; set; }
     }
 }

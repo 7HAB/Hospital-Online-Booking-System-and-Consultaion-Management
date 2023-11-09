@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL.Data.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using ServiceStack.DataAnnotations;
 using System;
@@ -12,6 +13,7 @@ namespace graduationProject.DAL
     public class Doctor : IdentityUser
     {
         public string Name { get; set; } = string.Empty;
+        //public IFormFile? Photo { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
         public int? SpecializationId { get; set; } = 0;
