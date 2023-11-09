@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 namespace graduationProject.DAL
 {
     public class UnitOfWork : IUnitOfWork
-    { private readonly HospitalContext _context;
+    { 
+        private readonly HospitalContext _context;
 
         public IPatientRepo patientRepo {  get;  }
         public IDoctorRepo doctorRepo { get; }
@@ -16,7 +17,7 @@ namespace graduationProject.DAL
 
         public IWeekScheduleRepo weekScheduleRepo { get; }
 
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo)
+        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo)
         {
             _context = context;
             patientRepo = PatientRepo;

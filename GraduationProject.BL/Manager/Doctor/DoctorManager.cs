@@ -3,6 +3,7 @@ using GraduationProject.BL.Dtos.Doctor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace GraduationProject.BL
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
+            
 
             return doctors.Select(d => new GetAllDoctorsDto
             {
@@ -27,6 +29,7 @@ namespace GraduationProject.BL
                 Description = d.Description,
                 weeks = d.weeks,
                 SpecializationName = d.specialization.Name
+                
             }).ToList();
         }
 

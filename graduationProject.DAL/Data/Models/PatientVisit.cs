@@ -22,7 +22,6 @@ namespace graduationProject.DAL
         //In Progress Time = vist start time - visit end time
         public string? Prescription { get; set; } //Make sure this is how multivalued attributes are applied ---- migration 
        
-
         public string? Review { get; set; }
         public int? Rate { get; set; }
         public string? DoctorId { get; set; }
