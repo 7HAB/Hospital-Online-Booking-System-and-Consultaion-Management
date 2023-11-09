@@ -108,6 +108,23 @@ namespace GraduationProject.BL
             return true;
         }
         #endregion
+
+        #region AddPatientVisit
+        public void AddPatientVisit(AddPatientVisitDto addPatientVisitDto)
+        {
+            //PatientVisit patientVisit = _unitOfWork.patientVisitRepo.AddPatientVisit(addPatientVisitDto);
+            PatientVisit pv = new PatientVisit
+            {
+                PatientId = addPatientVisitDto.PatientId,
+                DateOfVisit = addPatientVisitDto.DateOfVisit,
+                DoctorId = addPatientVisitDto.DoctorId,
+
+            };
+            _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
+            _unitOfWork.SaveChanges();
+
+        }
+        #endregion
     }
 
 }

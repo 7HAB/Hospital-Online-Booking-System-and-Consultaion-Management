@@ -157,5 +157,14 @@ namespace graduation_project.Controllers
 
         }
         #endregion
+        #region AddPatientVisit
+        [HttpPost]
+        [Route("/addpatientVisit")]
+        public IActionResult AddPatientVisit(AddPatientVisitDto addPatientVisitDto)
+        {
+            _patientManager.AddPatientVisit(addPatientVisitDto);
+            return StatusCode(StatusCodes.Status201Created);
+        }
+        #endregion
     }
 }
