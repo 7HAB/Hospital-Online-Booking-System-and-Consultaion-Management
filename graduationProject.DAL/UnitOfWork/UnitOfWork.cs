@@ -17,13 +17,16 @@ namespace graduationProject.DAL
 
         public IWeekScheduleRepo weekScheduleRepo { get; }
 
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo)
+        public IPatientVisitRepo patientVisitRepo { get; }  
+
+        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo , IPatientVisitRepo PatientVisitRepo)
         {
             _context = context;
             patientRepo = PatientRepo;
             doctorRepo = DoctorRepo;
             this.visitReviewAndRateRepo = visitReviewAndRateRepo;
             weekScheduleRepo = WeekScheduleRepo;
+            patientVisitRepo = PatientVisitRepo;
         }
         public int SaveChanges()
         {

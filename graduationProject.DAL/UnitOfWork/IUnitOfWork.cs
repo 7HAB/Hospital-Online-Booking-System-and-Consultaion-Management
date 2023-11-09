@@ -12,6 +12,7 @@ namespace graduationProject.DAL
         public IDoctorRepo doctorRepo { get; }
         public IWeekScheduleRepo weekScheduleRepo { get; }
         public IVisitReviewAndRateRepo visitReviewAndRateRepo { get; }
+        public IPatientVisitRepo patientVisitRepo { get; }
         int SaveChanges();
     }
 }
