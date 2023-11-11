@@ -17,15 +17,15 @@ namespace graduationProject.DAL
         }
         public Doctor? GetById(string? id)
         {
-            return _context.Set<Doctor>().Include(d => d.specialization).FirstOrDefault(d => d.Id == id);
+            return _context.Set<Doctor>().Include(d => d.specialization).Include(d => d.weeks).FirstOrDefault(d => d.Id == id);
         }
         public List<Doctor> GetAll()
         {
-            return _context.Set<Doctor>().Include(d => d.specialization).ToList();
+            return _context.Set<Doctor>().Include(d => d.specialization).Include(d => d.weeks).ToList();
         }
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId)
         { 
-            var doctors = _context.Specializations.Include(d => d.Doctors).Where(s => s.Id == SpeializationId).ToList();
+            var doctors = _context.Specializations.Include(d => d.Doctors).ThenInclude(d => d.weeks).Where(s => s.Id == SpeializationId).ToList();
             return doctors;
         }
         }

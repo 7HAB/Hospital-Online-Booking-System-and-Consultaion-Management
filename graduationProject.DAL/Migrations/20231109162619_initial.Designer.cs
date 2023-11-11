@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231109052725_db")]
-    partial class db
+    [Migration("20231109162619_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -141,7 +141,7 @@ namespace graduationProject.DAL.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.UseTpcMappingStrategy();
+                    b.UseTptMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -641,6 +641,12 @@ namespace graduationProject.DAL.Migrations
 
             modelBuilder.Entity("graduationProject.DAL.Admin", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("graduationProject.DAL.Admin", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("graduationProject.DAL.Specialization", "Specialization")
                         .WithOne("Admin")
                         .HasForeignKey("graduationProject.DAL.Admin", "SpecializationId");
@@ -650,6 +656,12 @@ namespace graduationProject.DAL.Migrations
 
             modelBuilder.Entity("graduationProject.DAL.Doctor", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("graduationProject.DAL.Doctor", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("graduationProject.DAL.Specialization", "specialization")
                         .WithMany("Doctors")
                         .HasForeignKey("SpecializationId");
@@ -657,11 +669,26 @@ namespace graduationProject.DAL.Migrations
                     b.Navigation("specialization");
                 });
 
+            modelBuilder.Entity("graduationProject.DAL.Patient", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("graduationProject.DAL.Patient", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("graduationProject.DAL.Reception", b =>
                 {
                     b.HasOne("graduationProject.DAL.Admin", "Admin")
                         .WithMany("Receptions")
                         .HasForeignKey("AdminId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("graduationProject.DAL.Reception", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Admin");
                 });

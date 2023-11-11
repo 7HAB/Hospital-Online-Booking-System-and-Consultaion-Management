@@ -12,5 +12,6 @@ namespace GraduationProject.BL
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string SpecializationName { get; set; } = "";
+        public List<WeekSshaduakForDoctorDto>? WeekSchadual { get; set; }
     }
 }

@@ -15,8 +15,6 @@ namespace GraduationProject.BL.Dtos.Doctor
         public string? Description { get; set; }
         public string SpecializationName { get; set; } = "";
         public int PerformanceRate { get; set; }
-
-        public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();
-
+        public List<WeekSshaduakForDoctorDto>? WeekSchadual { get; set; }
     }
 }

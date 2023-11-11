@@ -27,9 +27,15 @@ namespace GraduationProject.BL
                 Name = d.Name,
                 Title = d.Title,
                 Description = d.Description,
-                weeks = d.weeks,
-                SpecializationName = d.specialization.Name
-                
+                SpecializationName = d.specialization.Name,
+                WeekSchadual = d.weeks
+                .Select(d => new WeekSshaduakForDoctorDto
+                {
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList()
             }).ToList();
         }
 
@@ -45,7 +51,15 @@ namespace GraduationProject.BL
                 Name = dbDoctor.Name,
                 Title = dbDoctor.Title,
                 Description = dbDoctor.Description,
-                SpecializationName = dbDoctor.specialization.Name
+                SpecializationName = dbDoctor.specialization.Name,
+                WeekSchadual = dbDoctor.weeks
+                .Select(d => new WeekSshaduakForDoctorDto
+                {
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList()
             };
         }
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
@@ -59,7 +73,15 @@ namespace GraduationProject.BL
                 {
                     Name = d.Name,
                     Title = d.Title,
-                    Description = d.Description
+                    Description = d.Description,
+                    WeekSchadual = d.weeks
+                .Select(d => new WeekSshaduakForDoctorDto
+                {
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList()
                 }).ToList()
             }).ToList();
         }
@@ -75,8 +97,8 @@ namespace GraduationProject.BL
                 {
                     DayOfWeek = d.DayOfWeek,
                     IsAvailable = d.IsAvailable,
-                    StartTime = d.StartTime,
-                    EndTime = d.EndTime,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                 }).ToList()
             };
         }
