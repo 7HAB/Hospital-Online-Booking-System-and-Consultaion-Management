@@ -45,11 +45,11 @@ namespace graduationProject.DAL
         }
         #endregion
         #region Book Patient Visit
-        //public void AddVisit(PatientVisit patientVisit)
-        //{
-        //    _context.Set<PatientVisit>().Add(patientVisit);
-        //}
-        
+        /*public void AddVisit(PatientVisit patientVisit)
+        {
+            _context.Set<PatientVisit>().Add(patientVisit);
+        }*/
+
         #endregion
 
         //public List<Patient> GetAllPatientsByDate(DateTime date)

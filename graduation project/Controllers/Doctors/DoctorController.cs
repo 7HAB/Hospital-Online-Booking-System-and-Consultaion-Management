@@ -34,7 +34,7 @@ namespace graduation_project.Controllers.Doctors
 
             List<GetAllDoctorsDto>? getAllDoctorsDto = _doctorManager.GetAllDoctors();
 
-            if (getAllDoctorsDto == null) { return BadRequest(); }
+            if (getAllDoctorsDto == null) { return BadRequest("No doctors found"); }
             // if (getAllDoctorsDto.Count()==0) { return BadRequest(); }
 
             return _doctorManager.GetAllDoctors();
@@ -47,7 +47,7 @@ namespace graduation_project.Controllers.Doctors
         {
             GetDoctorByIDDto? GetDOctorById = _doctorManager.GetDoctorBYId(DoctorId);
             if (GetDOctorById == null)
-                return NotFound();
+                return NotFound("Doctor not found");
             return GetDOctorById;
         }
         #endregion
@@ -58,7 +58,7 @@ namespace graduation_project.Controllers.Doctors
         {
             List<GetDoctorsBySpecializationDto> DoctorWithSpecialization = _doctorManager.GetDoctorsBySpecialization(id);
             if (DoctorWithSpecialization is null)
-                return NotFound();
+                return NotFound("Doctors with specialization not found");
 
             return DoctorWithSpecialization;
         }
@@ -76,14 +76,14 @@ namespace graduation_project.Controllers.Doctors
 
             if (user is null)
             {
-                return Content("null");
+                return NotFound("User not found");
             }
 
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
                 //  return Unauthorized();
-                return Content("password wrong");
+                return Unauthorized("Invalid password");
             }
 
             #endregion
@@ -166,14 +166,14 @@ namespace graduation_project.Controllers.Doctors
 
             if (user is null)
             {
-                return Content("null");
+                return NotFound("User not found");
             }
 
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
                 //  return Unauthorized();
-                return Content("password wrong");
+                return Unauthorized("Invalid password");
             }
 
             #endregion
@@ -249,14 +249,14 @@ namespace graduation_project.Controllers.Doctors
 
             if (user is null)
             {
-                return Content("null");
+                return NotFound("User not found");
             }
 
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
                 //  return Unauthorized();
-                return Content("password wrong");
+                return Unauthorized("Invalid password");
             }
 
             #endregion

@@ -112,7 +112,6 @@ namespace GraduationProject.BL
         #region AddPatientVisit
         public void AddPatientVisit(AddPatientVisitDto addPatientVisitDto)
         {
-            //PatientVisit patientVisit = _unitOfWork.patientVisitRepo.AddPatientVisit(addPatientVisitDto);
             PatientVisit pv = new PatientVisit
             {
                 PatientId = addPatientVisitDto.PatientId,
