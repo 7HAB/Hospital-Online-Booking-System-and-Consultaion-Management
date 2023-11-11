@@ -16,6 +16,7 @@ namespace graduationProject.DAL
         //public List<PatientVisit>?  GetPatientVisitsByPhoneNumber(string phoneNumber);
         public Patient? GetPatientVisitsByPhoneNumber(string phoneNumber);
         public void AddVisit(PatientVisit patientVisit);
+        public List<Patient> GetAllPatientsByDate(DateTime date);
 
     }
 }

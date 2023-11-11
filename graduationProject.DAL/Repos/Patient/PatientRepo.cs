@@ -49,8 +49,15 @@ namespace graduationProject.DAL
         {
             _context.Set<PatientVisit>().Add(patientVisit);
         }
-        
+
+
+
         #endregion
+
+        public List<Patient> GetAllPatientsByDate(DateTime date)
+        {
+            throw new NotImplementedException();
+        }
 
 
     }
