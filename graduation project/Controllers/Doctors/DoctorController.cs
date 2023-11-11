@@ -329,7 +329,23 @@ namespace graduation_project.Controllers.Doctors
             if(weekschedule == null) { return NotFound(); }
             return Ok(weekschedule);
         }
-        
+
+        #endregion
+
+
+        #region GetAllPatientsWithDate
+        [HttpGet]
+        [Route("dailySchedule/{date}")]
+        public List<GetAllPatientsWithDateDto> getAllPatientsWithDates(DateTime date , string DoctorId)
+        {   
+            var d = _doctorManager.GetAllPatientsWithDate(date, DoctorId);
+            if(d == null)
+            {
+                return d;
+            }
+            return d;
+        }
+
         #endregion
     }
 

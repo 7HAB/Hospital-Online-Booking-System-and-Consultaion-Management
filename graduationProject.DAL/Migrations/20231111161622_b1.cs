@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class m1 : Migration
+    public partial class b1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -224,8 +224,8 @@ namespace graduationProject.DAL.Migrations
                     SpecializationId = table.Column<int>(type: "int", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    AssistantID = table.Column<int>(type: "int", nullable: false),
-                    AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AssistantID = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantPhoneNumber = table.Column<int>(type: "int", nullable: false),
                     AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
