@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraduationProject.BL
 {
-    public class WeekSshaduakForDoctorDto
+    public class WeekScheduleForDoctorsDto
     {
         public string? DayOfWeek { get; set; }
         public string StartTime { get; set; }

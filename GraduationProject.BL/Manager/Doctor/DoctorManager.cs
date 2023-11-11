@@ -29,7 +29,7 @@ namespace GraduationProject.BL
                 Description = d.Description,
                 SpecializationName = d.specialization.Name,
                 WeekSchadual = d.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -53,7 +53,7 @@ namespace GraduationProject.BL
                 Description = dbDoctor.Description,
                 SpecializationName = dbDoctor.specialization.Name,
                 WeekSchadual = dbDoctor.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -75,7 +75,7 @@ namespace GraduationProject.BL
                     Title = d.Title,
                     Description = d.Description,
                     WeekSchadual = d.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
