@@ -54,10 +54,10 @@ namespace graduationProject.DAL
 
         #endregion
 
-        public List<Patient> GetAllPatientsByDate(DateTime date)
-        {
-            throw new NotImplementedException();
-        }
+        //public List<Patient> GetAllPatientsByDate(DateTime date)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
 
     }
