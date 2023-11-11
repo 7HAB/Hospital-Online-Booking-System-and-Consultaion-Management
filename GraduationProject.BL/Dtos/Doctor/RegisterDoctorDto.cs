@@ -18,10 +18,10 @@ namespace GraduationProject.BL.Dtos
 
         public DateTime DateOfBirth { get; set; }
 
-        public int AssistantID { get; set; }
+        public string? AssistantID { get; set; }
 
         [Required]
-        public string AssistantName { get; set; } = string.Empty;
+        public string? AssistantName { get; set; } 
 
         [Unique]
         public int AssistantPhoneNumber { get; set; }

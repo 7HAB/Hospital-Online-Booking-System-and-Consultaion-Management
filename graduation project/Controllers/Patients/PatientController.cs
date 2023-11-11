@@ -38,14 +38,14 @@ namespace graduation_project.Controllers
 
             if (user is null)
             {
-                return Content("null");
+                return NotFound("User not found");
             }
 
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
                 //  return Unauthorized();
-                return Content("password wrong");
+                return Unauthorized("Invalid password");
             }
 
             #endregion
@@ -125,12 +125,14 @@ namespace graduation_project.Controllers
         #endregion
         #region adding rate
         [HttpPut]
+        [Route("reviews")]
+
         public ActionResult Update(VisitReviewAndRateDto VisitDto)
         {
             bool result = _patientManager.ReviewAndRate(VisitDto);
             if (!result)
             {
-                return NotFound();
+                return NotFound("Patient not found");
             }
             return NoContent();
         }
@@ -142,7 +144,7 @@ namespace graduation_project.Controllers
         {
             GetMedicalHistoryByPhoneDto? medicalHistory = _patientManager.GetMedicalHistoryByPhoneNumber(phoneNumber);
 
-            if (medicalHistory == null) { return NotFound(); }
+            if (medicalHistory == null) { return NotFound("Medical history not found"); }
             return Ok(medicalHistory);
         }
         #endregion
@@ -152,7 +154,7 @@ namespace graduation_project.Controllers
         public ActionResult<GetPatientVisitDto> GetPatientVisitsByPhone(string phoneNumber)
         {
             GetPatientVisitDto? patient = _patientManager.GetPatientVisitsByPhoneNumber(phoneNumber);
-            if (patient == null) { return NotFound(); }
+            if (patient == null) { return NotFound("Patient visits not found"); }
             return Ok(patient);
 
         }
