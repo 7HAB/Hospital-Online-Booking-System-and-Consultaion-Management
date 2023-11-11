@@ -461,11 +461,10 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("AssistantDateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AssistantID")
-                        .HasColumnType("int");
+                    b.Property<string>("AssistantID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssistantName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AssistantPhoneNumber")

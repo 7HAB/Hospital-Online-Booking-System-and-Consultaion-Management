@@ -44,14 +44,42 @@ namespace graduationProject.DAL
             return patient;
         }
         #endregion
-        #region Book Patient Visit
-        //public void AddVisit(PatientVisit patientVisit)
-        //{
-        //    _context.Set<PatientVisit>().Add(patientVisit);
-        //}
-        
-        #endregion
 
+        //public List<PatientVisit> GetAllPatientsByDate(DateTime date, string DoctorId)
+        //{
+        //    PatientVisit PatientsIdList = _context.Set<PatientVisit>().Where(s => s.DateOfVisit == date && s.DoctorId == DoctorId).ToList();
+
+
+
+        //    foreach (PatientVisit patientVisit in PatientsIdList)
+        //    {
+        //        _context.Set<Patient>().Where(s => s.Id == patientVisit.PatientId).FirstOrDefault();
+        //    }
+        //}
+
+        public List<Patient> GetAllPatientsByDate(DateTime date, string doctorId)
+        {
+            
+            List<PatientVisit> patientVisitsList = _context.PatientVisits
+                .Where(visit => visit.DateOfVisit.Date == date.Date && visit.DoctorId == doctorId)
+                .ToList();
+
+            List<Patient> patientsList = new List<Patient>();
+
+            foreach (PatientVisit patientVisit in patientVisitsList)
+            {
+                Patient? patient = _context.Set<Patient>()
+                    .Where(p => p.Id == patientVisit.PatientId)
+                    .FirstOrDefault();
+
+                if (patient != null)
+                {
+                    patientsList.Add(patient);
+                }
+            }
+
+            return patientsList;
+        }
 
     }
-}
+    }

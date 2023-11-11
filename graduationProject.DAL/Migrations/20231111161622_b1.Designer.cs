@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231109162619_initial")]
-    partial class initial
+    [Migration("20231111161622_b1")]
+    partial class b1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -464,11 +464,10 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("AssistantDateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AssistantID")
-                        .HasColumnType("int");
+                    b.Property<string>("AssistantID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssistantName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AssistantPhoneNumber")

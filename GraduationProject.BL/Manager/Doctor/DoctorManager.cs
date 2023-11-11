@@ -102,5 +102,26 @@ namespace GraduationProject.BL
                 }).ToList()
             };
         }
+
+        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date , string DoctorId)
+        {
+            var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
+            List <GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
+            foreach(var patient in patients)
+            {
+                var patientListItem = new GetAllPatientsWithDateDto
+                {
+                    Name = patient.Name,
+                    DateOfBirth = patient.DateOfBirth,
+                    Gender = patient.Gender,
+                    MedicaHistory = patient.MedicaHistory
+                };
+                if(patientListItem != null)
+                {
+                    patientsWithDateDtosList.Add(patientListItem);
+                }
+            }
+            return patientsWithDateDtosList;
+        }
     }
 }
