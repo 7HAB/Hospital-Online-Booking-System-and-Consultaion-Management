@@ -40,7 +40,7 @@ builder.Services.AddScoped<IVisitReviewAndRateRepo, VisitReviewAndRateRepo>();
 builder.Services.AddScoped<IWeekScheduleRepo, WeekScheduleRepo>();
 builder.Services.AddScoped<IPatientVisitRepo, PatientVisitRepo>();
 builder.Services.AddScoped<IAdminRepo, AdminRepo>();
-
+builder.Services.AddScoped<IVisitCountRepo, VisitCountRepo>();
 #endregion
 
 #region Unit of work

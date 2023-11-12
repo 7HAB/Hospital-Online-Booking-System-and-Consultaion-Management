@@ -16,6 +16,8 @@ namespace GraduationProject.BL
             _unitOfWork = unitOfWork;
         }
 
+        #region Update Doctor by Id
+
         public Doctor UpdateDoctorById(UpdateDoctorStatusDto updateDoctor , string Id)
         {
             Doctor? doctor = _unitOfWork.adminRepo.UpdateDoctorById(Id);
@@ -36,5 +38,8 @@ namespace GraduationProject.BL
 
             return doctor;
         }
+        #endregion
+
+
     }
 }

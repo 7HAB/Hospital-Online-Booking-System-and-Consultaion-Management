@@ -120,6 +120,23 @@ namespace GraduationProject.BL
 
             };
             _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
+
+            int counter = _unitOfWork.visitCountRepo.GetCount(pv.DateOfVisit , pv.DoctorId);
+            VisitCountDto visitCountDto = new VisitCountDto
+            {
+                DoctorId = pv.DoctorId,
+                Date = pv.DateOfVisit.Date,
+                ActualNoOfPatients = counter + 1
+            };
+
+            VisitCount vc = new VisitCount
+            {
+                DoctorId = visitCountDto.DoctorId,
+                Date = visitCountDto.Date,
+                ActualNoOfPatients = visitCountDto.ActualNoOfPatients
+            };
+            _unitOfWork.visitCountRepo.AddVisitCount(vc);
+           
             _unitOfWork.SaveChanges();
 
         }
