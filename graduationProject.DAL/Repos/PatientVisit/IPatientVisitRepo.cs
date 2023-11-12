@@ -8,6 +8,8 @@ namespace graduationProject.DAL
 {
    public interface IPatientVisitRepo
     {
+        public PatientVisit? GetById(int? id);
         public void AddPatientVisit(PatientVisit patientVisit);
+        public void UpdatePatientVisit(PatientVisit patientVisit); 
     }
 }

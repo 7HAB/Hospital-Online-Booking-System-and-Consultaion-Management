@@ -52,7 +52,6 @@ builder.Services.AddScoped<IPatientManager, PatientManager>();
 
 builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
-
 #endregion
 #region cors
 builder.Services.AddCors(Options =>
