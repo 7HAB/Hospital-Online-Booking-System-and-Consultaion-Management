@@ -329,7 +329,22 @@ namespace graduation_project.Controllers.Doctors
             if(weekschedule == null) { return NotFound(); }
             return Ok(weekschedule);
         }
-        
+
+        #endregion
+
+
+        #region GetPatientForDoctor
+        [HttpGet]
+        [Route("doctors/patients/{PatientId}")]
+        public ActionResult<GetPatientForDoctorDto> GetPatientForDoctor(string PatientId)
+        {
+            GetPatientForDoctorDto? PatientForDoctor = _doctorManager.GetPatientForDoctorId(PatientId);
+            if (PatientForDoctor == null)
+                return NotFound("Patient not found");
+            return PatientForDoctor;
+        }
+
+
         #endregion
     }
 

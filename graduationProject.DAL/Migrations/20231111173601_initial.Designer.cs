@@ -12,7 +12,7 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231109162619_initial")]
+    [Migration("20231111173601_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -464,11 +464,10 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("AssistantDateOfBirth")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("AssistantID")
-                        .HasColumnType("int");
+                    b.Property<string>("AssistantID")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AssistantName")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("AssistantPhoneNumber")

@@ -43,19 +43,17 @@ namespace graduationProject.DAL
             if (patient == null) { return null; }
             return patient;
         }
+
+
         #endregion
-        #region Book Patient Visit
-        /*public void AddVisit(PatientVisit patientVisit)
+        #region GetPatientForDoctor
+
+        public Patient? GetPatientForDoctor(string patientId)
         {
-            _context.Set<PatientVisit>().Add(patientVisit);
-        }*/
-
+            return _context.Set<Patient>().Include(p=>p.MedicaHistory).Include(p=>p.PatientVisits).FirstOrDefault(d => d.Id == patientId);
+        }
         #endregion
 
-        //public List<Patient> GetAllPatientsByDate(DateTime date)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
 
     }
