@@ -346,6 +346,22 @@ namespace graduation_project.Controllers.Doctors
 
 
         #endregion
+
+
+        #region GetAllPatientsWithDate
+        [HttpGet]
+        [Route("dailySchedule/{date}")]
+        public List<GetAllPatientsWithDateDto> getAllPatientsWithDates(DateTime date , string DoctorId)
+        {   
+            var d = _doctorManager.GetAllPatientsWithDate(date, DoctorId);
+            if(d == null)
+            {
+                return d;
+            }
+            return d;
+        }
+
+        #endregion
     }
 
 }

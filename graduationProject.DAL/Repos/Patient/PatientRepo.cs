@@ -56,5 +56,30 @@ namespace graduationProject.DAL
 
 
 
+        public List<Patient> GetAllPatientsByDate(DateTime date, string doctorId)
+        {
+            
+            List<PatientVisit> patientVisitsList = _context.PatientVisits
+                .Where(visit => visit.DateOfVisit.Date == date.Date && visit.DoctorId == doctorId)
+                .ToList();
+
+            List<Patient> patientsList = new List<Patient>();
+
+            foreach (PatientVisit patientVisit in patientVisitsList)
+            {
+                Patient? patient = _context.Set<Patient>()
+                    .Where(p => p.Id == patientVisit.PatientId)
+                    .FirstOrDefault();
+
+                if (patient != null)
+                {
+                    patientsList.Add(patient);
+                }
+            }
+
+            return patientsList;
+        }
+
+
     }
-}
+    }

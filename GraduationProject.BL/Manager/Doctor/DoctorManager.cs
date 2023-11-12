@@ -30,7 +30,7 @@ namespace GraduationProject.BL
                 Description = d.Description,
                 SpecializationName = d.specialization.Name,
                 WeekSchadual = d.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -54,7 +54,7 @@ namespace GraduationProject.BL
                 Description = dbDoctor.Description,
                 SpecializationName = dbDoctor.specialization.Name,
                 WeekSchadual = dbDoctor.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -76,7 +76,7 @@ namespace GraduationProject.BL
                     Title = d.Title,
                     Description = d.Description,
                     WeekSchadual = d.weeks
-                .Select(d => new WeekSshaduakForDoctorDto
+                .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -102,6 +102,26 @@ namespace GraduationProject.BL
                     EndTime = d.EndTime.ToShortTimeString(),
                 }).ToList()
             };
+        }
+
+        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date , string DoctorId)
+        {
+            var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
+            List <GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
+            foreach(var patient in patients)
+            {
+                var patientListItem = new GetAllPatientsWithDateDto
+                {
+                    Name = patient.Name,
+                    DateOfBirth = patient.DateOfBirth,
+                    Gender = patient.Gender,
+                };
+                if(patientListItem != null)
+                {
+                    patientsWithDateDtosList.Add(patientListItem);
+                }
+            }
+            return patientsWithDateDtosList;
         }
 
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id)
