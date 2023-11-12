@@ -27,6 +27,15 @@ namespace graduation_project.Controllers.Doctors
             _doctorManager = doctorManager;
         }
 
+       /* #region GetAllSpcializations
+        [HttpGet]
+        public ActionResult<List<GetAllSpecializationsDto>?> GetAllSpecialization()
+        {
+            List<GetAllSpecializationsDto>? getAllSpecializationsDtos = _doctorManager.GetAllSpecializations();
+            if (getAllSpecializationsDtos == null) {return NotFound();}
+            return getAllSpecializationsDtos;
+        }
+        #endregion*/
         #region GetAllDoctors
         [HttpGet]
         public ActionResult<List<GetAllDoctorsDto>?> GetAllDoctors()
@@ -34,10 +43,9 @@ namespace graduation_project.Controllers.Doctors
 
             List<GetAllDoctorsDto>? getAllDoctorsDto = _doctorManager.GetAllDoctors();
 
-            if (getAllDoctorsDto == null) { return BadRequest("No doctors found"); }
-            // if (getAllDoctorsDto.Count()==0) { return BadRequest(); }
+            if (getAllDoctorsDto == null) { return NotFound(); }
 
-            return _doctorManager.GetAllDoctors();
+            return getAllDoctorsDto;
         }
         #endregion
         #region GetDoctorById

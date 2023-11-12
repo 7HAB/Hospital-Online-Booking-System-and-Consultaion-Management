@@ -18,11 +18,21 @@ namespace GraduationProject.BL
         {
             _unitOfWork = unitOfWork;
         }
+        public List<GetAllSpecializationsDto> GetAllSpecializations()
+        {
+            List<Specialization> specializations = _unitOfWork.doctorRepo.GetAllSpecializations();
+            return specializations.Select(s => new GetAllSpecializationsDto
+            {
+                Name = s.Name,
+                DoctorsForAllSpecializations = s.Doctors.Select(d => new DoctorsForAllSpecializations
+                {
+                    Name = d.Name
+                }).ToList()
+            }).ToList();
+        }
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
-
-
             return doctors.Select(d => new GetAllDoctorsDto
             {
                 Name = d.Name,
