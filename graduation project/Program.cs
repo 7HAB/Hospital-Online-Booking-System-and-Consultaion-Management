@@ -2,9 +2,11 @@ using graduationProject.DAL;
 using GraduationProject.BL;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using ServiceStack;
 
 var builder = WebApplication.CreateBuilder(args);
+const string AllowAllPolicy = "AllowAllPolicy";
 
 // Add services to the container.
 #region Default
@@ -52,7 +54,15 @@ builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
 
 #endregion
-
+#region cors
+builder.Services.AddCors(Options =>
+{
+    Options.AddPolicy(AllowAllPolicy, builder =>
+    {
+        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+    });
+});
+#endregion
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,6 +73,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors(AllowAllPolicy);
 app.UseAuthentication();
 app.UseAuthorization();
 
