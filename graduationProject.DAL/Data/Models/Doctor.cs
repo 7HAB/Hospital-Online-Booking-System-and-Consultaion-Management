@@ -33,8 +33,11 @@ namespace graduationProject.DAL
 
         public string? Status { get; set; } = " Active";
 
+
         public ICollection<PatientVisit> patientVisits { get; set; } = new HashSet<PatientVisit>();
         public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();
         public Specialization? specialization {  get; set; }
+
+        public ICollection<VisitCount> visitCounts { get; set; } = new HashSet<VisitCount>();
     }
 }
