@@ -24,7 +24,7 @@ namespace GraduationProject.BL.Dtos
         public string? AssistantName { get; set; } 
 
         [Unique]
-        public int AssistantPhoneNumber { get; set; }
+        public string? AssistantPhoneNumber { get; set; }
 
         public DateTime AssistantDateOfBirth { get; set; }
         public string Password { get; set; } = string.Empty;

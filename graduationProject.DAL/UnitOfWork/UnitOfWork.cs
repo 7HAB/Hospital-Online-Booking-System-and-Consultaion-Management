@@ -17,9 +17,11 @@ namespace graduationProject.DAL
 
         public IWeekScheduleRepo weekScheduleRepo { get; }
 
-        public IPatientVisitRepo patientVisitRepo { get; }  
+        public IPatientVisitRepo patientVisitRepo { get; }
 
-        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo , IPatientVisitRepo PatientVisitRepo)
+        public IAdminRepo adminRepo { get; }
+
+        public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo, IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo , IPatientVisitRepo PatientVisitRepo , IAdminRepo AdminRepo)
         {
             _context = context;
             patientRepo = PatientRepo;
@@ -27,6 +29,7 @@ namespace graduationProject.DAL
             this.visitReviewAndRateRepo = visitReviewAndRateRepo;
             weekScheduleRepo = WeekScheduleRepo;
             patientVisitRepo = PatientVisitRepo;
+            adminRepo = AdminRepo;
         }
         public int SaveChanges()
         {

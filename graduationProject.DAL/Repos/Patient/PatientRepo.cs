@@ -55,7 +55,7 @@ namespace graduationProject.DAL
         #endregion
 
 
-
+        #region GetAllPatientsWithDate
         public List<Patient> GetAllPatientsByDate(DateTime date, string doctorId)
         {
             
@@ -79,7 +79,8 @@ namespace graduationProject.DAL
 
             return patientsList;
         }
+        #endregion
 
 
     }
-    }
+}
