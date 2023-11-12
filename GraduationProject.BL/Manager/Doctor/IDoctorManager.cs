@@ -16,5 +16,8 @@ namespace GraduationProject.BL
         public GetAllWeekScheduleDto? GetAllWeekScheduleByDoctorId(string id);
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
+        public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
+
+
     }
 }

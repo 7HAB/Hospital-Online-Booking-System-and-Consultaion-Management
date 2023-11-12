@@ -43,6 +43,15 @@ namespace graduationProject.DAL
             if (patient == null) { return null; }
             return patient;
         }
+
+
+        #endregion
+        #region GetPatientForDoctor
+
+        public Patient? GetPatientForDoctor(string patientId)
+        {
+            return _context.Set<Patient>().Include(p=>p.MedicaHistory).Include(p=>p.PatientVisits).FirstOrDefault(d => d.Id == patientId);
+        }
         #endregion
 
 
@@ -70,6 +79,7 @@ namespace graduationProject.DAL
 
             return patientsList;
         }
+
 
     }
     }
