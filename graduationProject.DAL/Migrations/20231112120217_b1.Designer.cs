@@ -12,7 +12,7 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231111161622_b1")]
+    [Migration("20231112120217_b1")]
     partial class b1
     {
         /// <inheritdoc />
@@ -470,8 +470,8 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("AssistantName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AssistantPhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("AssistantPhoneNumber")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
@@ -488,6 +488,9 @@ namespace graduationProject.DAL.Migrations
 
                     b.Property<int?>("SpecializationId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");

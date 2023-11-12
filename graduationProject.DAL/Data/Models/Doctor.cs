@@ -27,9 +27,11 @@ namespace graduationProject.DAL
         public string? AssistantName { get; set; } 
 
         [Unique]
-        public int AssistantPhoneNumber { get; set; }
+        public string? AssistantPhoneNumber { get; set; }
 
         public DateTime AssistantDateOfBirth { get; set; }
+
+        public string? Status { get; set; } = " Active";
 
         public ICollection<PatientVisit> patientVisits { get; set; } = new HashSet<PatientVisit>();
         public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();

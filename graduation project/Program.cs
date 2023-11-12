@@ -39,6 +39,7 @@ builder.Services.AddScoped<IDoctorRepo, DoctorRepo>();
 builder.Services.AddScoped<IVisitReviewAndRateRepo, VisitReviewAndRateRepo>();
 builder.Services.AddScoped<IWeekScheduleRepo, WeekScheduleRepo>();
 builder.Services.AddScoped<IPatientVisitRepo, PatientVisitRepo>();
+builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 
 #endregion
 
@@ -52,7 +53,7 @@ builder.Services.AddScoped<IPatientManager, PatientManager>();
 
 builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 
-
+builder.Services.AddScoped<IAdminManager, AdminManager>();
 #endregion
 #region cors
 builder.Services.AddCors(Options =>
