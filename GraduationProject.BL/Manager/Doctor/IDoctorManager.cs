@@ -17,5 +17,8 @@ namespace GraduationProject.BL
         public bool UpdatePatientVisit(UpdatePatientVisitDto updateDto);
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
+        public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
+
+
     }
 }
