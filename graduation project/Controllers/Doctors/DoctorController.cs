@@ -252,6 +252,21 @@ namespace graduation_project.Controllers.Doctors
         #endregion
 
 
+        #region GetPatientForDoctor
+        [HttpGet]
+        [Route("doctors/patients/{PatientId}")]
+        public ActionResult<GetPatientForDoctorDto> GetPatientForDoctor(string PatientId)
+        {
+            GetPatientForDoctorDto? PatientForDoctor = _doctorManager.GetPatientForDoctorId(PatientId);
+            if (PatientForDoctor == null)
+                return NotFound("Patient not found");
+            return PatientForDoctor;
+        }
+
+
+        #endregion
+
+
         #region GetAllPatientsWithDate
         [HttpGet]
         [Route("dailySchedule/{date}")]
@@ -265,6 +280,20 @@ namespace graduation_project.Controllers.Doctors
             return d;
         }
 
+        #endregion
+
+        #region UpdatePatientVisit
+        [HttpPut]
+        [Route("PatientVisit")]
+        public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
+        {
+            bool result = _doctorManager.UpdatePatientVisit(updateDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return StatusCode(StatusCodes.Status202Accepted);
+        }
         #endregion
     }
 

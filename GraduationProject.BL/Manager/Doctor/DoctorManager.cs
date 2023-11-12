@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace GraduationProject.BL
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
-            
+
 
             return doctors.Select(d => new GetAllDoctorsDto
             {
@@ -103,11 +104,11 @@ namespace GraduationProject.BL
             };
         }
 
-        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date , string DoctorId)
+        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId)
         {
             var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
-            List <GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
-            foreach(var patient in patients)
+            List<GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
+            foreach (var patient in patients)
             {
                 var patientListItem = new GetAllPatientsWithDateDto
                 {
@@ -115,12 +116,72 @@ namespace GraduationProject.BL
                     DateOfBirth = patient.DateOfBirth,
                     Gender = patient.Gender,
                 };
-                if(patientListItem != null)
+                if (patientListItem != null)
                 {
                     patientsWithDateDtosList.Add(patientListItem);
                 }
             }
             return patientsWithDateDtosList;
         }
+
+        public GetPatientForDoctorDto? GetPatientForDoctorId(string id)
+        {
+            Patient? dbPatient = _unitOfWork.patientRepo.GetPatientForDoctor(id);
+            if (dbPatient is null)
+                return null!;
+
+
+
+            return new GetPatientForDoctorDto
+            {
+                Name = dbPatient.Name,
+                Gender = dbPatient.Gender,
+                DateOfBirth = dbPatient.DateOfBirth,
+                medicaHistory = new GetMedicalHistoryByPhoneDto
+                {
+                    MartialStatus = dbPatient.MedicaHistory.MartialStatus,
+                    Depression = dbPatient.MedicaHistory.Depression,
+                    Allergies = dbPatient.MedicaHistory.Allergies,
+                    Diabetes = dbPatient.MedicaHistory.Diabetes,
+                    Smoker = dbPatient.MedicaHistory.Smoker,
+                    AnxityOrPanicDisorder = dbPatient.MedicaHistory.AnxityOrPanicDisorder,
+                    Asthma = dbPatient.MedicaHistory.Asthma,
+                    HeartDisease = dbPatient.MedicaHistory.HeartDisease,
+                    previousSurgeries = dbPatient.MedicaHistory.previousSurgeries,
+                    BloodGroup = dbPatient.MedicaHistory.BloodGroup,
+                    Hepatitis = dbPatient.MedicaHistory.Hepatitis,
+                    HighBloodPressure = dbPatient.MedicaHistory.HighBloodPressure,
+                    LowBloodPressure = dbPatient.MedicaHistory.LowBloodPressure,
+                    Medication = dbPatient.MedicaHistory.Medication,
+                    Other = dbPatient.MedicaHistory.Other,
+                    pregnancy = dbPatient.MedicaHistory.pregnancy,
+                },
+                PatientVisitList = dbPatient.PatientVisits
+                .Select(s => new GetPatientVisitsChildDTO
+                {
+                    Comments = s.Comments,
+                    ArrivalTime = s.ArrivalTime,
+                    Prescription = s.Prescription,
+                    DateOfVisit = s.DateOfVisit,
+                    Symptoms = s.Symptoms,
+                    VisitStatus = s.VisitStatus,
+                    VisitEndTime = s.VisitEndTime,
+                    VisitStartTime = s.VisitStartTime
+
+                }).ToList()
+            };
+        }
+        public bool UpdatePatientVisit(UpdatePatientVisitDto updateDto)
+        {
+            PatientVisit? dbVisit = _unitOfWork.patientVisitRepo.GetById(updateDto.Id);
+            if (dbVisit == null) { return false; }
+            dbVisit.Comments = updateDto.Comments;
+            dbVisit.Symptoms = updateDto.Symptoms;
+            dbVisit.Prescription = updateDto.Prescription;
+            _unitOfWork.patientVisitRepo.UpdatePatientVisit(dbVisit);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
     }
 }
+    
