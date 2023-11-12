@@ -45,17 +45,7 @@ namespace graduationProject.DAL
         }
         #endregion
 
-        //public List<PatientVisit> GetAllPatientsByDate(DateTime date, string DoctorId)
-        //{
-        //    PatientVisit PatientsIdList = _context.Set<PatientVisit>().Where(s => s.DateOfVisit == date && s.DoctorId == DoctorId).ToList();
 
-
-
-        //    foreach (PatientVisit patientVisit in PatientsIdList)
-        //    {
-        //        _context.Set<Patient>().Where(s => s.Id == patientVisit.PatientId).FirstOrDefault();
-        //    }
-        //}
 
         public List<Patient> GetAllPatientsByDate(DateTime date, string doctorId)
         {

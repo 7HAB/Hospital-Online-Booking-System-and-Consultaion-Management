@@ -12,6 +12,5 @@ namespace GraduationProject.BL
         public string? Name { get; set; }
         public string? Gender { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public MedicaHistory? MedicaHistory { get; set; }
     }
 }

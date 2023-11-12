@@ -114,7 +114,6 @@ namespace GraduationProject.BL
                     Name = patient.Name,
                     DateOfBirth = patient.DateOfBirth,
                     Gender = patient.Gender,
-                    MedicaHistory = patient.MedicaHistory
                 };
                 if(patientListItem != null)
                 {
