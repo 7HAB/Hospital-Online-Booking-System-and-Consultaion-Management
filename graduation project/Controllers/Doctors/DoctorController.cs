@@ -362,6 +362,20 @@ namespace graduation_project.Controllers.Doctors
         }
 
         #endregion
+
+        #region UpdatePatientVisit
+        [HttpPut]
+        [Route("PatientVisit")]
+        public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
+        {
+            bool result = _doctorManager.UpdatePatientVisit(updateDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return StatusCode(StatusCodes.Status202Accepted);
+        }
+        #endregion
     }
 
 }

@@ -21,7 +21,7 @@ namespace GraduationProject.BL
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
-            
+
 
             return doctors.Select(d => new GetAllDoctorsDto
             {
@@ -104,11 +104,11 @@ namespace GraduationProject.BL
             };
         }
 
-        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date , string DoctorId)
+        public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId)
         {
             var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
-            List <GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
-            foreach(var patient in patients)
+            List<GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
+            foreach (var patient in patients)
             {
                 var patientListItem = new GetAllPatientsWithDateDto
                 {
@@ -116,7 +116,7 @@ namespace GraduationProject.BL
                     DateOfBirth = patient.DateOfBirth,
                     Gender = patient.Gender,
                 };
-                if(patientListItem != null)
+                if (patientListItem != null)
                 {
                     patientsWithDateDtosList.Add(patientListItem);
                 }
@@ -170,6 +170,17 @@ namespace GraduationProject.BL
 
                 }).ToList()
             };
+        }
+        public bool UpdatePatientVisit(UpdatePatientVisitDto updateDto)
+        {
+            PatientVisit? dbVisit = _unitOfWork.patientVisitRepo.GetById(updateDto.Id);
+            if (dbVisit == null) { return false; }
+            dbVisit.Comments = updateDto.Comments;
+            dbVisit.Symptoms = updateDto.Symptoms;
+            dbVisit.Prescription = updateDto.Prescription;
+            _unitOfWork.patientVisitRepo.UpdatePatientVisit(dbVisit);
+            _unitOfWork.SaveChanges();
+            return true;
         }
     }
 }
