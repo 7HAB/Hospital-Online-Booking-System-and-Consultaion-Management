@@ -27,15 +27,16 @@ namespace graduation_project.Controllers.Doctors
             _doctorManager = doctorManager;
         }
 
-       /* #region GetAllSpcializations
+        #region GetAllSpcializations
         [HttpGet]
+        [Route("GetAllSpecialization")]
         public ActionResult<List<GetAllSpecializationsDto>?> GetAllSpecialization()
         {
             List<GetAllSpecializationsDto>? getAllSpecializationsDtos = _doctorManager.GetAllSpecializations();
             if (getAllSpecializationsDtos == null) {return NotFound();}
             return getAllSpecializationsDtos;
         }
-        #endregion*/
+        #endregion
         #region GetAllDoctors
         [HttpGet]
         public ActionResult<List<GetAllDoctorsDto>?> GetAllDoctors()
