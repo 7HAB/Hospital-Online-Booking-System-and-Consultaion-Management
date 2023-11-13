@@ -10,6 +10,7 @@ namespace GraduationProject.BL.Dtos.Doctor
 {
     public class GetAllDoctorsDto
     {
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
