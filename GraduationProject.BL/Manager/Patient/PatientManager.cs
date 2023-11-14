@@ -141,6 +141,11 @@ namespace GraduationProject.BL
 
         }
         #endregion
+
+        #region UpdatePatientVisit
+
+
+        #endregion
     }
 
 }

@@ -12,5 +12,6 @@ namespace graduationProject.DAL
         public List<Doctor> GetAll();
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId);
         public List<Specialization> GetAllSpecializations();
+
     }
 }

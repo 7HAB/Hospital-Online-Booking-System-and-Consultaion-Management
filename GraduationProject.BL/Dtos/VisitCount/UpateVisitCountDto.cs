@@ -4,14 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraduationProject.BL
+namespace GraduationProject.BL.Dtos.VisitCount
 {
-    public class VisitCountDto
+    internal class UpateVisitCountDto
     {
         public int Id { get; set; }
-        public DateTime Date { get; set; }
-        public int LimitOfPatients { get; set; }
         public int ActualNoOfPatients { get; set; }
-        public string? DoctorId { get; set; }
+        public int LimitOfPatients { get; set; } 
     }
 }

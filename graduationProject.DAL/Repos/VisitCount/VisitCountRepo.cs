@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,21 +9,35 @@ namespace graduationProject.DAL
 {
     public class VisitCountRepo : IVisitCountRepo
     {
-        HospitalContext _Context;
+        HospitalContext _context;
 
         public VisitCountRepo(HospitalContext context)
         {
-              _Context = context;
+              _context = context;
         }
    
-        public void AddVisitCount(VisitCount visitCount)
+        /*public void AddVisitCount(VisitCount visitCount)
         {
-            _Context.Set<VisitCount>().Add(visitCount);
-        }
+            _context.Set<VisitCount>().Add(visitCount);
+        }*/
 
         public int GetCount(DateTime date , string DoctorId) 
         {
-            return _Context.Set<VisitCount>().Where(d => d.DoctorId == DoctorId && d.Date.Date == date.Date).Count();
+            return _context.Set<VisitCount>().Where(d => d.DoctorId == DoctorId && d.Date.Date == date.Date).Count();
+        }
+        public VisitCount? AddOrUpdateVisitCount(int Id)
+        {
+            VisitCount? visitCount = _context.Set<VisitCount>().FirstOrDefault(v => v.Id == Id);
+
+            if (visitCount != null)
+            {
+                _context.Set<VisitCount>().Update(visitCount);
+            }
+            else
+            {
+                _context.Set<VisitCount>().Add(visitCount);
+            }
+            return visitCount;
         }
     }
 }
