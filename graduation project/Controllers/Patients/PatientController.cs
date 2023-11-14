@@ -80,7 +80,7 @@ namespace graduation_project.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> Register(RegisterPatientDto registerDto)
+        public async Task<ActionResult<TokenDto>> Register(RegisterPatientDto registerDto)
         {
             var user = new Patient
             {
@@ -89,8 +89,8 @@ namespace graduation_project.Controllers
                 UserName = registerDto.PhoneNumber,
                 Gender = registerDto.Gender,
                 DateOfBirth = registerDto.DateOfBirth,
-
             };
+
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
             {
@@ -98,15 +98,33 @@ namespace graduation_project.Controllers
             }
 
             var claimsList = new List<Claim>
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(ClaimTypes.Role, "Patient"),
-            new Claim(ClaimTypes.Name, user.UserName)
-        //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
-        };
+    {
+        new Claim(ClaimTypes.NameIdentifier, user.Id),
+        new Claim(ClaimTypes.Role, "Patient"),
+        new Claim(ClaimTypes.Name, user.UserName)
+    };
+
             await _userManager.AddClaimsAsync(user, claimsList);
 
-            return Ok();
+            // Generate token
+            var secretKey = _configuration.GetValue<string>("SecretKey")!;
+            var algorithm = SecurityAlgorithms.HmacSha256Signature;
+
+            var keyInBytes = Encoding.ASCII.GetBytes(secretKey);
+            var key = new SymmetricSecurityKey(keyInBytes);
+            var signingCredentials = new SigningCredentials(key, algorithm);
+
+            var token = new JwtSecurityToken(
+                claims: claimsList,
+                signingCredentials: signingCredentials,
+                expires: DateTime.Now.AddMinutes(10));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            return new TokenDto
+            {
+                Token = tokenHandler.WriteToken(token),
+            };
         }
 
         #endregion
