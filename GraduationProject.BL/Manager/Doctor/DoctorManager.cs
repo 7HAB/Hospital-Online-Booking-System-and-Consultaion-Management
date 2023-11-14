@@ -1,12 +1,7 @@
 ﻿using graduationProject.DAL;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace GraduationProject.BL
 {
@@ -14,6 +9,7 @@ namespace GraduationProject.BL
     {
         // private readonly PatientRepo _patientRepo;
         private readonly IUnitOfWork _unitOfWork;
+
         public DoctorManager(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
@@ -60,6 +56,9 @@ namespace GraduationProject.BL
             Doctor? dbDoctor = _unitOfWork.doctorRepo.GetById(id);
             if (dbDoctor is null)
                 return null!;
+          //  var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+
             return new GetDoctorByIDDto
             {
                 Name = dbDoctor.Name,
@@ -73,9 +72,14 @@ namespace GraduationProject.BL
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
-                }).ToList()
+                }).ToList(),
+                ImageFileName = dbDoctor.FileName,
+                ImageStoredFileName = dbDoctor.StoredFileName,
+                ImageContentType = dbDoctor.ContentType,
             };
         }
+
+
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
@@ -195,6 +199,91 @@ namespace GraduationProject.BL
             _unitOfWork.SaveChanges();
             return true;
         }
+
+        #region UploadImage
+        public async Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles)
+        {
+            if (imageFiles == null || imageFiles.Count == 0)
+            {
+                return new List<Doctor>();
+            }
+
+            List<Doctor> doctors = new List<Doctor>();
+
+            foreach (var file in imageFiles)
+            {
+                if (file.Length > 0)
+                {
+                    var fakeFileName = Path.GetRandomFileName();
+                    var storedFileName = Path.Combine("UploadImages", fakeFileName);
+
+                    var directory = Path.GetDirectoryName(storedFileName);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    Doctor doctor = new Doctor
+                    {
+                        Id = doctorId,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        StoredFileName = storedFileName,
+                    };
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), storedFileName);
+
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    doctors.Add(doctor);
+                }
+            }
+
+            _unitOfWork.doctorRepo.UploadDoctorImage(doctors);
+            _unitOfWork.SaveChanges();
+
+            return doctors;
+        }
+        #endregion
+
+
+        //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
+        //        {
+        //            if (string.IsNullOrEmpty(doctorId) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(contentType))
+        //            {
+        //                return;
+        //            }
+
+        //            var fakeFileName = Path.GetRandomFileName();
+        //            var newStoredFileName = Path.Combine("UploadImages", fakeFileName);
+
+        //            var directory = Path.GetDirectoryName(newStoredFileName);
+        //            if (!Directory.Exists(directory))
+        //            {
+        //                Directory.CreateDirectory(directory);
+        //            }
+
+        //            var path = Path.Combine(Directory.GetCurrentDirectory(), newStoredFileName);
+
+        //            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+        //            {
+        //                // You need to provide logic to read the file from its location and write it to the new location
+        //            }
+
+        //            _unitOfWork.doctorRepo.UpdateDoctorImage(doctorId, fileName, newStoredFileName, contentType);
+        //            _unitOfWork.SaveChanges();
+        //        }
     }
 }
-    
+
+
+
+
+
+
+        
+
+     

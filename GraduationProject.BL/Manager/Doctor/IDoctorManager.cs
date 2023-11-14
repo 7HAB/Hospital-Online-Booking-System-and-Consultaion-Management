@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GraduationProject.BL.Dtos.Doctor;
 using GraduationProject.BL.Dtos;
+using Microsoft.AspNetCore.Http;
 
 namespace GraduationProject.BL
 {
@@ -20,6 +21,12 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
+
+        Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles);
+
+        //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
+
+
 
 
     }

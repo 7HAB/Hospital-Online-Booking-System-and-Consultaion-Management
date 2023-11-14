@@ -18,13 +18,22 @@ namespace graduation_project.Controllers.Doctors
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IDoctorManager _doctorManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+
+
+
 
         public DoctorController(IConfiguration configuration,
-            UserManager<IdentityUser> userManager, IDoctorManager doctorManager)
+            UserManager<IdentityUser> userManager, IDoctorManager doctorManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _userManager = userManager;
             _doctorManager = doctorManager;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
+
         }
 
         #region GetAllSpcializations
@@ -59,6 +68,7 @@ namespace graduation_project.Controllers.Doctors
                 return NotFound("Doctor not found");
             return GetDOctorById;
         }
+
         #endregion
         #region GetDoctorBySpecification
         [HttpGet]
@@ -304,6 +314,80 @@ namespace graduation_project.Controllers.Doctors
             return StatusCode(StatusCodes.Status202Accepted);
         }
         #endregion
+
+
+
+        #region UploadImages
+
+
+        [HttpPost]
+        [Route("doctors/uploadimage/{doctorId}")]
+        public async Task<IActionResult> UploadImage(string doctorId, List<IFormFile> imageFiles)
+        {
+            try
+            {
+                List<Doctor> uploadedDoctors = await _doctorManager.UploadDoctorImage(doctorId, imageFiles);
+
+                if (uploadedDoctors.Count > 0)
+                {
+                    return Ok(uploadedDoctors);
+                }
+                else
+                {
+                    return BadRequest("No files provided or an error occurred during upload.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+   
+
+
+        }
+        //[HttpGet]
+        //[Route("images/{fileName}")]
+        //public IActionResult GetImage(string fileName)
+        //{
+        //    var imagePath = Path.Combine("UploadImages", fileName);
+        //    var fullPath = Path.Combine(Directory.GetCurrentDirectory(), imagePath);
+
+        //    if (!System.IO.File.Exists(fullPath))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var fileBytes = System.IO.File.ReadAllBytes(fullPath);
+        //    return File(fileBytes, "image/jpeg"); 
+        //}
+
+
+
+        #endregion
+
+        //#region GetTheImage
+        //[HttpGet]
+        //[Route("doctors/getimage/{DoctorId}")]
+        //public ActionResult<DoctorImageDto> GetDoctorImage(string DoctorId)
+        //{
+        //    Doctor doctor = _doctorManager.GetImageByDoctorId(DoctorId);
+
+        //    if (doctor == null)
+        //    {
+        //        return NotFound("Doctor not found");
+        //    }
+
+        //    // Assuming DoctorImageDto is a DTO to represent the image details
+        //    DoctorImageDto imageDto = new DoctorImageDto
+        //    {
+        //        ImageFileName = doctor.ImageFileName,
+        //        ImageContentType = doctor.ImageContentType,
+        //        ImageStoredFileName = doctor.ImageStoredFileName,
+        //    };
+
+        //    return Ok(imageDto);
+        //}
+        //#endregion
     }
 
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class databasemayar : Migration
+    public partial class uploadimages : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,6 +221,9 @@ namespace graduationProject.DAL.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StoredFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SpecializationId = table.Column<int>(type: "int", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     DateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -394,11 +397,17 @@ namespace graduationProject.DAL.Migrations
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LimitOfPatients = table.Column<int>(type: "int", nullable: false),
                     ActualNoOfPatients = table.Column<int>(type: "int", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     WeekScheduleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_VisitCount", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VisitCount_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_VisitCount_WeekSchedules_WeekScheduleId",
                         column: x => x.WeekScheduleId,
@@ -483,6 +492,11 @@ namespace graduationProject.DAL.Migrations
                 name: "IX_Receptions_AdminId",
                 table: "Receptions",
                 column: "AdminId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_VisitCount_DoctorId",
+                table: "VisitCount",
+                column: "DoctorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VisitCount_WeekScheduleId",

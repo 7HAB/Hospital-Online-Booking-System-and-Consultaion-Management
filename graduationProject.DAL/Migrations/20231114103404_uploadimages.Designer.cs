@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231112154715_b1")]
-    partial class b1
+    [Migration("20231114103404_uploadimages")]
+    partial class uploadimages
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -478,10 +478,16 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("AssistantPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -495,6 +501,9 @@ namespace graduationProject.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoredFileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
