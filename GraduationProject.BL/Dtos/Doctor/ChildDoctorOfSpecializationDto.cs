@@ -8,6 +8,7 @@ namespace GraduationProject.BL
 {
     public class ChildDoctorOfSpecializationDto
     {
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }

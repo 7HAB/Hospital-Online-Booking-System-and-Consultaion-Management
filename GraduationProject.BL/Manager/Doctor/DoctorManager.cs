@@ -68,16 +68,19 @@ namespace GraduationProject.BL
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
             return dbSpecializationDoctors.Select(s => new GetDoctorsBySpecializationDto
             {
+                id = s.Id,
                 Name = s.Name,
                 ChildDoctorOfSpecializations = s.Doctors
                 .Select(d => new ChildDoctorOfSpecializationDto
                 {
+                    Id = d.Id,
                     Name = d.Name,
                     Title = d.Title,
                     Description = d.Description,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
+                    Id= d.Id,
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
