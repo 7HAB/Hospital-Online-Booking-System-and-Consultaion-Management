@@ -424,6 +424,9 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
@@ -431,6 +434,8 @@ namespace graduationProject.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("WeekScheduleId");
 
@@ -631,11 +636,15 @@ namespace graduationProject.DAL.Migrations
 
             modelBuilder.Entity("graduationProject.DAL.VisitCount", b =>
                 {
-                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", "WeekSchedule")
+                    b.HasOne("graduationProject.DAL.Doctor", "Doctor")
+                        .WithMany("visitCounts")
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
                         .WithMany("VisitCount")
                         .HasForeignKey("WeekScheduleId");
 
-                    b.Navigation("WeekSchedule");
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Admin", b =>
@@ -712,6 +721,8 @@ namespace graduationProject.DAL.Migrations
             modelBuilder.Entity("graduationProject.DAL.Doctor", b =>
                 {
                     b.Navigation("patientVisits");
+
+                    b.Navigation("visitCounts");
 
                     b.Navigation("weeks");
                 });

@@ -28,5 +28,9 @@ namespace graduationProject.DAL
             var doctors = _context.Specializations.Include(d => d.Doctors).ThenInclude(d => d.weeks).Where(s => s.Id == SpeializationId).ToList();
             return doctors;
         }
+        public List<Specialization> GetAllSpecializations()
+        {
+            return _context.Set<Specialization>().Include(s => s.Doctors).ToList();
         }
+    }
 }

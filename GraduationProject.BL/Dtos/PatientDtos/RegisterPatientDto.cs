@@ -10,6 +10,7 @@ namespace GraduationProject.BL.Dtos
 {
     public class RegisterPatientDto
     {
+        public string? Id { get; set; } 
         public string PhoneNumber { get; set; } = string.Empty;
         public string? Name { get; set; }
         public string? Gender { get; set; }

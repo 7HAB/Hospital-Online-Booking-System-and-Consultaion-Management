@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231112120217_b1")]
-    partial class b1
+    [Migration("20231113135044_s")]
+    partial class s
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -427,6 +427,9 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
@@ -434,6 +437,8 @@ namespace graduationProject.DAL.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
 
                     b.HasIndex("WeekScheduleId");
 
@@ -634,11 +639,15 @@ namespace graduationProject.DAL.Migrations
 
             modelBuilder.Entity("graduationProject.DAL.VisitCount", b =>
                 {
-                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", "WeekSchedule")
+                    b.HasOne("graduationProject.DAL.Doctor", "Doctor")
+                        .WithMany("visitCounts")
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
                         .WithMany("VisitCount")
                         .HasForeignKey("WeekScheduleId");
 
-                    b.Navigation("WeekSchedule");
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Admin", b =>
@@ -715,6 +724,8 @@ namespace graduationProject.DAL.Migrations
             modelBuilder.Entity("graduationProject.DAL.Doctor", b =>
                 {
                     b.Navigation("patientVisits");
+
+                    b.Navigation("visitCounts");
 
                     b.Navigation("weeks");
                 });

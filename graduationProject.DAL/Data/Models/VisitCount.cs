@@ -11,8 +11,10 @@ namespace graduationProject.DAL
     {
         public int Id { get; set; }
         public DateTime Date {  get; set; }
-        public int LimitOfPatients { get; set; }
-        public int ActualNoOfPatients { get; set; }
-        public WeekSchedule? WeekSchedule { get; set; }
+        public int LimitOfPatients { get; set; } 
+        public int ActualNoOfPatients { get; set; } = 0;
+
+        public string? DoctorId { get; set; }
+        public Doctor? Doctor { get; set; }
     }
 }

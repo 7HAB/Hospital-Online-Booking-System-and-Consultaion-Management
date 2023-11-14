@@ -112,6 +112,7 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
+        #region Update Doctor With Id
         [HttpPut]
         [Route("admins/updatedoctor/{doctorId}")]
         public IActionResult UpdateDoctorById(UpdateDoctorStatusDto updateDoctor , string doctorId)
@@ -123,6 +124,8 @@ namespace graduation_project.Controllers.Admins
             }
             return Content("Updated");
         }
+        #endregion
+
 
     }
 }
