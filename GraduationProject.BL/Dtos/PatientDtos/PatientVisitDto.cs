@@ -11,7 +11,5 @@ namespace GraduationProject.BL
     {
         public DateTime DateOfVisit { get; set; }
         public string? PatientId { get; set; }
-
-
     }
 }

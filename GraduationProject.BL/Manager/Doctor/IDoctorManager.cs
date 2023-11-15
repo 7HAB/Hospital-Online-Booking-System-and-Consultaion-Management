@@ -22,5 +22,6 @@ namespace GraduationProject.BL
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
 
 
+
     }
 }

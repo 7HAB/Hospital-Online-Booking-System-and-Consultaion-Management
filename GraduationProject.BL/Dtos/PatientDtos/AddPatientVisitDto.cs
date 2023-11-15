@@ -11,5 +11,7 @@ namespace GraduationProject.BL
         public DateTime DateOfVisit { get; set; }
         public string? DoctorId { get; set; }
         public string? PatientId { get; set; }
+        public int? WeekSchedule {  get; set; }
+      //  public List<WeekScheduleForDoctorsDto>? WeekSchadual { get; set; }
     }
 }

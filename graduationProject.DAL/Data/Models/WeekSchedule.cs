@@ -12,12 +12,14 @@ namespace graduationProject.DAL.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public string? DayOfWeek { get; set; }
+        public DayOfWeek? DayOfWeek { get; set; }
 
         [Required]
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public bool IsAvailable { get; set; }
+        public int LimitOfPatients { get; set; }
+
         [Required]
         //public DateTime ScheduleDate { get; set; }
         public Doctor? Doctor { get; set; }

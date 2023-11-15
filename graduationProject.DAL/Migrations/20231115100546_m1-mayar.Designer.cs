@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231113135044_s")]
-    partial class s
+    [Migration("20231115100546_m1-mayar")]
+    partial class m1mayar
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,6 +262,9 @@ namespace graduationProject.DAL.Migrations
                     b.Property<bool>("IsAvailable")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LimitOfPatients")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
@@ -429,9 +432,6 @@ namespace graduationProject.DAL.Migrations
 
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("LimitOfPatients")
-                        .HasColumnType("int");
 
                     b.Property<int?>("WeekScheduleId")
                         .HasColumnType("int");

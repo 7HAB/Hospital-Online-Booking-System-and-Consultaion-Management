@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -117,25 +118,32 @@ namespace GraduationProject.BL
                 PatientId = addPatientVisitDto.PatientId,
                 DateOfVisit = addPatientVisitDto.DateOfVisit,
                 DoctorId = addPatientVisitDto.DoctorId,
-
             };
             _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
 
-            int counter = _unitOfWork.visitCountRepo.GetCount(pv.DateOfVisit , pv.DoctorId);
-            VisitCountDto visitCountDto = new VisitCountDto
-            {
-                DoctorId = pv.DoctorId,
-                Date = pv.DateOfVisit.Date,
-                ActualNoOfPatients = counter + 1
-            };
+            VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(pv.DateOfVisit , pv.DoctorId);
+            Doctor DoctorWeekSchedule = _unitOfWork.weekScheduleRepo.GetAllWeekSchedule(pv.DoctorId);
 
-            VisitCount vc = new VisitCount
+            DayOfWeek Day = pv.DateOfVisit.DayOfWeek;
+            WeekSchedule weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, pv.DoctorId);
+            
+            if (visitCount == null)
             {
-                DoctorId = visitCountDto.DoctorId,
-                Date = visitCountDto.Date,
-                ActualNoOfPatients = visitCountDto.ActualNoOfPatients
-            };
-            _unitOfWork.visitCountRepo.AddVisitCount(vc);
+                VisitCount AddVisitCount = new VisitCount
+                {
+                    DoctorId = addPatientVisitDto.DoctorId,
+                    Date = addPatientVisitDto.DateOfVisit,
+                    LimitOfPatients = weekSchedule.LimitOfPatients,
+                    WeekScheduleId = weekSchedule.Id,
+                    ActualNoOfPatients = 1,
+                };
+                _unitOfWork.visitCountRepo.AddOrUpdateVisitCount(AddVisitCount);
+            }
+            else
+            {
+                visitCount.ActualNoOfPatients++;
+                _unitOfWork.visitCountRepo.AddOrUpdateVisitCount(visitCount);
+            }
            
             _unitOfWork.SaveChanges();
 
