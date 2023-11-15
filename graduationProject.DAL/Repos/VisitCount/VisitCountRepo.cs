@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using graduationProject.DAL.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +16,23 @@ namespace graduationProject.DAL
         {
               _context = context;
         }
-   
-        /*public void AddVisitCount(VisitCount visitCount)
+
+       /* public void AddVisitCount(VisitCount visitCount)
         {
             _context.Set<VisitCount>().Add(visitCount);
         }*/
 
-        public int GetCount(DateTime date , string DoctorId) 
+        public VisitCount? GetCount(DateTime date , string DoctorId) 
         {
-            return _context.Set<VisitCount>().Where(d => d.DoctorId == DoctorId && d.Date.Date == date.Date).Count();
+            return _context.Set<VisitCount>().FirstOrDefault(d => d.DoctorId == DoctorId && d.Date.Date == date.Date);
         }
-        public VisitCount? AddOrUpdateVisitCount(int Id)
+        public WeekSchedule? GetWeekSchedule(DayOfWeek Day , string DoctorId)
         {
-            VisitCount? visitCount = _context.Set<VisitCount>().FirstOrDefault(v => v.Id == Id);
+            return _context.Set<WeekSchedule>().Include(w => w.Doctor).FirstOrDefault(w => w.DayOfWeek == Day && w.Doctor.Id == DoctorId);
+        }
+        public VisitCount? AddOrUpdateVisitCount(VisitCount visitCount)
+        {
+            VisitCount? dbVisitCountBy = _context.Set<VisitCount>().FirstOrDefault(v => v.Id == visitCount.Id);
 
             if (visitCount != null)
             {

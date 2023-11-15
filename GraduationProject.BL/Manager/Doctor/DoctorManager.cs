@@ -46,14 +46,13 @@ namespace GraduationProject.BL
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
+                    LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
                 }).ToList()
             }).ToList();
         }
-
-
 
         public GetDoctorByIDDto GetDoctorBYId(string id)
         {
@@ -70,6 +69,7 @@ namespace GraduationProject.BL
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
                     DayOfWeek = d.DayOfWeek,
+                    LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
@@ -95,6 +95,7 @@ namespace GraduationProject.BL
                 {
                     Id= d.Id,
                     DayOfWeek = d.DayOfWeek,
+                    LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable

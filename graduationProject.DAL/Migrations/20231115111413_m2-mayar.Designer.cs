@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using graduationProject.DAL;
 
@@ -11,9 +12,11 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    partial class HospitalContextModelSnapshot : ModelSnapshot
+    [Migration("20231115111413_m2-mayar")]
+    partial class m2mayar
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -237,21 +240,6 @@ namespace graduationProject.DAL.Migrations
                     b.ToTable("PatientReception");
                 });
 
-            modelBuilder.Entity("VisitCountWeekSchedule", b =>
-                {
-                    b.Property<int>("VisitCountId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WeekScheduleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("VisitCountId", "WeekScheduleId");
-
-                    b.HasIndex("WeekScheduleId");
-
-                    b.ToTable("VisitCountWeekSchedule");
-                });
-
             modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
                 {
                     b.Property<int>("Id")
@@ -447,12 +435,14 @@ namespace graduationProject.DAL.Migrations
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
-                    b.Property<int>("WeekScheduleId")
+                    b.Property<int?>("WeekScheduleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
+
+                    b.HasIndex("WeekScheduleId");
 
                     b.ToTable("VisitCount");
                 });
@@ -614,21 +604,6 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VisitCountWeekSchedule", b =>
-                {
-                    b.HasOne("graduationProject.DAL.VisitCount", null)
-                        .WithMany()
-                        .HasForeignKey("VisitCountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
-                        .WithMany()
-                        .HasForeignKey("WeekScheduleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
                 {
                     b.HasOne("graduationProject.DAL.Doctor", "Doctor")
@@ -669,6 +644,10 @@ namespace graduationProject.DAL.Migrations
                     b.HasOne("graduationProject.DAL.Doctor", "Doctor")
                         .WithMany("visitCounts")
                         .HasForeignKey("DoctorId");
+
+                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
+                        .WithMany("VisitCount")
+                        .HasForeignKey("WeekScheduleId");
 
                     b.Navigation("Doctor");
                 });
@@ -725,6 +704,11 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Admin");
+                });
+
+            modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
+                {
+                    b.Navigation("VisitCount");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Specialization", b =>
