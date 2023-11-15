@@ -61,6 +61,7 @@ namespace GraduationProject.BL
                 return null!;
             return new GetDoctorByIDDto
             {
+                ID = dbDoctor.Id,
                 Name = dbDoctor.Name,
                 Title = dbDoctor.Title,
                 Description = dbDoctor.Description,
