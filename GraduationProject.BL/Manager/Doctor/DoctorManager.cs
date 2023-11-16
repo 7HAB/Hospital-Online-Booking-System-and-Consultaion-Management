@@ -141,7 +141,21 @@ namespace GraduationProject.BL
             }
             return patientsWithDateDtosList;
         }
+        #region get visit count
+        public VisitCountDto GetVisitCount(DateTime date, string doctorId)
+        {
+            VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(date, doctorId);
+            return new VisitCountDto
+            {
+                Id = visitCount.Id,
+                Date = date,
+                DoctorId = doctorId,
+                ActualNoOfPatients = visitCount.ActualNoOfPatients,
+                LimitOfPatients = visitCount.LimitOfPatients,
 
+            };
+        }
+        #endregion
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id)
         {
             Patient? dbPatient = _unitOfWork.patientRepo.GetPatientForDoctor(id);

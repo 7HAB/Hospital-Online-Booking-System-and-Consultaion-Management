@@ -290,7 +290,19 @@ namespace graduation_project.Controllers.Doctors
         }
 
         #endregion
-
+        #region get visit count
+        [HttpGet]
+        [Route("visitCount/{date}")]
+        public ActionResult<VisitCountDto> GetVisitCount(DateTime date , string DoctorId)
+        {
+            VisitCountDto visitCount = _doctorManager.GetVisitCount(date, DoctorId);
+            if(visitCount == null)
+            {
+                return NotFound();
+            }
+            return Ok(visitCount);
+        }
+        #endregion
         #region UpdatePatientVisit
         [HttpPut]
         [Route("PatientVisit")]
