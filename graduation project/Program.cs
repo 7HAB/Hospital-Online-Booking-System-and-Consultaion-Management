@@ -56,9 +56,9 @@ builder.Services.AddScoped<IDoctorManager, DoctorManager>();
 builder.Services.AddScoped<IAdminManager, AdminManager>();
 #endregion
 #region cors
-builder.Services.AddCors(Options =>
+builder.Services.AddCors(options =>
 {
-    Options.AddPolicy(AllowAllPolicy, builder =>
+    options.AddPolicy(AllowAllPolicy, builder =>
     {
         builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
     });
@@ -74,6 +74,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseCors(AllowAllPolicy);
 app.UseAuthentication();
 app.UseAuthorization();

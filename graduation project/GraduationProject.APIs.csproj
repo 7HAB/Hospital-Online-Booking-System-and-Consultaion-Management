@@ -20,4 +20,8 @@
     <ProjectReference Include="..\GraduationProject.BL\GraduationProject.BL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\UploadImages\" />
+  </ItemGroup>
+
 </Project>

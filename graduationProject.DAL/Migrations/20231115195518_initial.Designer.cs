@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231115100546_m1-mayar")]
-    partial class m1mayar
+    [Migration("20231115195518_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -240,6 +240,21 @@ namespace graduationProject.DAL.Migrations
                     b.ToTable("PatientReception");
                 });
 
+            modelBuilder.Entity("VisitCountWeekSchedule", b =>
+                {
+                    b.Property<int>("VisitCountId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekScheduleId")
+                        .HasColumnType("int");
+
+                    b.HasKey("VisitCountId", "WeekScheduleId");
+
+                    b.HasIndex("WeekScheduleId");
+
+                    b.ToTable("VisitCountWeekSchedule");
+                });
+
             modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
                 {
                     b.Property<int>("Id")
@@ -248,9 +263,8 @@ namespace graduationProject.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("DayOfWeek")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
@@ -433,14 +447,15 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("WeekScheduleId")
+                    b.Property<int>("LimitOfPatients")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekScheduleId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("DoctorId");
-
-                    b.HasIndex("WeekScheduleId");
 
                     b.ToTable("VisitCount");
                 });
@@ -478,10 +493,16 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("AssistantPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -495,6 +516,9 @@ namespace graduationProject.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoredFileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -602,6 +626,21 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("VisitCountWeekSchedule", b =>
+                {
+                    b.HasOne("graduationProject.DAL.VisitCount", null)
+                        .WithMany()
+                        .HasForeignKey("VisitCountId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
+                        .WithMany()
+                        .HasForeignKey("WeekScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
                 {
                     b.HasOne("graduationProject.DAL.Doctor", "Doctor")
@@ -642,10 +681,6 @@ namespace graduationProject.DAL.Migrations
                     b.HasOne("graduationProject.DAL.Doctor", "Doctor")
                         .WithMany("visitCounts")
                         .HasForeignKey("DoctorId");
-
-                    b.HasOne("graduationProject.DAL.Data.Models.WeekSchedule", null)
-                        .WithMany("VisitCount")
-                        .HasForeignKey("WeekScheduleId");
 
                     b.Navigation("Doctor");
                 });
@@ -702,11 +737,6 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired();
 
                     b.Navigation("Admin");
-                });
-
-            modelBuilder.Entity("graduationProject.DAL.Data.Models.WeekSchedule", b =>
-                {
-                    b.Navigation("VisitCount");
                 });
 
             modelBuilder.Entity("graduationProject.DAL.Specialization", b =>

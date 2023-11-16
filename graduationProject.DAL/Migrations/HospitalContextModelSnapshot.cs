@@ -490,10 +490,16 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("AssistantPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -507,6 +513,9 @@ namespace graduationProject.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StoredFileName")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")

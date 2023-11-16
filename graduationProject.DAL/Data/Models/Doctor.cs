@@ -15,6 +15,11 @@ namespace graduationProject.DAL
         public string Name { get; set; } = string.Empty;
         //public IFormFile? Photo { get; set; }
         public string? Title { get; set; }
+        #region uploadImages
+        public string? FileName { get; set; }
+        public string? StoredFileName { get; set; }
+        public string? ContentType { get; set; }
+        #endregion
         public string? Description { get; set; }
         public int? SpecializationId { get; set; } = 0;
         public decimal Salary { get; set; } 

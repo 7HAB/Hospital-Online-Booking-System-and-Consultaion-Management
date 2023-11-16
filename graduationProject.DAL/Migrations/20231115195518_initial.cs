@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class m1mayar : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -220,6 +220,9 @@ namespace graduationProject.DAL.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StoredFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ContentType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SpecializationId = table.Column<int>(type: "int", nullable: true),
                     Salary = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
@@ -340,12 +343,34 @@ namespace graduationProject.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "VisitCount",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ActualNoOfPatients = table.Column<int>(type: "int", nullable: false),
+                    LimitOfPatients = table.Column<int>(type: "int", nullable: false),
+                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    WeekScheduleId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_VisitCount", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_VisitCount_Doctors_DoctorId",
+                        column: x => x.DoctorId,
+                        principalTable: "Doctors",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "WeekSchedules",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfWeek = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    DayOfWeek = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
@@ -387,29 +412,27 @@ namespace graduationProject.DAL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "VisitCount",
+                name: "VisitCountWeekSchedule",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ActualNoOfPatients = table.Column<int>(type: "int", nullable: false),
-                    DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    WeekScheduleId = table.Column<int>(type: "int", nullable: true)
+                    VisitCountId = table.Column<int>(type: "int", nullable: false),
+                    WeekScheduleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VisitCount", x => x.Id);
+                    table.PrimaryKey("PK_VisitCountWeekSchedule", x => new { x.VisitCountId, x.WeekScheduleId });
                     table.ForeignKey(
-                        name: "FK_VisitCount_Doctors_DoctorId",
-                        column: x => x.DoctorId,
-                        principalTable: "Doctors",
-                        principalColumn: "Id");
+                        name: "FK_VisitCountWeekSchedule_VisitCount_VisitCountId",
+                        column: x => x.VisitCountId,
+                        principalTable: "VisitCount",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_VisitCount_WeekSchedules_WeekScheduleId",
+                        name: "FK_VisitCountWeekSchedule_WeekSchedules_WeekScheduleId",
                         column: x => x.WeekScheduleId,
                         principalTable: "WeekSchedules",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -496,8 +519,8 @@ namespace graduationProject.DAL.Migrations
                 column: "DoctorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_VisitCount_WeekScheduleId",
-                table: "VisitCount",
+                name: "IX_VisitCountWeekSchedule_WeekScheduleId",
+                table: "VisitCountWeekSchedule",
                 column: "WeekScheduleId");
 
             migrationBuilder.CreateIndex(
@@ -534,7 +557,7 @@ namespace graduationProject.DAL.Migrations
                 name: "PatientVisits");
 
             migrationBuilder.DropTable(
-                name: "VisitCount");
+                name: "VisitCountWeekSchedule");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
@@ -544,6 +567,9 @@ namespace graduationProject.DAL.Migrations
 
             migrationBuilder.DropTable(
                 name: "Patients");
+
+            migrationBuilder.DropTable(
+                name: "VisitCount");
 
             migrationBuilder.DropTable(
                 name: "WeekSchedules");
