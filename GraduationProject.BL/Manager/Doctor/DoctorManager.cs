@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
 using System;
@@ -130,6 +131,7 @@ namespace GraduationProject.BL
             {
                 var patientListItem = new GetAllPatientsWithDateDto
                 {
+                    PatientId = patient.Id,
                     Name = patient.Name,
                     DateOfBirth = patient.DateOfBirth,
                     Gender = patient.Gender,
@@ -141,10 +143,52 @@ namespace GraduationProject.BL
             }
             return patientsWithDateDtosList;
         }
+        #region Add Visit Count Records
+        public void AddVisitCountRecords(DateTime Date)
+        {
+            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
+            int i = 0;
+            DateTime current = Date;
+            DateTime next =current;
+            foreach (Doctor doctor in doctors)
+            {
+                
+                for (int j = 0; j < 7; j++)
+                {
+                    DayOfWeek Day = next.AddDays(i).DayOfWeek;
+                    
+                      WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
+
+                    
+                    if (current.Year == Date.Year)
+                    {
+                        VisitCount visitCount = new VisitCount
+                        {
+                            DoctorId = doctor.Id,
+                            Date = current.AddDays(i),
+                            LimitOfPatients = weekSchedule.LimitOfPatients,
+                            WeekScheduleId = weekSchedule.Id,
+                            ActualNoOfPatients = 0,
+
+                        };
+
+                        i++;
+                        _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
+                        _unitOfWork.SaveChanges();
+
+
+                    }
+
+                }
+            }
+
+        }
+        #endregion
         #region get visit count
         public VisitCountDto GetVisitCount(DateTime date, string doctorId)
         {
             VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(date, doctorId);
+            if(visitCount != null) { return null; }
             return new VisitCountDto
             {
                 Id = visitCount.Id,
@@ -214,6 +258,8 @@ namespace GraduationProject.BL
             _unitOfWork.SaveChanges();
             return true;
         }
+
+       
     }
 }
     

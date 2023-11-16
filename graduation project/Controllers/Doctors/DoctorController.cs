@@ -290,6 +290,16 @@ namespace graduation_project.Controllers.Doctors
         }
 
         #endregion
+        #region Add Visit Count Records
+        [HttpPost]
+        [Route("addVisitCount/{date}")]
+        public ActionResult AddVisitCountRecords(DateTime date)
+        {
+            _doctorManager.AddVisitCountRecords(date);
+            return StatusCode(StatusCodes.Status202Accepted);
+
+        }
+        #endregion
         #region get visit count
         [HttpGet]
         [Route("visitCount/{date}")]
