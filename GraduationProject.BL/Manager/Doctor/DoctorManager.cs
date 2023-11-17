@@ -37,8 +37,10 @@ namespace GraduationProject.BL
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
+
             return doctors.Select(d => new GetAllDoctorsDto
             {
+
                 Id = d.Id,
                 Name = d.Name,
                 Title = d.Title,
@@ -47,6 +49,7 @@ namespace GraduationProject.BL
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
+                    Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -152,17 +155,17 @@ namespace GraduationProject.BL
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
             int i = 0;
             DateTime current = Date;
-            DateTime next =current;
+            DateTime now =DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
 
-                VisitCount v = _unitOfWork.visitCountRepo.GetCount(Date, doctor.Id);
-                if (v == null)
-                {
+                
                     for (int j = 0; j < 7; j++)
                     {
-                        DayOfWeek Day = next.AddDays(i).DayOfWeek;
-
+                        DayOfWeek Day = current.AddDays(j).DayOfWeek;
+                         VisitCount v = _unitOfWork.visitCountRepo.GetCount(current.AddDays(j), doctor.Id);
+                      if (v == null && Date>=now)
+                {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
 
@@ -172,7 +175,7 @@ namespace GraduationProject.BL
                             VisitCount visitCount = new VisitCount
                             {
                                 DoctorId = doctor.Id,
-                                Date = current.AddDays(i),
+                                Date = current.AddDays(j),
                                 LimitOfPatients = weekSchedule.LimitOfPatients,
                                 WeekScheduleId = weekSchedule.Id,
                                 ActualNoOfPatients = 0,
