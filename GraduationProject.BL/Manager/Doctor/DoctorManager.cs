@@ -8,6 +8,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GraduationProject.BL
 {
@@ -154,35 +155,40 @@ namespace GraduationProject.BL
             DateTime next =current;
             foreach (Doctor doctor in doctors)
             {
-                
-                for (int j = 0; j < 7; j++)
+
+                VisitCount v = _unitOfWork.visitCountRepo.GetCount(Date, doctor.Id);
+                if (v == null)
                 {
-                    DayOfWeek Day = next.AddDays(i).DayOfWeek;
-                    
-                      WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
-
-                    
-                    if (current.Year == Date.Year)
+                    for (int j = 0; j < 7; j++)
                     {
-                        VisitCount visitCount = new VisitCount
+                        DayOfWeek Day = next.AddDays(i).DayOfWeek;
+
+                        WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
+
+
+
+                        if (current.Year == Date.Year)
                         {
-                            DoctorId = doctor.Id,
-                            Date = current.AddDays(i),
-                            LimitOfPatients = weekSchedule.LimitOfPatients,
-                            WeekScheduleId = weekSchedule.Id,
-                            ActualNoOfPatients = 0,
-                            Day = weekSchedule.DayOfWeek,
+                            VisitCount visitCount = new VisitCount
+                            {
+                                DoctorId = doctor.Id,
+                                Date = current.AddDays(i),
+                                LimitOfPatients = weekSchedule.LimitOfPatients,
+                                WeekScheduleId = weekSchedule.Id,
+                                ActualNoOfPatients = 0,
+                                Day = weekSchedule.DayOfWeek,
 
-                        };
+                            };
 
-                        
-                        _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
-                        _unitOfWork.SaveChanges();
-                        i++;
 
+                            _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
+                            _unitOfWork.SaveChanges();
+                            i++;
+
+
+                        }
 
                     }
-
                 }
             }
 
