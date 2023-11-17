@@ -13,5 +13,8 @@ namespace GraduationProject.BL
         public int LimitOfPatients { get; set; }
         public int ActualNoOfPatients { get; set; }
         public string? DoctorId { get; set; }
+
+        public DayOfWeek Day {  get; set; }
+        public int WeekScheduleId { get; set; }
     }
 }

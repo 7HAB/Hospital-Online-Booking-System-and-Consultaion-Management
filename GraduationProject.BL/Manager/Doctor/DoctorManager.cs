@@ -70,6 +70,7 @@ namespace GraduationProject.BL
                 WeekSchadual = dbDoctor.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
+                    Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -115,6 +116,7 @@ namespace GraduationProject.BL
                 Name = doctor.Name,
                 WeekSchedule = doctor.weeks.Select(d => new GetAllWeekScheduleChildDto
                 {
+                    
                     DayOfWeek = d.DayOfWeek,
                     IsAvailable = d.IsAvailable,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -169,12 +171,14 @@ namespace GraduationProject.BL
                             LimitOfPatients = weekSchedule.LimitOfPatients,
                             WeekScheduleId = weekSchedule.Id,
                             ActualNoOfPatients = 0,
+                            Day = weekSchedule.DayOfWeek,
 
                         };
 
-                        i++;
+                        
                         _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
                         _unitOfWork.SaveChanges();
+                        i++;
 
 
                     }
@@ -188,7 +192,7 @@ namespace GraduationProject.BL
         public VisitCountDto GetVisitCount(DateTime date, string doctorId)
         {
             VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(date, doctorId);
-            if(visitCount != null) { return null; }
+            if(visitCount == null) { return null; }
             return new VisitCountDto
             {
                 Id = visitCount.Id,
@@ -196,6 +200,8 @@ namespace GraduationProject.BL
                 DoctorId = doctorId,
                 ActualNoOfPatients = visitCount.ActualNoOfPatients,
                 LimitOfPatients = visitCount.LimitOfPatients,
+                WeekScheduleId = visitCount.WeekScheduleId,
+                Day = visitCount.Date.DayOfWeek,
 
             };
         }
