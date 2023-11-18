@@ -205,7 +205,7 @@ namespace GraduationProject.BL
             return new VisitCountDto
             {
                 Id = visitCount.Id,
-                Date = date,
+                Date = date.ToShortDateString(),
                 DoctorId = doctorId,
                 ActualNoOfPatients = visitCount.ActualNoOfPatients,
                 LimitOfPatients = visitCount.LimitOfPatients,
