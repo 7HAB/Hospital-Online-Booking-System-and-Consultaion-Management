@@ -2,6 +2,7 @@
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,6 +13,7 @@ using System.Text;
 namespace graduation_project.Controllers.Doctors
 {
     [ApiController]
+
     [Route("api/[controller]")]
     public class DoctorController : ControllerBase
     {
@@ -46,13 +48,23 @@ namespace graduation_project.Controllers.Doctors
         [HttpGet]
         public ActionResult<List<GetAllDoctorsDto>?> GetAllDoctors()
         {
-
             List<GetAllDoctorsDto>? getAllDoctorsDto = _doctorManager.GetAllDoctors();
 
             if (getAllDoctorsDto == null) { return NotFound(); }
 
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            baseUrl = baseUrl.TrimEnd('/');
+
+            foreach (var doctor in getAllDoctorsDto)
+            {
+                doctor.ImageUrl = $"{baseUrl}/{doctor.ImageStoredFileName}";
+                doctor.ImageUrl = doctor.ImageUrl.Replace("wwwroot/", string.Empty);
+
+            }
+
             return getAllDoctorsDto;
         }
+
         #endregion
         #region GetDoctorById
         [HttpGet]
@@ -85,7 +97,7 @@ namespace graduation_project.Controllers.Doctors
 
         #endregion
 
-        #region GetDoctorBySpecification
+        #region GetDoctorBySpecialization
         [HttpGet]
         [Route("doctors/specialization/{id}")]
         public ActionResult<List<GetDoctorsBySpecializationDto>> GetBySpecialization(int id)
@@ -93,7 +105,16 @@ namespace graduation_project.Controllers.Doctors
             List<GetDoctorsBySpecializationDto> DoctorWithSpecialization = _doctorManager.GetDoctorsBySpecialization(id);
             if (DoctorWithSpecialization is null)
                 return NotFound("Doctors with specialization not found");
-
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            baseUrl = baseUrl.TrimEnd('/');
+            foreach (var doctor in DoctorWithSpecialization)
+            {
+                foreach (var d in doctor.ChildDoctorOfSpecializations)
+                {
+                    d.ImageUrl = $"{baseUrl}/{d.ImageStoredFileName}";
+                    d.ImageUrl =d.ImageUrl.Replace("wwwroot/", string.Empty);
+                }
+            }
             return DoctorWithSpecialization;
         }
         #endregion
@@ -318,6 +339,7 @@ namespace graduation_project.Controllers.Doctors
 
         #region UpdatePatientVisit
         [HttpPut]
+        [Authorize(Policy = "DoctorPolicy")]
         [Route("PatientVisit")]
         public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
         {
@@ -333,6 +355,7 @@ namespace graduation_project.Controllers.Doctors
 
 
         [HttpPost]
+        [Authorize(Policy = "DoctorPolicy")]
         [Route("doctors/uploadimage/{doctorId}")]
         public async Task<IActionResult> UploadImage(string doctorId, List<IFormFile> imageFiles)
         {

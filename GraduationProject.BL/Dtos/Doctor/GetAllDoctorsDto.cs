@@ -17,5 +17,12 @@ namespace GraduationProject.BL.Dtos.Doctor
         public string SpecializationName { get; set; } = "";
         public int PerformanceRate { get; set; }
         public List<WeekScheduleForDoctorsDto>? WeekSchadual { get; set; }
+
+        #region Image
+        public string? ImageFileName { get; set; }
+        public string? ImageStoredFileName { get; set; }
+        public string? ImageContentType { get; set; }
+        public string? ImageUrl { get; set; }
+        #endregion
     }
 }

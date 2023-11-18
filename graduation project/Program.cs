@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using ServiceStack;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 const string AllowAllPolicy = "AllowAllPolicy";
@@ -29,7 +30,43 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
     })
     .AddEntityFrameworkStores<HospitalContext>();
 #endregion
+#region Authentication
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultAuthenticateScheme = "XYZ";
+//    options.DefaultChallengeScheme = "XYZ";
 
+//});
+
+#endregion
+#region Authoriziation
+// DoctorPolicy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("DoctorPolicy", p => p.RequireClaim(ClaimTypes.Role, "Doctor"));
+});
+
+// PatientPolicy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("PatientPolicy", p => p.RequireClaim(ClaimTypes.Role, "Patient"));
+});
+
+// AdminPolicy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", p => p.RequireClaim(ClaimTypes.Role, "Admin"));
+});
+
+// ReceptionPolicy
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ReceptionPolicy", p => p.RequireClaim(ClaimTypes.Role, "Reception"));
+});
+
+
+
+#endregion
 
 #region Repos
 

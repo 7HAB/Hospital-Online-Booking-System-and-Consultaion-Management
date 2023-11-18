@@ -43,6 +43,9 @@ namespace GraduationProject.BL
                 Title = d.Title,
                 Description = d.Description,
                 SpecializationName = d.specialization.Name,
+                ImageFileName = d.FileName,
+                ImageStoredFileName = d.StoredFileName,
+                ImageContentType = d.ContentType, 
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -89,6 +92,7 @@ namespace GraduationProject.BL
             {
                 id = s.Id,
                 Name = s.Name,
+
                 ChildDoctorOfSpecializations = s.Doctors
                 .Select(d => new ChildDoctorOfSpecializationDto
                 {
@@ -96,6 +100,9 @@ namespace GraduationProject.BL
                     Name = d.Name,
                     Title = d.Title,
                     Description = d.Description,
+                    ImageFileName = d.FileName,
+                    ImageStoredFileName = d.StoredFileName,
+                    ImageContentType = d.ContentType,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
