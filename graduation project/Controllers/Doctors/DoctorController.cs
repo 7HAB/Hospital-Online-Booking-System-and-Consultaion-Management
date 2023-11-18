@@ -313,6 +313,25 @@ namespace graduation_project.Controllers.Doctors
             return Ok(visitCount);
         }
         #endregion
+        #region get visit count for week
+        [HttpGet]
+        [Route("visitCount/{date}/{date2}")]
+        public ActionResult<List<VisitCountDto>> GetVisitCountForWeek(DateTime date, string DoctorId, DateTime date2)
+        {
+            List<VisitCountDto> visitCounts = new List<VisitCountDto>();
+            for (int i = 0; i < 7; i++)
+            {
+               
+                VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
+                visitCounts.Add(visitCount);
+            }
+            if (visitCounts == null)
+            {
+                return NotFound();
+            }
+            return Ok(visitCounts);
+        }
+        #endregion
         #region UpdatePatientVisit
         [HttpPut]
         [Route("PatientVisit")]
