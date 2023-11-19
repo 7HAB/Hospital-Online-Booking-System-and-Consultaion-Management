@@ -21,6 +21,8 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
+        public void AddVisitCountRecords(DateTime Date);
+
 
 
 

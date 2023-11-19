@@ -13,5 +13,7 @@ namespace graduationProject.DAL
         public VisitCount? AddOrUpdateVisitCount(VisitCount visitCount);
         public WeekSchedule? GetWeekSchedule(DayOfWeek Day, string DoctorId);
         public VisitCount GetCount(DateTime date, string DoctorId);
+        public void AddVisitCountRecords(VisitCount visitCountRecord);
+
     }
 }

@@ -180,7 +180,7 @@ namespace graduation_project.Controllers
         #region AddPatientVisit
         [HttpPost]
         [Route("/addpatientVisit")]
-        public IActionResult AddPatientVisit(AddPatientVisitDto addPatientVisitDto)
+        public ActionResult AddPatientVisit(AddPatientVisitDto addPatientVisitDto)
         {
             _patientManager.AddPatientVisit(addPatientVisitDto);
             return StatusCode(StatusCodes.Status201Created);

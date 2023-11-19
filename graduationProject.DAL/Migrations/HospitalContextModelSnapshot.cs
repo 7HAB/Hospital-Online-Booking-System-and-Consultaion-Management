@@ -441,6 +441,9 @@ namespace graduationProject.DAL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("Day")
+                        .HasColumnType("int");
+
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
 
