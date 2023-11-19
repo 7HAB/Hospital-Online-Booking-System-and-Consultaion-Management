@@ -158,8 +158,6 @@ namespace GraduationProject.BL
             DateTime now =DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
-
-                
                     for (int j = 0; j < 7; j++)
                     {
                         DayOfWeek Day = current.AddDays(j).DayOfWeek;
@@ -167,7 +165,6 @@ namespace GraduationProject.BL
                       if (v == null && Date>=now)
                 {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
-
 
 
                         if (current.Year == Date.Year)

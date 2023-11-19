@@ -44,7 +44,7 @@ namespace graduationProject.DAL
             }
             return visitCount;
         }
-
+        
         public void AddVisitCountRecords (VisitCount visitCountRecord)
         {
             _context.Set<VisitCount?>().Add(visitCountRecord);

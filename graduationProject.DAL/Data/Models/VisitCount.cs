@@ -17,7 +17,6 @@ namespace graduationProject.DAL
         public Doctor? Doctor { get; set; }
         public int WeekScheduleId { get; set; }
         public DayOfWeek? Day { get; set; }
-
         public ICollection<WeekSchedule>? WeekSchedule { get; set; } = new HashSet<WeekSchedule>();
     }
 }
