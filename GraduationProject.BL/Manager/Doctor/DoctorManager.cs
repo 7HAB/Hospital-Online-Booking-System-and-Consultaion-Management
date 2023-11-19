@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace GraduationProject.BL
 {
@@ -36,8 +38,10 @@ namespace GraduationProject.BL
         public List<GetAllDoctorsDto> GetAllDoctors()
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
+
             return doctors.Select(d => new GetAllDoctorsDto
             {
+
                 Id = d.Id,
                 Name = d.Name,
                 Title = d.Title,
@@ -49,6 +53,7 @@ namespace GraduationProject.BL
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
+                    Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -67,6 +72,7 @@ namespace GraduationProject.BL
 
             return new GetDoctorByIDDto
             {
+                ID = dbDoctor.Id,
                 Name = dbDoctor.Name,
                 Title = dbDoctor.Title,
                 Description = dbDoctor.Description,
@@ -74,6 +80,7 @@ namespace GraduationProject.BL
                 WeekSchadual = dbDoctor.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
+                    Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
@@ -126,6 +133,7 @@ namespace GraduationProject.BL
                 Name = doctor.Name,
                 WeekSchedule = doctor.weeks.Select(d => new GetAllWeekScheduleChildDto
                 {
+                    
                     DayOfWeek = d.DayOfWeek,
                     IsAvailable = d.IsAvailable,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -142,6 +150,7 @@ namespace GraduationProject.BL
             {
                 var patientListItem = new GetAllPatientsWithDateDto
                 {
+                    PatientId = patient.Id,
                     Name = patient.Name,
                     DateOfBirth = patient.DateOfBirth,
                     Gender = patient.Gender,
@@ -153,7 +162,69 @@ namespace GraduationProject.BL
             }
             return patientsWithDateDtosList;
         }
+        #region Add Visit Count Records
+        public void AddVisitCountRecords(DateTime Date)
+        {
+            List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
+            int i = 0;
+            DateTime current = Date;
+            DateTime now =DateTime.Now.Date;
+            foreach (Doctor doctor in doctors)
+            {
+                    for (int j = 0; j < 7; j++)
+                    {
+                        DayOfWeek Day = current.AddDays(j).DayOfWeek;
+                         VisitCount v = _unitOfWork.visitCountRepo.GetCount(current.AddDays(j), doctor.Id);
+                      if (v == null && Date>=now)
+                {
+                        WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
+
+                        if (current.Year == Date.Year)
+                        {
+                            VisitCount visitCount = new VisitCount
+                            {
+                                DoctorId = doctor.Id,
+                                Date = current.AddDays(j),
+                                LimitOfPatients = weekSchedule.LimitOfPatients,
+                                WeekScheduleId = weekSchedule.Id,
+                                ActualNoOfPatients = 0,
+                                Day = weekSchedule.DayOfWeek,
+
+                            };
+
+
+                            _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
+                            _unitOfWork.SaveChanges();
+                            i++;
+
+
+                        }
+
+                    }
+                }
+            }
+
+        }
+        #endregion
+        #region get visit count
+        public VisitCountDto GetVisitCount(DateTime date, string doctorId)
+        {
+            VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(date, doctorId);
+            if(visitCount == null) { return null; }
+            return new VisitCountDto
+            {
+                Id = visitCount.Id,
+                Date = date.ToShortDateString(),
+                DoctorId = doctorId,
+                ActualNoOfPatients = visitCount.ActualNoOfPatients,
+                LimitOfPatients = visitCount.LimitOfPatients,
+                WeekScheduleId = visitCount.WeekScheduleId,
+                Day = visitCount.Date.DayOfWeek,
+
+            };
+        }
+        #endregion
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id)
         {
             Patient? dbPatient = _unitOfWork.patientRepo.GetPatientForDoctor(id);

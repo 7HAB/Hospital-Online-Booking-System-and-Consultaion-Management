@@ -29,6 +29,7 @@ namespace GraduationProject.BL
             if (patient == null) { return null; }
             return new GetPatientByPhoneDTO
             {
+                Id = patient.Id,
                 Name = patient.Name,
                 PhoneNumber = phoneNumber,
                 Gender = patient.Gender,
@@ -122,10 +123,10 @@ namespace GraduationProject.BL
             _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
 
             VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(pv.DateOfVisit , pv.DoctorId);
-            Doctor DoctorWeekSchedule = _unitOfWork.weekScheduleRepo.GetAllWeekSchedule(pv.DoctorId);
+            Doctor? DoctorWeekSchedule = _unitOfWork.weekScheduleRepo.GetAllWeekSchedule(pv.DoctorId);
 
             DayOfWeek Day = pv.DateOfVisit.DayOfWeek;
-            WeekSchedule weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, pv.DoctorId);
+            WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, pv.DoctorId);
             
             if (visitCount == null)
             {
