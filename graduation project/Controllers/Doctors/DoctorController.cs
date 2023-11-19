@@ -396,7 +396,7 @@ namespace graduation_project.Controllers.Doctors
 
 
         [HttpPost]
-        [Authorize(Policy = "DoctorPolicy")]
+      //  [Authorize(Policy = "DoctorPolicy")]
         [Route("doctors/uploadimage/{doctorId}")]
         public async Task<IActionResult> UploadImage(string doctorId, List<IFormFile> imageFiles)
         {

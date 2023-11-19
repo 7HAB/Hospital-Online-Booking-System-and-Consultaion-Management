@@ -182,23 +182,25 @@ namespace GraduationProject.BL
 
                         if (current.Year == Date.Year)
                         {
-                            VisitCount visitCount = new VisitCount
+                            if (weekSchedule != null)
                             {
-                                DoctorId = doctor.Id,
-                                Date = current.AddDays(j),
-                                LimitOfPatients = weekSchedule.LimitOfPatients,
-                                WeekScheduleId = weekSchedule.Id,
-                                ActualNoOfPatients = 0,
-                                Day = weekSchedule.DayOfWeek,
+                                VisitCount visitCount = new VisitCount
+                                {
+                                    DoctorId = doctor.Id,
+                                    Date = current.AddDays(j),
+                                    LimitOfPatients = weekSchedule.LimitOfPatients,
+                                    WeekScheduleId = weekSchedule.Id,
+                                    ActualNoOfPatients = 0,
+                                    Day = weekSchedule.DayOfWeek,
 
-                            };
-
-
-                            _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
-                            _unitOfWork.SaveChanges();
-                            i++;
+                                };
 
 
+                                _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
+                                _unitOfWork.SaveChanges();
+                                i++;
+
+                            }
                         }
 
                     }
