@@ -14,5 +14,9 @@ namespace GraduationProject.BL
         public string? Description { get; set; }
         public string SpecializationName { get; set; } = "";
         public List<WeekScheduleForDoctorsDto>? WeekSchadual { get; set; }
+        public string? ImageFileName { get; set; }
+        public string? ImageStoredFileName { get; set; }
+        public string? ImageContentType { get; set; }
+        public string? ImageUrl { get; set; }
     }
 }

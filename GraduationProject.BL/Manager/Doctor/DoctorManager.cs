@@ -2,6 +2,7 @@
 using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,9 @@ namespace GraduationProject.BL
                 Title = d.Title,
                 Description = d.Description,
                 SpecializationName = d.specialization.Name,
+                ImageFileName = d.FileName,
+                ImageStoredFileName = d.StoredFileName,
+                ImageContentType = d.ContentType, 
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -64,6 +68,8 @@ namespace GraduationProject.BL
             Doctor? dbDoctor = _unitOfWork.doctorRepo.GetById(id);
             if (dbDoctor is null)
                 return null!;
+
+
             return new GetDoctorByIDDto
             {
                 ID = dbDoctor.Id,
@@ -76,13 +82,16 @@ namespace GraduationProject.BL
                 {
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
-                    LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
                     EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
-                }).ToList()
+                }).ToList(),
+                ImageFileName = dbDoctor.FileName,
+                ImageStoredFileName = dbDoctor.StoredFileName,
+                ImageContentType = dbDoctor.ContentType,
             };
         }
+
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
@@ -90,6 +99,7 @@ namespace GraduationProject.BL
             {
                 id = s.Id,
                 Name = s.Name,
+
                 ChildDoctorOfSpecializations = s.Doctors
                 .Select(d => new ChildDoctorOfSpecializationDto
                 {
@@ -97,6 +107,9 @@ namespace GraduationProject.BL
                     Name = d.Name,
                     Title = d.Title,
                     Description = d.Description,
+                    ImageFileName = d.FileName,
+                    ImageStoredFileName = d.StoredFileName,
+                    ImageContentType = d.ContentType,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -270,8 +283,95 @@ namespace GraduationProject.BL
             _unitOfWork.SaveChanges();
             return true;
         }
+        #region UploadImage
+        public async Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles)
+        {
+            if (imageFiles == null || imageFiles.Count == 0)
+            {
+                return new List<Doctor>();
+            }
 
-       
+            List<Doctor> doctors = new List<Doctor>();
+
+            foreach (var file in imageFiles)
+            {
+                if (file.Length > 0)
+                {
+                    var fileExtension = Path.GetExtension(file.FileName);
+                    var fakeFileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
+                    var storedFileName = "wwwroot/" + "UploadImages/" + fakeFileName;
+                    //var storedFileName = Path.Combine("wwwroot", "UploadImages", fakeFileName);
+
+
+
+                    var directory = Path.GetDirectoryName(storedFileName);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    Doctor doctor = new Doctor
+                    {
+                        Id = doctorId,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        StoredFileName = storedFileName,
+                    };
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), storedFileName);
+
+                    using (FileStream fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+
+                    doctors.Add(doctor);
+                }
+            }
+
+            _unitOfWork.doctorRepo.UploadDoctorImage(doctors);
+            _unitOfWork.SaveChanges();
+
+            return doctors;
+        }
+
+        #endregion
+
+        //#region UpdateImge
+        //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
+        //{
+        //    if (string.IsNullOrEmpty(doctorId) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(contentType))
+        //    {
+        //        return;
+        //    }
+
+        //    // Assuming the original location is in the "UploadImages" folder
+        //    var originalFilePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadImages", storedFileName);
+
+        //    // Create a new unique file name for the moved file
+        //    var fakeFileName = Path.GetRandomFileName();
+        //    var newStoredFileName = Path.Combine("UploadImages", fakeFileName);
+
+        //    var newFilePath = Path.Combine(Directory.GetCurrentDirectory(), newStoredFileName);
+
+        //    var directory = Path.GetDirectoryName(newFilePath);
+        //    if (!Directory.Exists(directory))
+        //    {
+        //        Directory.CreateDirectory(directory);
+        //    }
+
+        //    using (FileStream originalFileStream = new FileStream(originalFilePath, FileMode.Open))
+        //    {
+        //        using (FileStream newFileStream = new FileStream(newFilePath, FileMode.Create))
+        //        {
+        //            originalFileStream.CopyTo(newFileStream);
+        //        }
+        //    }
+
+        //    _unitOfWork.doctorRepo.UpdateDoctorImage(doctorId, fileName, newStoredFileName, contentType);
+        //    _unitOfWork.SaveChanges();
+        //}
+        //#endregion
     }
 }
     

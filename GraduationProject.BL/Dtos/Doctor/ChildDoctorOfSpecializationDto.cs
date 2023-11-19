@@ -12,7 +12,12 @@ namespace GraduationProject.BL
         public string Name { get; set; } = string.Empty;
         public string? Title { get; set; }
         public string? Description { get; set; }
-
+        #region Image
+        public string? ImageFileName { get; set; }
+        public string? ImageStoredFileName { get; set; }
+        public string? ImageContentType { get; set; }
+        public string? ImageUrl { get; set; }
+        #endregion
         public List<WeekScheduleForDoctorsDto>? WeekSchadual { get; set; }
     }
 }

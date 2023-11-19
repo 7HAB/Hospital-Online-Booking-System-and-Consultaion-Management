@@ -32,5 +32,55 @@ namespace graduationProject.DAL
         {
             return _context.Set<Specialization>().Include(s => s.Doctors).ToList();
         }
+        public void UploadDoctorImage(List<Doctor> doctors)
+        {
+            foreach (var doctor in doctors)
+            {
+                var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
+                if (existingDoctor != null)
+                {
+                    //DeleteImage(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingDoctor.StoredFileName));
+                    DeleteImage(existingDoctor.StoredFileName);
+
+                    existingDoctor.FileName = doctor.FileName;
+                    existingDoctor.StoredFileName = doctor.StoredFileName;
+                    existingDoctor.ContentType = doctor.ContentType;
+                }
+            }
+
+            _context.SaveChanges();
+        }
+
+
+        public void DeleteImage(string storedFileName)
+        {
+            if (storedFileName == null)
+            {
+                return;
+            }
+
+            var imagePath = Path.Combine("UploadImages", storedFileName);
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath);
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+        }
+
+
+        //    public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
+        //{
+        //    var existingDoctor = _context.Set<Doctor>().Find(doctorId);
+        //    if (existingDoctor != null)
+        //    {
+        //        existingDoctor.FileName = fileName;
+        //        existingDoctor.StoredFileName = storedFileName;
+        //        existingDoctor.ContentType = contentType;
+        //    }
+
+        //    _context.SaveChanges();
+        //}
+
     }
 }

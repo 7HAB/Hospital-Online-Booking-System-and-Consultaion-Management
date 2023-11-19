@@ -2,6 +2,7 @@
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -12,19 +13,25 @@ using System.Text;
 namespace graduation_project.Controllers.Doctors
 {
     [ApiController]
+
     [Route("api/[controller]")]
     public class DoctorController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IDoctorManager _doctorManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
 
         public DoctorController(IConfiguration configuration,
-            UserManager<IdentityUser> userManager, IDoctorManager doctorManager)
+            UserManager<IdentityUser> userManager, IDoctorManager doctorManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _userManager = userManager;
             _doctorManager = doctorManager;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         #region GetAllSpcializations
@@ -41,26 +48,56 @@ namespace graduation_project.Controllers.Doctors
         [HttpGet]
         public ActionResult<List<GetAllDoctorsDto>?> GetAllDoctors()
         {
-
             List<GetAllDoctorsDto>? getAllDoctorsDto = _doctorManager.GetAllDoctors();
 
             if (getAllDoctorsDto == null) { return NotFound(); }
 
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            baseUrl = baseUrl.TrimEnd('/');
+
+            foreach (var doctor in getAllDoctorsDto)
+            {
+                doctor.ImageUrl = $"{baseUrl}/{doctor.ImageStoredFileName}";
+                doctor.ImageUrl = doctor.ImageUrl.Replace("wwwroot/", string.Empty);
+
+            }
+
             return getAllDoctorsDto;
         }
+
         #endregion
         #region GetDoctorById
         [HttpGet]
         [Route("doctors/{DoctorId}")]
         public ActionResult<GetDoctorByIDDto> GetDoctorById(string DoctorId)
         {
-            GetDoctorByIDDto? GetDOctorById = _doctorManager.GetDoctorBYId(DoctorId);
-            if (GetDOctorById == null)
+            GetDoctorByIDDto? GetDoctorById = _doctorManager.GetDoctorBYId(DoctorId);
+            if (GetDoctorById == null)
                 return NotFound("Doctor not found");
-            return GetDOctorById;
+
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            baseUrl = baseUrl.TrimEnd('/');
+
+            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+
+
+
+            GetDoctorById.ImageUrl = imageUrl;
+
+            return GetDoctorById;
         }
+
+
+
+
+
         #endregion
-        #region GetDoctorBySpecification
+
+        #region GetDoctorBySpecialization
         [HttpGet]
         [Route("doctors/specialization/{id}")]
         public ActionResult<List<GetDoctorsBySpecializationDto>> GetBySpecialization(int id)
@@ -68,7 +105,16 @@ namespace graduation_project.Controllers.Doctors
             List<GetDoctorsBySpecializationDto> DoctorWithSpecialization = _doctorManager.GetDoctorsBySpecialization(id);
             if (DoctorWithSpecialization is null)
                 return NotFound("Doctors with specialization not found");
-
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            baseUrl = baseUrl.TrimEnd('/');
+            foreach (var doctor in DoctorWithSpecialization)
+            {
+                foreach (var d in doctor.ChildDoctorOfSpecializations)
+                {
+                    d.ImageUrl = $"{baseUrl}/{d.ImageStoredFileName}";
+                    d.ImageUrl =d.ImageUrl.Replace("wwwroot/", string.Empty);
+                }
+            }
             return DoctorWithSpecialization;
         }
         #endregion
@@ -334,6 +380,7 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region UpdatePatientVisit
         [HttpPut]
+        [Authorize(Policy = "DoctorPolicy")]
         [Route("PatientVisit")]
         public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
         {
@@ -345,6 +392,83 @@ namespace graduation_project.Controllers.Doctors
             return StatusCode(StatusCodes.Status202Accepted);
         }
         #endregion
+        #region UploadImages
+
+
+        [HttpPost]
+        [Authorize(Policy = "DoctorPolicy")]
+        [Route("doctors/uploadimage/{doctorId}")]
+        public async Task<IActionResult> UploadImage(string doctorId, List<IFormFile> imageFiles)
+        {
+            try
+            {
+                List<Doctor> uploadedDoctors = await _doctorManager.UploadDoctorImage(doctorId, imageFiles);
+
+                if (uploadedDoctors.Count > 0)
+                {
+                    return Ok(uploadedDoctors);
+                }
+                else
+                {
+                    return BadRequest("No files provided or an error occurred during upload.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+
+
+
+        }
+
+        //#region UpdateImage
+        //[HttpPut]
+        //[Route("doctors/updateimage/{doctorId}")]
+        //public IActionResult UpdateImage(string doctorId, IFormFile imageFile)
+        //{
+        //    try
+        //    {
+        //        if (string.IsNullOrEmpty(doctorId) || imageFile == null)
+        //        {
+        //            return BadRequest("Invalid input");
+        //        }
+
+        //        _doctorManager.UpdateDoctorImage(doctorId, imageFile.FileName, imageFile.FileName, imageFile.ContentType);
+
+        //        return Ok("Doctor's image updated successfully");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(500, "Internal server error");
+        //    }
+        //}
+
+
+
+
+        //#endregion
+
+        //[HttpGet]
+        //[Route("images/{fileName}")]
+        //public IActionResult GetImage(string fileName)
+        //{
+        //    var imagePath = Path.Combine("UploadImages", fileName);
+        //    var fullPath = Path.Combine(Directory.GetCurrentDirectory(), imagePath);
+
+        //    if (!System.IO.File.Exists(fullPath))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var fileBytes = System.IO.File.ReadAllBytes(fullPath);
+        //    return File(fileBytes, "image/jpeg"); 
+        //}
+
+
+
+        #endregion
+
     }
 
 }
