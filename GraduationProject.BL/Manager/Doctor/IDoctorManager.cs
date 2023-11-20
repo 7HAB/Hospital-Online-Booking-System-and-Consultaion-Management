@@ -27,7 +27,7 @@ namespace GraduationProject.BL
         //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
 
-        public void AddVisitCountRecords(DateTime Date);
+        public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate);
 
 
 
