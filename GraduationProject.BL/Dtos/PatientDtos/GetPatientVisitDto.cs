@@ -9,6 +9,8 @@ namespace GraduationProject.BL.Dtos
     public class GetPatientVisitDto
     {
         public string? Name { get; set; }
+        
+
         public List<GetPatientVisitsChildDTO>? PatientVisits { get; set; } = new();
     }
 }
