@@ -66,7 +66,7 @@ namespace graduation_project.Controllers.Admins
             var token = new JwtSecurityToken(
                 claims: claimsList,
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(10));
+                expires: DateTime.Now.AddMinutes(720));
             var tokenHandler = new JwtSecurityTokenHandler();
 
             return new TokenDto

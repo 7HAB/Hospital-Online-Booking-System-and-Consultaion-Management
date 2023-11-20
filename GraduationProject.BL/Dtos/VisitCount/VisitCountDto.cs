@@ -14,6 +14,6 @@ namespace GraduationProject.BL
         public int ActualNoOfPatients { get; set; }
         public string? DoctorId { get; set; }
         public DayOfWeek Day {  get; set; }
-        public int WeekScheduleId { get; set; }
+        public int? WeekScheduleId { get; set; }
     }
 }

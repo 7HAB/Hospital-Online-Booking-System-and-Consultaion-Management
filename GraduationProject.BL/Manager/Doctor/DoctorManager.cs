@@ -163,31 +163,35 @@ namespace GraduationProject.BL
             return patientsWithDateDtosList;
         }
         #region Add Visit Count Records
-        public void AddVisitCountRecords(DateTime Date)
+        public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate)
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
-            int i = 0;
-            DateTime current = Date;
+            
+            DateTime start = StartDate;
+            DateTime end = EndDate;
+            int count = end.Day- start.Day;
             DateTime now =DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
-                    for (int j = 0; j < 7; j++)
+                    for (int j = 0; j <= count; j++)
                     {
-                        DayOfWeek Day = current.AddDays(j).DayOfWeek;
-                         VisitCount v = _unitOfWork.visitCountRepo.GetCount(current.AddDays(j), doctor.Id);
-                      if (v == null && Date>=now)
-                {
+                  
+
+                    DayOfWeek Day = start.AddDays(j).DayOfWeek;
+                         VisitCount v = _unitOfWork.visitCountRepo.GetCount(start.AddDays(j), doctor.Id);
+                      if (v == null && StartDate>=now)
+                         {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
 
-                        if (current.Year == Date.Year)
+                        if (start.Year == StartDate.Year)
                         {
                             if (weekSchedule != null)
                             {
                                 VisitCount visitCount = new VisitCount
                                 {
                                     DoctorId = doctor.Id,
-                                    Date = current.AddDays(j),
+                                    Date = start.AddDays(j),
                                     LimitOfPatients = weekSchedule.LimitOfPatients,
                                     WeekScheduleId = weekSchedule.Id,
                                     ActualNoOfPatients = 0,
@@ -198,7 +202,6 @@ namespace GraduationProject.BL
 
                                 _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
                                 _unitOfWork.SaveChanges();
-                                i++;
 
                             }
                         }
