@@ -212,6 +212,8 @@ namespace GraduationProject.BL
 
         }
         #endregion
+
+        
         #region get visit count
         public VisitCountDto GetVisitCount(DateTime date, string doctorId)
         {

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using graduationProject.DAL.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,7 +51,7 @@ namespace graduationProject.DAL
 
             _context.SaveChanges();
         }
-
+       
 
         public void DeleteImage(string storedFileName)
         {

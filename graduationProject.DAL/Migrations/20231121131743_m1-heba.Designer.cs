@@ -12,7 +12,7 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231119142539_m1-heba")]
+    [Migration("20231121131743_m1-heba")]
     partial class m1heba
     {
         /// <inheritdoc />

@@ -126,6 +126,14 @@ namespace graduation_project.Controllers.Admins
         }
         #endregion
 
-
+        #region add week schedule
+        [HttpPost]
+        [Route("/addWeekSchedule")]
+        public ActionResult AddWeekSchedule (AddWeekScheduleDto addWeekScheduleDto)
+        {
+            _adminManager.AddWeekSchedule(addWeekScheduleDto);
+            return Ok();
+        }
+        #endregion
     }
 }

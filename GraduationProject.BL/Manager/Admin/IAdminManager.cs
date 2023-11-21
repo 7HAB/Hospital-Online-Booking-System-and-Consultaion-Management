@@ -10,5 +10,7 @@ namespace GraduationProject.BL
     public interface IAdminManager
     {
         public Doctor UpdateDoctorById(UpdateDoctorStatusDto updateDoctor, string Id);
+        public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule);
+
     }
 }

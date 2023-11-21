@@ -23,6 +23,8 @@ namespace graduationProject.DAL.Data.Models
         [Required]
         //public DateTime ScheduleDate { get; set; }
         public Doctor? Doctor { get; set; }
+
+        public string? DoctorId { get; set; }
         public ICollection<VisitCount>? VisitCount { get; set; } = new HashSet<VisitCount>();
     }
 }

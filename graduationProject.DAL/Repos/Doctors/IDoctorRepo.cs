@@ -1,4 +1,5 @@
-﻿using System;
+﻿using graduationProject.DAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace graduationProject.DAL
         public List<Doctor> GetAll();
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId);
         public List<Specialization> GetAllSpecializations();
+
         void UploadDoctorImage(List<Doctor> doctors);
         //void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 

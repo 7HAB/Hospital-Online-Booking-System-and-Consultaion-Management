@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -40,6 +41,20 @@ namespace GraduationProject.BL
         }
         #endregion
 
-
+        #region Add Week Schedule
+        public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule)
+        {
+            WeekSchedule weekSchedule = new WeekSchedule
+            {
+                DayOfWeek = addWeekSchedule.DayOfWeek,
+                LimitOfPatients = addWeekSchedule.LimitOfPatients,
+                StartTime = addWeekSchedule.StartTime,
+                EndTime = addWeekSchedule.EndTime,
+                DoctorId = addWeekSchedule.DoctorId,
+                IsAvailable = addWeekSchedule.IsAvailable,
+            };
+            _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
+        }
+        #endregion
     }
 }
