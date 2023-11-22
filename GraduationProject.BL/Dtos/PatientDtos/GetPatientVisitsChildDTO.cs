@@ -8,6 +8,9 @@ namespace GraduationProject.BL.Dtos
 {
     public class GetPatientVisitsChildDTO
     {
+        public int Id { get; set; }
+        public string? Review { get; set; }
+        public int? Rate { get; set; } 
         public string? DoctorId { get; set; }
         public DateTime DateOfVisit { get; set; }
         public string? Comments { get; set; }
