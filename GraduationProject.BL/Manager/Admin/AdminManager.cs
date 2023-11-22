@@ -15,7 +15,36 @@ namespace GraduationProject.BL
         {
             _unitOfWork = unitOfWork;
         }
-
+        #region Adding Specialization
+        public void AddSpecialization(AddSpecializationDto? specialization)
+        {
+            Specialization dbSpecialization = new Specialization
+            {
+                Name = specialization.Name,
+            };
+            _unitOfWork.adminRepo.AddSpecialization(dbSpecialization);
+            _unitOfWork.SaveChanges();
+        }
+        #endregion
+        #region ChangeStatus
+        public Doctor ChangeDoctorStatus(string doctorId)
+        {
+            Doctor? doctor = _unitOfWork.adminRepo.ChangeDoctorStatus(doctorId);
+            if (doctor != null)
+            {
+                if(doctor.Status == "Active")
+                {
+                    doctor.Status = "Not Active";
+                }
+                else
+                {
+                    doctor.Status = "Active";
+                }
+                _unitOfWork.SaveChanges();
+            }
+            return doctor;   
+        }
+        #endregion
         #region Update Doctor by Id
 
         public Doctor UpdateDoctorById(UpdateDoctorStatusDto updateDoctor , string Id)
