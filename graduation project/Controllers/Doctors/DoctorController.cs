@@ -90,18 +90,13 @@ namespace graduation_project.Controllers.Doctors
 
             return GetDoctorById;
         }
-
-
-
-
-
         #endregion
 
 
         #region GetDoctorByPhone
         [HttpGet]
         [Route("doctor/{phoneNumber}")]
-        public ActionResult<GetDoctorByPhoneDto> GetPatientByPhone(string phoneNumber)
+        public ActionResult<GetDoctorByPhoneDto> GetAdminByPhone(string phoneNumber)
         {
             GetDoctorByPhoneDto? doctor = _doctorManager.getDoctorByPhoneDTO(phoneNumber);
             if (doctor == null) { return NotFound(); }
