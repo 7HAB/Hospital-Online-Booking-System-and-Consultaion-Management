@@ -353,6 +353,7 @@ namespace GraduationProject.BL
                  return new GetDoctorByPhoneDto
                  {
                      ID = doctor.Id,
+                     DateOfBirth = doctor.DateOfBirth,
                      Name = doctor.Name,
                      PhoneNumber = phoneNumber,
                      Title = doctor.Title,

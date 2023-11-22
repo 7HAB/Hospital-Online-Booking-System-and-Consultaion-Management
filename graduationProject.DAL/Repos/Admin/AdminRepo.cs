@@ -14,16 +14,11 @@ namespace graduationProject.DAL
         {
               _context = context;
         }
-        public Doctor? UpdateDoctorById(string doctorId)
+        public void UpdateDoctorById(Doctor doctor)
         {
-            Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);
-
-            if (doctorToUpdate != null)
-            {
-                 _context.Set<Doctor>().Update(doctorToUpdate);
+              _context.Set<Doctor>().Update(doctor);
                 
-            }
-            return doctorToUpdate;
+            
         }
         
         #region add week schedule

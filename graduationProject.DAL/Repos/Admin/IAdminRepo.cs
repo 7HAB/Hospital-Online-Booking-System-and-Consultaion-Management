@@ -9,7 +9,7 @@ namespace graduationProject.DAL
 {
     public interface IAdminRepo
     {
-        public Doctor? UpdateDoctorById(string doctorId);
+        public void UpdateDoctorById(Doctor doctor);
         public void AddWeekSchedule(WeekSchedule schedule);
 
     }

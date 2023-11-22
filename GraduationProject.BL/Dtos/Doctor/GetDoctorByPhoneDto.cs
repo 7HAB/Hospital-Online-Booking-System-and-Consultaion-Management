@@ -13,6 +13,8 @@ namespace GraduationProject.BL.Dtos.Doctor
         public string? Title { get; set; }
         public string? Description { get; set; }
         public string? PhoneNumber { get; set; }
+        public decimal Salary { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string SpecializationName { get; set; } = "";
         public List<WeekScheduleForDoctorsDto>? WeekSchadual { get; set; }
         public string? ImageFileName { get; set; }
