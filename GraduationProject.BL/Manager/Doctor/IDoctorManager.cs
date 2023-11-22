@@ -26,6 +26,7 @@ namespace GraduationProject.BL
 
         //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
+        public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber);
 
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate);
 

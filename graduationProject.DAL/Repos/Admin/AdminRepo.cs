@@ -25,6 +25,7 @@ namespace graduationProject.DAL
             }
             return doctorToUpdate;
         }
+        
         #region add week schedule
         public void AddWeekSchedule(WeekSchedule schedule)
         {

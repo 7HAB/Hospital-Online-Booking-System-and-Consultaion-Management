@@ -69,7 +69,6 @@ namespace GraduationProject.BL
             if (dbDoctor is null)
                 return null!;
 
-
             return new GetDoctorByIDDto
             {
                 ID = dbDoctor.Id,
@@ -342,6 +341,40 @@ namespace GraduationProject.BL
             return doctors;
         }
 
+        #endregion
+
+        #region GetDoctroByPhone
+        public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
+        {
+            Doctor? doctor = _unitOfWork.doctorRepo.GetDoctorByPhoneNumber(phoneNumber);
+
+            if (doctor == null) { return null; }
+              
+                 return new GetDoctorByPhoneDto
+                 {
+                     ID = doctor.Id,
+                     Name = doctor.Name,
+                     PhoneNumber = phoneNumber,
+                     Title = doctor.Title,
+                     Description = doctor.Description,
+                     SpecializationName = doctor.specialization.Name,
+                     WeekSchadual = doctor.weeks
+                     
+                .Select(d => new WeekScheduleForDoctorsDto
+                {
+                    Id = d.Id,
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList(),
+                     ImageFileName = doctor.FileName,
+                     ImageStoredFileName = doctor.StoredFileName,
+                     ImageContentType = doctor.ContentType,
+                 };
+
+       
+        }
         #endregion
 
         //#region UpdateImge

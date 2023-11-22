@@ -15,6 +15,8 @@ namespace graduationProject.DAL
         public List<Specialization> GetAllSpecializations();
 
         void UploadDoctorImage(List<Doctor> doctors);
+        public Doctor? GetDoctorByPhoneNumber(string phoneNumber);
+
         //void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
 

@@ -97,6 +97,20 @@ namespace graduation_project.Controllers.Doctors
 
         #endregion
 
+
+        #region GetDoctorByPhone
+        [HttpGet]
+        [Route("doctor/{phoneNumber}")]
+        public ActionResult<GetDoctorByPhoneDto> GetPatientByPhone(string phoneNumber)
+        {
+            GetDoctorByPhoneDto? doctor = _doctorManager.getDoctorByPhoneDTO(phoneNumber);
+            if (doctor == null) { return NotFound(); }
+            return Ok(doctor);
+        }
+
+
+        #endregion
+
         #region GetDoctorBySpecialization
         [HttpGet]
         [Route("doctors/specialization/{id}")]
@@ -176,7 +190,6 @@ namespace graduation_project.Controllers.Doctors
         {
             var user = new Doctor
             {
-
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,

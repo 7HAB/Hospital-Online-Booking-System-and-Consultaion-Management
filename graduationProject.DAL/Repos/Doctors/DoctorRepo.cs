@@ -51,8 +51,14 @@ namespace graduationProject.DAL
 
             _context.SaveChanges();
         }
-       
 
+        #region GetDoctorByPhone
+        public Doctor? GetDoctorByPhoneNumber(string phoneNumber)
+        {
+            return _context.Set<Doctor>().Include(d => d.specialization).Include(d => d.weeks).FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+        }
+
+        #endregion
         public void DeleteImage(string storedFileName)
         {
             if (storedFileName == null)
