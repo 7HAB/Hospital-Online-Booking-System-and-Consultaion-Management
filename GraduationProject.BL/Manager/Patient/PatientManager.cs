@@ -84,6 +84,9 @@ namespace GraduationProject.BL
                 PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsChildDTO
                 {
                  
+                    Id = p.Id,
+                    Rate = p.Rate,
+                    Review = p.Review,
                     DoctorId = p.DoctorId,
                     DateOfVisit = p.DateOfVisit,
                     Comments = p.Comments,

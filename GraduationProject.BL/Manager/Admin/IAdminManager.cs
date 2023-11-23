@@ -13,5 +13,11 @@ namespace GraduationProject.BL
         public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule);
         public GetDoctorByIDForAdminDto GetDoctorByIdForAdmin(string id);
 
+        public Doctor ChangeDoctorStatus(string doctorId);
+
+        public void AddSpecialization(AddSpecializationDto? specialization);
+
+        public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
+        public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
     }
 }
