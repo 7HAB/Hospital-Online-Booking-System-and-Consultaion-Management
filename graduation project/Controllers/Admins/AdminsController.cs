@@ -30,7 +30,24 @@ namespace graduation_project.Controllers.Admins
             _userManager = userManager;
             _adminManager = adminManager;
         }
-
+        #region Get Admin By Phone Number
+        [HttpGet]
+        [Route("Admin/{phoneNumber}")]
+        public ActionResult<GetAdminByPhoneNumberDto> GetAdminByPhoneNumber(string phoneNumber)
+        {
+            GetAdminByPhoneNumberDto? Admin = _adminManager.GetAdminByPhoneNumber(phoneNumber);
+            if(Admin == null) { return NotFound(); }
+            return Admin;
+        }
+        #endregion
+        #region get All specializations and doctors for admin
+        [HttpGet]
+        [Route("Specializations")]
+        public ActionResult<List<GetAllSpecializationForAdminDto>> GetAllSpecializationForAdmins()
+        {
+            return _adminManager.GetAllSpecializations();
+        }
+        #endregion
         #region admin login
         [HttpPost]
         [Route("Admins/login")]
@@ -141,6 +158,32 @@ namespace graduation_project.Controllers.Admins
             //baseUrl = baseUrl.TrimEnd('/');
 
             //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+        #region ChangeStatus
+        [HttpPut("admins/changedoctorstatus/{doctorId}")]
+        public IActionResult ChangeStatus(string doctorId)
+        {
+            Doctor? doctor = _adminManager.ChangeDoctorStatus(doctorId);
+
+            if (doctor == null)
+            {
+                return NotFound("Doctor not found");
+            }
+
+            return NoContent(); 
+        }
+
+        #endregion
+        #region AddSpecialization
+        [HttpPost]
+        [Route("Admins/AddSpecialization")]
+        public IActionResult AddSpecialization(AddSpecializationDto addSpecializationDto)
+        {
+            _adminManager.AddSpecialization(addSpecializationDto);
+            return StatusCode(StatusCodes.Status201Created);
+
+        }
+
+        #endregion
 
             //// Remove the wwwroot part from the URL
             //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
