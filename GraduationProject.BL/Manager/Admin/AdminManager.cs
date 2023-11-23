@@ -45,7 +45,38 @@ namespace GraduationProject.BL
             return doctor;
         }
         #endregion
+        #region Get Doctor By ID For Admin
+        public GetDoctorByIDForAdminDto GetDoctorByIdForAdmin(string id)
+        {
+            Doctor? doctor = _unitOfWork.doctorRepo.GetById(id);
+            if (doctor is null)
+                return null!;
 
+            return new GetDoctorByIDForAdminDto
+            {
+                ID = doctor.Id,
+                DateOfBirth = doctor.DateOfBirth,
+                Name = doctor.Name,
+                PhoneNumber = doctor.PhoneNumber,
+                Title = doctor.Title,
+                Salary = doctor.Salary,
+                Description = doctor.Description,
+                SpecializationName = doctor.specialization.Name,
+                WeekSchadual = doctor.weeks
+                .Select(d => new WeekScheduleForDoctorsDto
+                {
+                    Id = d.Id,
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList(),
+                ImageFileName = doctor.FileName,
+                ImageStoredFileName = doctor.StoredFileName,
+                ImageContentType = doctor.ContentType,
+            };
+        }
+        #endregion
         #region Add Week Schedule
         public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule)
         {

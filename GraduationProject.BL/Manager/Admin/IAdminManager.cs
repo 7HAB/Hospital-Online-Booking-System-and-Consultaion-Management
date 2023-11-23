@@ -11,6 +11,7 @@ namespace GraduationProject.BL
     {
         public Doctor UpdateDoctorById(UpdateDoctorStatusDto updateDoctor, string id);
         public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule);
+        public GetDoctorByIDForAdminDto GetDoctorByIdForAdmin(string id);
 
     }
 }

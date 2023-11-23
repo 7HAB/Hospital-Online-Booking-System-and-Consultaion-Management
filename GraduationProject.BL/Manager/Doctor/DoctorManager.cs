@@ -91,6 +91,7 @@ namespace GraduationProject.BL
             };
         }
 
+        
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
@@ -357,6 +358,7 @@ namespace GraduationProject.BL
                      Name = doctor.Name,
                      PhoneNumber = phoneNumber,
                      Title = doctor.Title,
+                     Salary = doctor.Salary,
                      Description = doctor.Description,
                      SpecializationName = doctor.specialization.Name,
                      WeekSchadual = doctor.weeks
