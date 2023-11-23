@@ -14,5 +14,7 @@ namespace GraduationProject.BL
 
         public void AddSpecialization(AddSpecializationDto? specialization);
 
+        public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
+        public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
     }
 }

@@ -6,7 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
+<<<<<<<< HEAD:graduationProject.DAL/Migrations/20231119155928_m1-mayar.cs
+    public partial class m1mayar : Migration
+========
     public partial class Zeyad1 : Migration
+>>>>>>>> master:graduationProject.DAL/Migrations/20231119192854_Zeyad-1.cs
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
