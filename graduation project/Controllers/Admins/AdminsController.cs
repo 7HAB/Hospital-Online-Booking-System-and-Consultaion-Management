@@ -20,6 +20,8 @@ namespace graduation_project.Controllers.Admins
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAdminManager _adminManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AdminsController(IConfiguration configuration,
             UserManager<IdentityUser> userManager, IAdminManager adminManager)
@@ -142,6 +144,20 @@ namespace graduation_project.Controllers.Admins
             return Content("Updated");
         }
         #endregion
+        #region GetDoctorById For Admin
+        [HttpGet]
+        [Route("admin/{DoctorId}")]
+        public ActionResult<GetDoctorByIDForAdminDto> GetDoctorById(string DoctorId)
+        {
+            GetDoctorByIDForAdminDto? GetDoctorById = _adminManager.GetDoctorByIdForAdmin(DoctorId);
+            if (GetDoctorById == null)
+                return NotFound("Doctor not found");
+
+            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            //baseUrl = baseUrl.TrimEnd('/');
+
+            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
         #region ChangeStatus
         [HttpPut("admins/changedoctorstatus/{doctorId}")]
         public IActionResult ChangeStatus(string doctorId)
@@ -169,6 +185,25 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
+            //// Remove the wwwroot part from the URL
+            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
 
+
+
+            //GetDoctorById.ImageUrl = imageUrl;
+
+            return GetDoctorById;
+        }
+        #endregion
+
+        #region add week schedule
+        [HttpPost]
+        [Route("/addWeekSchedule")]
+        public ActionResult AddWeekSchedule (AddWeekScheduleDto addWeekScheduleDto)
+        {
+            _adminManager.AddWeekSchedule(addWeekScheduleDto);
+            return Ok();
+        }
+        #endregion
     }
 }

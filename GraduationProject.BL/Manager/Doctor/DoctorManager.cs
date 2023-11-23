@@ -69,7 +69,6 @@ namespace GraduationProject.BL
             if (dbDoctor is null)
                 return null!;
 
-
             return new GetDoctorByIDDto
             {
                 ID = dbDoctor.Id,
@@ -92,6 +91,7 @@ namespace GraduationProject.BL
             };
         }
 
+        
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
@@ -212,6 +212,8 @@ namespace GraduationProject.BL
 
         }
         #endregion
+
+        
         #region get visit count
         public VisitCountDto GetVisitCount(DateTime date, string doctorId)
         {
@@ -340,6 +342,42 @@ namespace GraduationProject.BL
             return doctors;
         }
 
+        #endregion
+
+        #region GetDoctroByPhone
+        public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
+        {
+            Doctor? doctor = _unitOfWork.doctorRepo.GetDoctorByPhoneNumber(phoneNumber);
+
+            if (doctor == null) { return null; }
+              
+                 return new GetDoctorByPhoneDto
+                 {
+                     ID = doctor.Id,
+                     DateOfBirth = doctor.DateOfBirth,
+                     Name = doctor.Name,
+                     PhoneNumber = phoneNumber,
+                     Title = doctor.Title,
+                     Salary = doctor.Salary,
+                     Description = doctor.Description,
+                     SpecializationName = doctor.specialization.Name,
+                     WeekSchadual = doctor.weeks
+                     
+                .Select(d => new WeekScheduleForDoctorsDto
+                {
+                    Id = d.Id,
+                    DayOfWeek = d.DayOfWeek,
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable
+                }).ToList(),
+                     ImageFileName = doctor.FileName,
+                     ImageStoredFileName = doctor.StoredFileName,
+                     ImageContentType = doctor.ContentType,
+                 };
+
+       
+        }
         #endregion
 
         //#region UpdateImge
