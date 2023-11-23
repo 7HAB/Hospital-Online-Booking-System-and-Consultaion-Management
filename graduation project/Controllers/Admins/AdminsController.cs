@@ -1,6 +1,7 @@
 ﻿using graduationProject.DAL;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -20,13 +21,18 @@ namespace graduation_project.Controllers.Admins
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAdminManager _adminManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
 
         public AdminsController(IConfiguration configuration,
-            UserManager<IdentityUser> userManager, IAdminManager adminManager)
+            UserManager<IdentityUser> userManager, IAdminManager adminManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _userManager = userManager;
             _adminManager = adminManager;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
         }
         #region Get Admin By Phone Number
         [HttpGet]
@@ -35,6 +41,15 @@ namespace graduation_project.Controllers.Admins
         {
             GetAdminByPhoneNumberDto? Admin = _adminManager.GetAdminByPhoneNumber(phoneNumber);
             if(Admin == null) { return NotFound(); }
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            baseUrl = baseUrl.TrimEnd('/');
+
+            var imageUrl = $"{baseUrl}/{Admin.ImageStoredFileName}";
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+            Admin.ImageUrl = imageUrl;
+
+
             return Admin;
         }
         #endregion
@@ -169,6 +184,33 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
+        #region UploadImages
+
+        [HttpPost]
+        // [Authorize(Policy = "DoctorPolicy")]
+        [Route("admins/uploadimage/{adminId}")]
+        public async Task<IActionResult> UploadImage(string adminId, IFormFile imageFile)
+        {
+            try
+            {
+                Admin uploadedAdmin = await _adminManager.UploadAdminImage(adminId, imageFile);
+
+                if (uploadedAdmin != null)
+                {
+                    return Ok(uploadedAdmin);
+                }
+                else
+                {
+                    return BadRequest("No file provided or an error occurred during upload.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        #endregion
 
     }
 }

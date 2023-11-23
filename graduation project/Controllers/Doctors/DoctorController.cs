@@ -395,32 +395,34 @@ namespace graduation_project.Controllers.Doctors
         #region UploadImages
 
 
+        #region UploadImages
+
         [HttpPost]
-      //  [Authorize(Policy = "DoctorPolicy")]
+       // [Authorize(Policy = "DoctorPolicy")]
         [Route("doctors/uploadimage/{doctorId}")]
-        public async Task<IActionResult> UploadImage(string doctorId, List<IFormFile> imageFiles)
+        public async Task<IActionResult> UploadImage(string doctorId, IFormFile imageFile)
         {
             try
             {
-                List<Doctor> uploadedDoctors = await _doctorManager.UploadDoctorImage(doctorId, imageFiles);
+                Doctor uploadedDoctor = await _doctorManager.UploadDoctorImage(doctorId, imageFile);
 
-                if (uploadedDoctors.Count > 0)
+                if (uploadedDoctor != null)
                 {
-                    return Ok(uploadedDoctors);
+                    return Ok(uploadedDoctor);
                 }
                 else
                 {
-                    return BadRequest("No files provided or an error occurred during upload.");
+                    return BadRequest("No file provided or an error occurred during upload.");
                 }
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "Internal server error");
             }
-
-
-
         }
+
+        #endregion
+
 
         //#region UpdateImage
         //[HttpPut]

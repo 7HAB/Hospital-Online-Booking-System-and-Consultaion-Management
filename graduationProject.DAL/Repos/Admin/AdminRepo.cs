@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -60,7 +61,36 @@ namespace graduationProject.DAL
 
         }
 
+        public void UploadAdminImage(Admin admin)
+        {
+            {
+                var existingAdmin = _context.Set<Admin>().Find(admin.Id);
+                DeleteImage(existingAdmin.StoredFileName);
+
+                existingAdmin.FileName = admin.FileName;
+                existingAdmin.StoredFileName = admin.StoredFileName;
+                existingAdmin.ContentType = admin.ContentType;
 
 
+                _context.SaveChanges();
+            }
+
+        }
+
+        public void DeleteImage(string storedFileName)
+        {
+            if (storedFileName == null)
+            {
+                return;
+            }
+
+            var imagePath = Path.Combine("AdminImages", storedFileName);
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath);
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+        }
     }
 }

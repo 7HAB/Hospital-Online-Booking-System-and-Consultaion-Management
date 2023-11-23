@@ -14,5 +14,7 @@ namespace graduationProject.DAL
         public void AddSpecialization(Specialization? specialization);
         public Admin? GetAdminByPhoneNumber(string PhoneNumber);
         public Specialization GetSpecializationByAdmin(int? id);
+        void UploadAdminImage(Admin admin);
+
     }
 }
