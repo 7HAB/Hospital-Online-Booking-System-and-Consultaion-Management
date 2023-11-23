@@ -136,18 +136,18 @@ namespace graduation_project.Controllers.Admins
             if (GetDoctorById == null)
                 return NotFound("Doctor not found");
 
-            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
 
-            //baseUrl = baseUrl.TrimEnd('/');
+            baseUrl = baseUrl.TrimEnd('/');
 
-            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
 
-            //// Remove the wwwroot part from the URL
-            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
 
 
 
-            //GetDoctorById.ImageUrl = imageUrl;
+            GetDoctorById.ImageUrl = imageUrl;
 
             return GetDoctorById;
         }
