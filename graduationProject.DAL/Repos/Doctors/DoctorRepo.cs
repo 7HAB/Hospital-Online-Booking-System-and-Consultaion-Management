@@ -32,21 +32,15 @@ namespace graduationProject.DAL
         {
             return _context.Set<Specialization>().Include(s => s.Doctors).ToList();
         }
-        public void UploadDoctorImage(List<Doctor> doctors)
+        public void UploadDoctorImage(Doctor doctor)
         {
-            foreach (var doctor in doctors)
-            {
-                var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
-                if (existingDoctor != null)
-                {
-                    //DeleteImage(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingDoctor.StoredFileName));
-                    DeleteImage(existingDoctor.StoredFileName);
+            var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
+            DeleteImage(existingDoctor.StoredFileName);
 
-                    existingDoctor.FileName = doctor.FileName;
-                    existingDoctor.StoredFileName = doctor.StoredFileName;
-                    existingDoctor.ContentType = doctor.ContentType;
-                }
-            }
+            existingDoctor.FileName = doctor.FileName;
+            existingDoctor.StoredFileName = doctor.StoredFileName;
+            existingDoctor.ContentType = doctor.ContentType;
+
 
             _context.SaveChanges();
         }
