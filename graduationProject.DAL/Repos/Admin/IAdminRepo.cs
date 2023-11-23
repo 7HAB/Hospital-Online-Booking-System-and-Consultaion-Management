@@ -9,5 +9,7 @@ namespace graduationProject.DAL
     public interface IAdminRepo
     {
         public Doctor? UpdateDoctorById(string doctorId);
+        public Admin? GetAdminByPhoneNumber(string PhoneNumber);
+        public Specialization GetSpecializationByAdmin(int? id);
     }
 }
