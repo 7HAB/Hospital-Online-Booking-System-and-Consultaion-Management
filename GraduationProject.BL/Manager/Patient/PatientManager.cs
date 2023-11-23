@@ -73,6 +73,7 @@ namespace GraduationProject.BL
         {
             /*                List<PatientVisit>? patientVisit = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber).ToList();
             */               /* if (patientVisit = ) { return ; }*/
+
             Patient? patient = _unitOfWork.patientRepo.GetPatientVisitsByPhoneNumber(phoneNumber);
             if (patient == null) { return null; }
 
@@ -82,6 +83,8 @@ namespace GraduationProject.BL
 
                 PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsChildDTO
                 {
+                 
+                    DoctorId = p.DoctorId,
                     DateOfVisit = p.DateOfVisit,
                     Comments = p.Comments,
                     Symptoms = p.Symptoms,

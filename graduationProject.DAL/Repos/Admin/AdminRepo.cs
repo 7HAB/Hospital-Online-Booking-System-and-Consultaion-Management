@@ -36,5 +36,31 @@ namespace graduationProject.DAL
             }
             return doctorToUpdate;
         }
+
+        public Doctor? ChangeDoctorStatus(string doctorId)
+        {
+            Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);
+            if (doctorToUpdate != null)
+            {
+                _context.Set<Doctor>().Update(doctorToUpdate);
+
+            }
+            return doctorToUpdate;
+
+        }
+
+        public void AddSpecialization(Specialization? specialization) 
+        {
+            if (specialization == null)
+            {
+                throw new ArgumentNullException(nameof(specialization), "Specialization cannot be null.");
+            }
+
+            _context.Set<Specialization>().Add(specialization);
+
+        }
+
+
+
     }
 }

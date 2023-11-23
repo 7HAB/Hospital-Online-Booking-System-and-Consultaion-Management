@@ -4,13 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraduationProject.BL.Dtos
+namespace GraduationProject.BL
 {
-    public class GetPatientVisitDto
+    public class AddSpecializationDto
     {
         public string? Name { get; set; }
-        
-
-        public List<GetPatientVisitsChildDTO>? PatientVisits { get; set; } = new();
     }
 }

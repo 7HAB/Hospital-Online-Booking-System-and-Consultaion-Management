@@ -338,10 +338,10 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region Add Visit Count Records
         [HttpPost]
-        [Route("addVisitCount/{date}")]
-        public ActionResult AddVisitCountRecords(DateTime date)
+        [Route("addVisitCount/{Startdate}/{EndDate}")]
+        public ActionResult AddVisitCountRecords(DateTime Startdate, DateTime EndDate)
         {
-            _doctorManager.AddVisitCountRecords(date);
+            _doctorManager.AddVisitCountRecords(Startdate,EndDate);
             return StatusCode(StatusCodes.Status202Accepted);
 
         }

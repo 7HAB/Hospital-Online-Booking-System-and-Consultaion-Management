@@ -10,6 +10,10 @@ namespace GraduationProject.BL
     public interface IAdminManager
     {
         public Doctor UpdateDoctorById(UpdateDoctorStatusDto updateDoctor, string Id);
+        public Doctor ChangeDoctorStatus(string doctorId);
+
+        public void AddSpecialization(AddSpecializationDto? specialization);
+
         public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
         public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
     }

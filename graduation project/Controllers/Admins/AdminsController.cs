@@ -83,7 +83,7 @@ namespace graduation_project.Controllers.Admins
             var token = new JwtSecurityToken(
                 claims: claimsList,
                 signingCredentials: signingCredentials,
-                expires: DateTime.Now.AddMinutes(10));
+                expires: DateTime.Now.AddMinutes(720));
             var tokenHandler = new JwtSecurityTokenHandler();
 
             return new TokenDto
@@ -141,6 +141,32 @@ namespace graduation_project.Controllers.Admins
             }
             return Content("Updated");
         }
+        #endregion
+        #region ChangeStatus
+        [HttpPut("admins/changedoctorstatus/{doctorId}")]
+        public IActionResult ChangeStatus(string doctorId)
+        {
+            Doctor? doctor = _adminManager.ChangeDoctorStatus(doctorId);
+
+            if (doctor == null)
+            {
+                return NotFound("Doctor not found");
+            }
+
+            return NoContent(); 
+        }
+
+        #endregion
+        #region AddSpecialization
+        [HttpPost]
+        [Route("Admins/AddSpecialization")]
+        public IActionResult AddSpecialization(AddSpecializationDto addSpecializationDto)
+        {
+            _adminManager.AddSpecialization(addSpecializationDto);
+            return StatusCode(StatusCodes.Status201Created);
+
+        }
+
         #endregion
 
 
