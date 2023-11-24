@@ -21,5 +21,7 @@ namespace GraduationProject.BL
         public string? ImageStoredFileName { get; set; }
         public string? ImageContentType { get; set; }
         public string? ImageUrl { get; set; }
+
+       
     }
 }

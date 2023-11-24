@@ -105,13 +105,13 @@ namespace GraduationProject.BL
                 doctor.Salary = updateDoctor.Salary;
                 doctor.Description = updateDoctor.Description;
                 doctor.DateOfBirth = updateDoctor.DateOfBirth;
-                doctor.AssistantID = updateDoctor.AssistantID;
-                doctor.AssistantDateOfBirth = updateDoctor.AssistantDateOfBirth;
-                doctor.AssistantPhoneNumber = updateDoctor.AssistantPhoneNumber;
-                doctor.AssistantName = updateDoctor.AssistantName;
-                doctor.Status = updateDoctor.Status;
+                //doctor.AssistantID = updateDoctor.AssistantID;
+                //doctor.AssistantDateOfBirth = updateDoctor.AssistantDateOfBirth;
+                //doctor.AssistantPhoneNumber = updateDoctor.AssistantPhoneNumber;
+                //doctor.AssistantName = updateDoctor.AssistantName;
+             //   doctor.Status = updateDoctor.Status;
 
-                _unitOfWork.adminRepo.UpdateDoctorById(doctor);
+                _unitOfWork.adminRepo.UpdateDoctorById(doctor.Id);
                 _unitOfWork.SaveChanges();
             }
 

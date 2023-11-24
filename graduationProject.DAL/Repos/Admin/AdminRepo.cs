@@ -28,7 +28,7 @@ namespace graduationProject.DAL
 
         public Doctor? UpdateDoctorById(string doctorId)
         {
-            Doctor? doctorToUpdate = _context.Set<Doctor>().Include(A => A.specialization).FirstOrDefault(d => d.Id == doctorId);
+            Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);
 
             if (doctorToUpdate != null)
             {
@@ -59,7 +59,6 @@ namespace graduationProject.DAL
 
             _context.Set<Specialization>().Add(specialization);
 
-              _context.Set<Doctor>().Update(doctor);
                 
             
         }

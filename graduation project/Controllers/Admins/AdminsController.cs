@@ -139,25 +139,35 @@ namespace graduation_project.Controllers.Admins
             Doctor? doctor = _adminManager.UpdateDoctorById(updateDoctor , doctorId);
             if (doctor == null)
             {
-                return Content("Null Record");
+                return NotFound();
             }
-            return Content("Updated");
+            return Ok();
         }
         #endregion
         #region GetDoctorById For Admin
         [HttpGet]
-        [Route("admin/{DoctorId}")]
+        [Route("admin/getDoctorForAdmin/{DoctorId}")]
         public ActionResult<GetDoctorByIDForAdminDto> GetDoctorById(string DoctorId)
         {
             GetDoctorByIDForAdminDto? GetDoctorById = _adminManager.GetDoctorByIdForAdmin(DoctorId);
             if (GetDoctorById == null)
                 return NotFound("Doctor not found");
 
-            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
 
-            baseUrl = baseUrl.TrimEnd('/');
+            //baseUrl = baseUrl.TrimEnd('/');
 
-            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            //// Remove the wwwroot part from the URL
+            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+
+
+
+            //GetDoctorById.ImageUrl = imageUrl;
+
+            return GetDoctorById;
+        }
+        #endregion
         #region ChangeStatus
         [HttpPut("admins/changedoctorstatus/{doctorId}")]
         public IActionResult ChangeStatus(string doctorId)
@@ -185,16 +195,7 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
-            // Remove the wwwroot part from the URL
-            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
-
-
-
-            GetDoctorById.ImageUrl = imageUrl;
-
-            return GetDoctorById;
-        }
-        #endregion
+       
 
         #region add week schedule
         [HttpPost]
