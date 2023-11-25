@@ -30,6 +30,9 @@ namespace GraduationProject.BL
 
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate);
 
+        public List<GetPatientVisitsChildDTO> GetMutualVisits(string? patientPhone, string? doctorPhone);
+
+
 
 
 
