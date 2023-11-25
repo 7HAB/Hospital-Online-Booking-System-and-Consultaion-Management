@@ -15,5 +15,6 @@ namespace graduationProject.DAL
         public VisitCount GetCount(DateTime date, string DoctorId);
         public void AddVisitCountRecords(VisitCount visitCountRecord);
 
+
     }
 }

@@ -28,5 +28,7 @@ namespace GraduationProject.BL.Dtos
 
         public DateTime AssistantDateOfBirth { get; set; }
         public string Password { get; set; } = string.Empty;
+
+
     }
 }

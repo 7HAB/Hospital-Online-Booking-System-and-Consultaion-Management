@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using graduationProject.DAL.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace graduationProject.DAL
 
         public Doctor? UpdateDoctorById(string doctorId)
         {
-            Doctor? doctorToUpdate = _context.Set<Doctor>().Include(A => A.specialization).FirstOrDefault(d => d.Id == doctorId);
+            Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);
 
             if (doctorToUpdate != null)
             {
@@ -58,9 +59,18 @@ namespace graduationProject.DAL
 
             _context.Set<Specialization>().Add(specialization);
 
+                
+            
         }
+        
+        #region add week schedule
+        public void AddWeekSchedule(WeekSchedule schedule)
+        {
 
-
-
+            _context.Set<WeekSchedule>().Add(schedule);
+            _context.SaveChanges();
+        }
+        #endregion
     }
+
 }

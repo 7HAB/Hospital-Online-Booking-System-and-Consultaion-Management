@@ -20,6 +20,8 @@ namespace graduation_project.Controllers.Admins
         private readonly IConfiguration _configuration;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IAdminManager _adminManager;
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AdminsController(IConfiguration configuration,
             UserManager<IdentityUser> userManager, IAdminManager adminManager)
@@ -145,9 +147,33 @@ namespace graduation_project.Controllers.Admins
             Doctor? doctor = _adminManager.UpdateDoctorById(updateDoctor , doctorId);
             if (doctor == null)
             {
-                return Content("Null Record");
+                return NotFound();
             }
-            return Content("Updated");
+            return Ok();
+        }
+        #endregion
+        #region GetDoctorById For Admin
+        [HttpGet]
+        [Route("admin/getDoctorForAdmin/{DoctorId}")]
+        public ActionResult<GetDoctorByIDForAdminDto> GetDoctorById(string DoctorId)
+        {
+            GetDoctorByIDForAdminDto? GetDoctorById = _adminManager.GetDoctorByIdForAdmin(DoctorId);
+            if (GetDoctorById == null)
+                return NotFound("Doctor not found");
+
+            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            //baseUrl = baseUrl.TrimEnd('/');
+
+            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            //// Remove the wwwroot part from the URL
+            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+
+
+
+            //GetDoctorById.ImageUrl = imageUrl;
+
+            return GetDoctorById;
         }
         #endregion
         #region ChangeStatus
@@ -177,6 +203,16 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
+       
 
+        #region add week schedule
+        [HttpPost]
+        [Route("/addWeekSchedule")]
+        public ActionResult AddWeekSchedule (AddWeekScheduleDto addWeekScheduleDto)
+        {
+            _adminManager.AddWeekSchedule(addWeekScheduleDto);
+            return Ok();
+        }
+        #endregion
     }
 }

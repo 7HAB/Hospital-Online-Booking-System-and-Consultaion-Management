@@ -1,4 +1,5 @@
-﻿using System;
+﻿using graduationProject.DAL.Data.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,7 @@ namespace graduationProject.DAL
         public void AddSpecialization(Specialization? specialization);
         public Admin? GetAdminByPhoneNumber(string PhoneNumber);
         public Specialization GetSpecializationByAdmin(int? id);
+        public void AddWeekSchedule(WeekSchedule schedule);
+
     }
 }

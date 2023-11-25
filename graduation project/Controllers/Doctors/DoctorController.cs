@@ -90,9 +90,18 @@ namespace graduation_project.Controllers.Doctors
 
             return GetDoctorById;
         }
+        #endregion
 
 
-
+        #region GetDoctorByPhone
+        [HttpGet]
+        [Route("doctor/{phoneNumber}")]
+        public ActionResult<GetDoctorByPhoneDto> GetAdminByPhone(string phoneNumber)
+        {
+            GetDoctorByPhoneDto? doctor = _doctorManager.getDoctorByPhoneDTO(phoneNumber);
+            if (doctor == null) { return NotFound(); }
+            return Ok(doctor);
+        }
 
 
         #endregion
@@ -184,7 +193,6 @@ namespace graduation_project.Controllers.Doctors
         {
             var user = new Doctor
             {
-
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
@@ -407,7 +415,25 @@ namespace graduation_project.Controllers.Doctors
             return StatusCode(StatusCodes.Status202Accepted);
         }
         #endregion
+        #region getmutualvisits
+        [HttpGet]
+        [Route("mutualvisits")]
+        public IActionResult GetMutualVisits(string patientPhone, string doctorPhone)
+        {
+            List<GetPatientVisitsChildDTO> mutualVisits = _doctorManager.GetMutualVisits(patientPhone, doctorPhone);
 
+            if (mutualVisits.Count == 0)
+            {
+                return NoContent(); 
+            }
+
+            return Ok(mutualVisits);
+        }
+
+
+
+
+        #endregion
         #region UploadImages
 
 
