@@ -33,6 +33,16 @@ namespace GraduationProject.BL
                     Id = d.Id,
                     Name = d.Name,
                     Status = d.Status,
+                    WeekSchadual = d.weeks
+                     .Select(d => new WeekScheduleForDoctorsDto
+                      {
+                          Id = d.Id,
+                          DayOfWeek = d.DayOfWeek,
+                          LimitOfPatients = d.LimitOfPatients,
+                          StartTime = d.StartTime.ToShortTimeString(),
+                          EndTime = d.EndTime.ToShortTimeString(),
+                          IsAvailable = d.IsAvailable
+                      }).ToList()
                 }).ToList()
             }).ToList();
         }

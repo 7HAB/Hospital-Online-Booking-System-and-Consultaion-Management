@@ -31,7 +31,7 @@ namespace graduationProject.DAL
         }
         public List<Specialization> GetAllSpecializations()
         {
-            return _context.Set<Specialization>().Include(s => s.Doctors).ToList();
+            return _context.Set<Specialization>().Include(s => s.Doctors).ThenInclude(d => d.weeks).ToList();
         }
         public void UploadDoctorImage(List<Doctor> doctors)
         {
