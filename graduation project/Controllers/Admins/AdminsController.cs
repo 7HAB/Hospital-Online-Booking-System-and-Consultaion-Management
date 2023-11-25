@@ -73,6 +73,14 @@ namespace graduation_project.Controllers.Admins
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (roleClaim.Value != "Admin")
+            {
+                return Unauthorized("You are not an Admin");
+            }
+
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
