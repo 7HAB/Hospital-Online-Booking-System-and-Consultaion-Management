@@ -383,6 +383,37 @@ namespace GraduationProject.BL
 
        
         }
+
+
+        #endregion
+
+        #region GetMutualVisits
+        public List<GetPatientVisitsChildDTO> GetMutualVisits(string? patientPhone, string? doctorPhone)
+        {
+            List<PatientVisit> patientVisit = _unitOfWork.doctorRepo.GetMutualVisits(patientPhone, doctorPhone);
+            return patientVisit.Select(s =>
+                new GetPatientVisitsChildDTO
+                {
+                    Id = s.Id,
+                    PatientId =s.PatientId,
+                    DoctorId = s.DoctorId,      
+                    Review =s.Review,
+                    
+
+                    Comments = s.Comments,
+                    ArrivalTime = s.ArrivalTime,
+                    Prescription = s.Prescription,
+                    DateOfVisit = s.DateOfVisit,
+                    Symptoms = s.Symptoms,
+                    VisitStatus = s.VisitStatus,
+                    VisitEndTime = s.VisitEndTime,
+                    VisitStartTime = s.VisitStartTime
+
+                }).ToList();
+            
+            
+        }
+
         #endregion
 
         //#region UpdateImge

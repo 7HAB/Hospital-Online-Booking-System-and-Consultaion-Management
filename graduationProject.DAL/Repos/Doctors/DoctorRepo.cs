@@ -75,7 +75,16 @@ namespace graduationProject.DAL
             }
         }
 
+        public List<PatientVisit> GetMutualVisits(string? patientPhone, string? doctorPhone)
+        {
+            Doctor? dr = _context.Set<Doctor>().FirstOrDefault(x => x.PhoneNumber == doctorPhone);
+            Patient? pt = _context.Set<Patient>().FirstOrDefault(x => x.PhoneNumber == patientPhone);
+            string? doctorId = dr?.Id;
+            string? patientId = pt?.Id;
+            return _context.Set<PatientVisit>().Where(x => x.PatientId == patientId && x.DoctorId == doctorId).ToList();        
+         }
 
+        
         //    public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
         //{
         //    var existingDoctor = _context.Set<Doctor>().Find(doctorId);

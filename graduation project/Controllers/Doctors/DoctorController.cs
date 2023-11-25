@@ -400,6 +400,25 @@ namespace graduation_project.Controllers.Doctors
             return StatusCode(StatusCodes.Status202Accepted);
         }
         #endregion
+        #region getmutualvisits
+        [HttpGet]
+        [Route("mutualvisits")]
+        public IActionResult GetMutualVisits(string patientPhone, string doctorPhone)
+        {
+            List<GetPatientVisitsChildDTO> mutualVisits = _doctorManager.GetMutualVisits(patientPhone, doctorPhone);
+
+            if (mutualVisits.Count == 0)
+            {
+                return NoContent(); 
+            }
+
+            return Ok(mutualVisits);
+        }
+
+
+
+
+        #endregion
         #region UploadImages
 
 
