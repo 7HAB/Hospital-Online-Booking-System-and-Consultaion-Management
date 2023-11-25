@@ -22,6 +22,6 @@ namespace GraduationProject.BL
         public string? ImageContentType { get; set; }
         public string? ImageUrl { get; set; }
 
-       
+       public Boolean Status { get; set; }
     }
 }

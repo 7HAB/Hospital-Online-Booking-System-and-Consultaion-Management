@@ -36,7 +36,7 @@ namespace graduationProject.DAL
 
         public DateTime AssistantDateOfBirth { get; set; }
 
-        public string? Status { get; set; } = "Active";
+        public Boolean Status { get; set; } = true;
 
 
         public ICollection<PatientVisit> patientVisits { get; set; } = new HashSet<PatientVisit>();

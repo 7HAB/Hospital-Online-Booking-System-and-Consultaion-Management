@@ -27,7 +27,7 @@ namespace GraduationProject.BL
 
         //public DateTime AssistantDateOfBirth { get; set; }
 
-   //     public string? Status { get; set; } 
+           public Boolean Status { get; set; } 
 
     }
 }

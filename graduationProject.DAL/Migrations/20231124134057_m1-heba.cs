@@ -231,7 +231,7 @@ namespace graduationProject.DAL.Migrations
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {

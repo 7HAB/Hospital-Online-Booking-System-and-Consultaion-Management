@@ -77,13 +77,13 @@ namespace GraduationProject.BL
             Doctor? doctor = _unitOfWork.adminRepo.ChangeDoctorStatus(doctorId);
             if (doctor != null)
             {
-                if(doctor.Status == "Active")
+                if(doctor.Status == true)
                 {
-                    doctor.Status = "Not Active";
+                    doctor.Status = false;
                 }
                 else
                 {
-                    doctor.Status = "Active";
+                    doctor.Status = true;
                 }
                 _unitOfWork.SaveChanges();
             }
@@ -109,7 +109,7 @@ namespace GraduationProject.BL
                 //doctor.AssistantDateOfBirth = updateDoctor.AssistantDateOfBirth;
                 //doctor.AssistantPhoneNumber = updateDoctor.AssistantPhoneNumber;
                 //doctor.AssistantName = updateDoctor.AssistantName;
-             //   doctor.Status = updateDoctor.Status;
+                doctor.Status = updateDoctor.Status;
 
                 _unitOfWork.adminRepo.UpdateDoctorById(doctor.Id);
                 _unitOfWork.SaveChanges();

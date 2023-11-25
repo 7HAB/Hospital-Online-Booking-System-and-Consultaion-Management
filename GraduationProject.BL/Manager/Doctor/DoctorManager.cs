@@ -31,7 +31,8 @@ namespace GraduationProject.BL
                 DoctorsForAllSpecializations = s.Doctors.Select(d => new DoctorsForAllSpecializations
                 {
                     Id = d.Id,
-                    Name = d.Name
+                    Name = d.Name,
+                    Status = d.Status,
                 }).ToList()
             }).ToList();
         }
@@ -50,6 +51,7 @@ namespace GraduationProject.BL
                 ImageFileName = d.FileName,
                 ImageStoredFileName = d.StoredFileName,
                 ImageContentType = d.ContentType, 
+                Status = d.Status,
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -110,6 +112,7 @@ namespace GraduationProject.BL
                     ImageFileName = d.FileName,
                     ImageStoredFileName = d.StoredFileName,
                     ImageContentType = d.ContentType,
+                    Status = d.Status,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -169,11 +172,12 @@ namespace GraduationProject.BL
             
             DateTime start = StartDate;
             DateTime end = EndDate;
-            int count = end.Day- start.Day;
+            TimeSpan difference = end.Subtract(start) ;
+            double days = difference.TotalDays;
             DateTime now =DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
-                    for (int j = 0; j <= count; j++)
+                    for (int j = 0; j <= days; j++)
                     {
                   
 
@@ -184,9 +188,9 @@ namespace GraduationProject.BL
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
 
-                        if (start.Year == StartDate.Year)
-                        {
-                            if (weekSchedule != null)
+                        
+                        
+                            if (weekSchedule != null && doctor.Status)
                             {
                                 VisitCount visitCount = new VisitCount
                                 {
@@ -206,7 +210,7 @@ namespace GraduationProject.BL
                             }
                         }
 
-                    }
+                    
                 }
             }
 
@@ -361,6 +365,7 @@ namespace GraduationProject.BL
                      Salary = doctor.Salary,
                      Description = doctor.Description,
                      SpecializationName = doctor.specialization.Name,
+                     Status = doctor.Status,
                      WeekSchadual = doctor.weeks
                      
                 .Select(d => new WeekScheduleForDoctorsDto
