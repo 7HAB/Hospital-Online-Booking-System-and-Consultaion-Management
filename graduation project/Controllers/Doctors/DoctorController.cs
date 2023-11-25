@@ -122,8 +122,9 @@ namespace graduation_project.Controllers.Doctors
 
         [HttpPost]
         [Route("Doctor/login")]
+
         //=> /api/users/static-login
-        public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
+        public async Task<ActionResult<TokenDto>> Login(LoginDto credentials )
         {
             #region Username and Password verification
 
@@ -137,15 +138,22 @@ namespace graduation_project.Controllers.Doctors
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
-                //  return Unauthorized();
                 return Unauthorized("Invalid password");
             }
-
+            
             #endregion
 
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            
+            if(roleClaim.Value != "Doctor")
+            {
+                return Unauthorized("You are not a doctor");
+            }
+            
+            
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
@@ -237,6 +245,13 @@ namespace graduation_project.Controllers.Doctors
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (roleClaim.Value != "Reception")
+            {
+                return Unauthorized("You are not a Reception");
+            }
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
