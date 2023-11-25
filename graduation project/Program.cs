@@ -78,6 +78,7 @@ builder.Services.AddScoped<IWeekScheduleRepo, WeekScheduleRepo>();
 builder.Services.AddScoped<IPatientVisitRepo, PatientVisitRepo>();
 builder.Services.AddScoped<IAdminRepo, AdminRepo>();
 builder.Services.AddScoped<IVisitCountRepo, VisitCountRepo>();
+builder.Services.AddScoped<IMedicalHistoryRepo, MedicalHistoryRepo>();
 #endregion
 
 #region Unit of work
@@ -101,6 +102,7 @@ builder.Services.AddCors(options =>
     });
 });
 #endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

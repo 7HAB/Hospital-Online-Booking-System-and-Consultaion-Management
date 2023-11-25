@@ -23,9 +23,12 @@ namespace graduationProject.DAL
 
         public IVisitCountRepo visitCountRepo { get; }
 
+        public IMedicalHistoryRepo medicalHistoryRepo { get; }
+
         public UnitOfWork(HospitalContext context, IPatientRepo PatientRepo, IDoctorRepo DoctorRepo,
             IWeekScheduleRepo WeekScheduleRepo,IVisitReviewAndRateRepo visitReviewAndRateRepo ,
-            IPatientVisitRepo PatientVisitRepo , IAdminRepo AdminRepo , IVisitCountRepo VisitCountRepo)
+            IPatientVisitRepo PatientVisitRepo , IAdminRepo AdminRepo , IVisitCountRepo VisitCountRepo,
+            IMedicalHistoryRepo MedicalHistoryRepo)
         {
             _context = context;
             patientRepo = PatientRepo;
@@ -35,6 +38,8 @@ namespace graduationProject.DAL
             patientVisitRepo = PatientVisitRepo;
             adminRepo = AdminRepo;
             visitCountRepo = VisitCountRepo;
+            medicalHistoryRepo = MedicalHistoryRepo;
+
         }
         public int SaveChanges()
         {
