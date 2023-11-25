@@ -29,7 +29,7 @@ namespace GraduationProject.BL
 
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate);
 
-
+        public bool UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto);
 
 
     }

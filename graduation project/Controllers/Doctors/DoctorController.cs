@@ -407,6 +407,7 @@ namespace graduation_project.Controllers.Doctors
             return StatusCode(StatusCodes.Status202Accepted);
         }
         #endregion
+
         #region UploadImages
 
 
@@ -482,6 +483,19 @@ namespace graduation_project.Controllers.Doctors
 
 
 
+        #endregion
+        #region UpdateMedicalHistory
+        [HttpPut]
+        [Route("MedicalHistory")]
+        public ActionResult UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto)
+        {
+            bool result = _doctorManager.UpdateMedicalHistory(updateDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return StatusCode(StatusCodes.Status202Accepted);
+        }
         #endregion
 
     }
