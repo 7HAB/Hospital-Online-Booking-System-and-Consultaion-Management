@@ -393,8 +393,7 @@ namespace GraduationProject.BL
                     PatientId =s.PatientId,
                     DoctorId = s.DoctorId,      
                     Review =s.Review,
-                    
-
+                    Rate = s.Rate,
                     Comments = s.Comments,
                     ArrivalTime = s.ArrivalTime,
                     Prescription = s.Prescription,
