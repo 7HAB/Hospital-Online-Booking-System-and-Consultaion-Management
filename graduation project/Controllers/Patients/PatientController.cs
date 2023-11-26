@@ -186,5 +186,23 @@ namespace graduation_project.Controllers
             return StatusCode(StatusCodes.Status201Created);
         }
         #endregion
+        #region DeletePatientVisit
+        [HttpDelete]
+        [Route("deletepatientvisit/{id}")]
+
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _patientManager.DeletePatientVisit(id);
+                return NoContent(); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error"); 
+            }
+        }
+
+        #endregion
     }
 }
