@@ -140,9 +140,10 @@ namespace GraduationProject.BL
                 {
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
-                    StartTime = d.StartTime.ToShortTimeString(),
-                    EndTime = d.EndTime.ToShortTimeString(),
-                    IsAvailable = d.IsAvailable
+                    StartTime = d.StartTime?.ToShortTimeString(),
+                    EndTime = d.EndTime?.ToShortTimeString(),
+                    IsAvailable = d.IsAvailable,
+                    LimitOfPatients = d.LimitOfPatients,
                 }).ToList(),
                 ImageFileName = doctor.FileName,
                 ImageStoredFileName = doctor.StoredFileName,
