@@ -12,8 +12,8 @@ namespace GraduationProject.BL
         public DayOfWeek? DayOfWeek { get; set; }
         public bool IsAvailable { get; set; }
         public int LimitOfPatients { get; set; } 
-        public string StartTime { get; set; }
-        public string EndTime { get; set; } 
+        public string? StartTime { get; set; }
+        public string? EndTime { get; set; } 
 
     }
 }
