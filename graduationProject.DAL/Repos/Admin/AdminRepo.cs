@@ -38,6 +38,22 @@ namespace graduationProject.DAL
             return doctorToUpdate;
         }
 
+        #region update week schedule record
+        public void UpdateWeekScheduleRecord (WeekSchedule schedule)
+        {
+
+            _context.Set<WeekSchedule>().Update(schedule);
+            _context.SaveChanges();
+        }
+        #endregion
+
+        #region get week schedule record by id
+        public WeekSchedule? GetWeekScheduleById(int id)
+        {
+            return _context.Set<WeekSchedule>().FirstOrDefault(w => w.Id == id);
+
+        }
+        #endregion
         public Doctor? ChangeDoctorStatus(string doctorId)
         {
             Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);

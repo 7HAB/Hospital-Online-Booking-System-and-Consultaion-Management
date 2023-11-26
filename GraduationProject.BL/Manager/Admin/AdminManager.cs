@@ -118,6 +118,45 @@ namespace GraduationProject.BL
             return doctor;
         }
         #endregion
+
+        #region update week schedule record 
+        public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id)
+        {
+            WeekSchedule? week = _unitOfWork.adminRepo.GetWeekScheduleById(id);
+            if (week == null) { return null; }
+            if (week != null)
+            {
+                week.Id = id;
+                week.LimitOfPatients = weekSchedule.LimitOfPatients;
+                week.StartTime = DateTime.Parse(weekSchedule.StartTime);
+                week.EndTime = DateTime.Parse(weekSchedule.EndTime);
+                week.IsAvailable = weekSchedule.IsAvailable;
+                week.DayOfWeek = weekSchedule.DayOfWeek;
+                _unitOfWork.adminRepo.UpdateWeekScheduleRecord(week);
+                _unitOfWork.SaveChanges();
+            }
+            return week;
+        }
+        #endregion
+
+        public WeekScheduleForDoctorsDto GetWeekScheduleById (int id)
+        {
+            WeekSchedule? weekSchedule = _unitOfWork.adminRepo.GetWeekScheduleById(id);
+            if (weekSchedule == null) 
+            {
+                return null;
+            }
+            return new WeekScheduleForDoctorsDto
+            {
+                Id = id,
+                DayOfWeek = weekSchedule.DayOfWeek,
+                LimitOfPatients = weekSchedule.LimitOfPatients,
+                IsAvailable = weekSchedule.IsAvailable,
+                StartTime = weekSchedule?.StartTime.ToString(),
+                EndTime = weekSchedule?.EndTime.ToString(),
+            };
+
+        }
         #region Get Doctor By ID For Admin
         public GetDoctorByIDForAdminDto GetDoctorByIdForAdmin(string id)
         {

@@ -17,5 +17,9 @@ namespace graduationProject.DAL
         public Specialization GetSpecializationByAdmin(int? id);
         public void AddWeekSchedule(WeekSchedule schedule);
 
+        public void UpdateWeekScheduleRecord(WeekSchedule schedule);
+
+        public WeekSchedule? GetWeekScheduleById(int id);
+
     }
 }

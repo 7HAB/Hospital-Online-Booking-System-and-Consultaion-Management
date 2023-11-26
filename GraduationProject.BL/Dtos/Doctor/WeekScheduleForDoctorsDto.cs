@@ -13,6 +13,7 @@ namespace GraduationProject.BL
         public int? LimitOfPatients { get; set; } = 0;
         public string? StartTime { get; set; }
         public string? EndTime { get; set; }
-        public bool? IsAvailable { get; set; }
+        public bool IsAvailable { get; set; }
+
     }
 }
