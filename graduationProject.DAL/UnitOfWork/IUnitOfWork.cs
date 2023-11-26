@@ -16,6 +16,7 @@ namespace graduationProject.DAL
         public IAdminRepo adminRepo { get; }
 
         public  IVisitCountRepo visitCountRepo { get; }
+        public IMedicalHistoryRepo medicalHistoryRepo { get; }
         int SaveChanges();
     }
 }

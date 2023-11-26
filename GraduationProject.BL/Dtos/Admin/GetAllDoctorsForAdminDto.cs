@@ -20,6 +20,6 @@ namespace GraduationProject.BL
         public string? AssistantName { get; set; }
         public string? AssistantPhoneNumber { get; set; }
         public string? AssistantDateOfBirth { get; set; }
-        public string? Status { get; set; }
+        public Boolean Status { get; set; }
     }
 }

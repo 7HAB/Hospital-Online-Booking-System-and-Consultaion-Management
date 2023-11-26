@@ -3,6 +3,7 @@ using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,7 +32,18 @@ namespace GraduationProject.BL
                 DoctorsForAllSpecializations = s.Doctors.Select(d => new DoctorsForAllSpecializations
                 {
                     Id = d.Id,
-                    Name = d.Name
+                    Name = d.Name,
+                    Status = d.Status,
+                    WeekSchadual = d.weeks
+                     .Select(d => new WeekScheduleForDoctorsDto
+                      {
+                          Id = d.Id,
+                          DayOfWeek = d.DayOfWeek,
+                          LimitOfPatients = d.LimitOfPatients,
+                          StartTime = d.StartTime.ToShortTimeString(),
+                          EndTime = d.EndTime.ToShortTimeString(),
+                          IsAvailable = d.IsAvailable
+                      }).ToList()
                 }).ToList()
             }).ToList();
         }
@@ -50,6 +62,7 @@ namespace GraduationProject.BL
                 ImageFileName = d.FileName,
                 ImageStoredFileName = d.StoredFileName,
                 ImageContentType = d.ContentType, 
+                Status = d.Status,
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -110,6 +123,7 @@ namespace GraduationProject.BL
                     ImageFileName = d.FileName,
                     ImageStoredFileName = d.StoredFileName,
                     ImageContentType = d.ContentType,
+                    Status = d.Status,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -169,11 +183,12 @@ namespace GraduationProject.BL
             
             DateTime start = StartDate;
             DateTime end = EndDate;
-            int count = end.Day- start.Day;
+            TimeSpan difference = end.Subtract(start) ;
+            double days = difference.TotalDays;
             DateTime now =DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
-                    for (int j = 0; j <= count; j++)
+                    for (int j = 0; j <= days; j++)
                     {
                   
 
@@ -184,9 +199,9 @@ namespace GraduationProject.BL
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
 
-                        if (start.Year == StartDate.Year)
-                        {
-                            if (weekSchedule != null)
+                        
+                        
+                            if (weekSchedule != null && doctor.Status)
                             {
                                 VisitCount visitCount = new VisitCount
                                 {
@@ -206,7 +221,7 @@ namespace GraduationProject.BL
                             }
                         }
 
-                    }
+                    
                 }
             }
 
@@ -290,6 +305,7 @@ namespace GraduationProject.BL
             _unitOfWork.SaveChanges();
             return true;
         }
+
         #region UploadImage
         public async Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles)
         {
@@ -343,6 +359,35 @@ namespace GraduationProject.BL
         }
 
         #endregion
+        #region UpdateMedical History
+        public bool UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto)
+        {
+
+            MedicaHistory? dbVisit = _unitOfWork.medicalHistoryRepo.GetById(updateDto.Id);
+            if (dbVisit == null)
+            {
+                return false;
+            }
+            dbVisit.MartialStatus = updateDto.MartialStatus;
+            dbVisit.MartialStatus = updateDto.MartialStatus;
+            dbVisit.pregnancy = updateDto.pregnancy;
+            dbVisit.BloodGroup = updateDto.BloodGroup;
+            dbVisit.previousSurgeries = updateDto.previousSurgeries;
+            dbVisit.Medication = updateDto.Medication;
+            dbVisit.Smoker = updateDto.Smoker;
+            dbVisit.Diabetes = updateDto.Diabetes;
+            dbVisit.HighBloodPressure = updateDto.HighBloodPressure;
+            dbVisit.LowBloodPressure = updateDto.LowBloodPressure;
+            dbVisit.Asthma = updateDto.Asthma;
+            dbVisit.Hepatitis = updateDto.Hepatitis;
+            dbVisit.HeartDisease = updateDto.HeartDisease;
+            dbVisit.AnxityOrPanicDisorder = updateDto.AnxityOrPanicDisorder;
+            dbVisit.Depression = updateDto.Depression;
+            dbVisit.Allergies = updateDto.Allergies;
+            dbVisit.Other = updateDto.Other;
+
+            _unitOfWork.medicalHistoryRepo.UpdateMedicaHistory(dbVisit);
+            _unitOfWork.SaveChanges();
 
         #region GetDoctroByPhone
         public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
@@ -361,6 +406,7 @@ namespace GraduationProject.BL
                      Salary = doctor.Salary,
                      Description = doctor.Description,
                      SpecializationName = doctor.specialization.Name,
+                     Status = doctor.Status,
                      WeekSchadual = doctor.weeks
                      
                 .Select(d => new WeekScheduleForDoctorsDto
