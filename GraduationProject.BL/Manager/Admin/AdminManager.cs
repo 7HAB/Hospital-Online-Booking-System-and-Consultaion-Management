@@ -194,16 +194,20 @@ namespace GraduationProject.BL
         #region Add Week Schedule
         public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule)
         {
-            WeekSchedule weekSchedule = new WeekSchedule
+            for (int i = 0; i < 7; i++)
             {
-                DayOfWeek = addWeekSchedule.DayOfWeek,
-                LimitOfPatients = addWeekSchedule.LimitOfPatients,
-                StartTime = addWeekSchedule.StartTime,
-                EndTime = addWeekSchedule.EndTime,
-                DoctorId = addWeekSchedule.DoctorId,
-                IsAvailable = addWeekSchedule.IsAvailable,
-            };
-            _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
+                
+                WeekSchedule weekSchedule = new WeekSchedule
+                {
+                    DayOfWeek = addWeekSchedule.DayOfWeek+i,
+                    LimitOfPatients = addWeekSchedule.LimitOfPatients,
+                    StartTime = addWeekSchedule.StartTime,
+                    EndTime = addWeekSchedule.EndTime,
+                    DoctorId = addWeekSchedule.DoctorId,
+                    IsAvailable = addWeekSchedule.IsAvailable,
+                };
+                _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
+            }
         }
         #endregion
     }
