@@ -19,5 +19,6 @@ namespace GraduationProject.BL
 
         public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
         public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
+        public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto);
     }
 }

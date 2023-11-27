@@ -38,6 +38,15 @@ namespace graduationProject.DAL
             return doctorToUpdate;
         }
 
+        public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit )
+        {
+            _context.Set<PatientVisit>().Update(patientVisit);
+            return patientVisit;
+        }
+        public PatientVisit GetVisit(int id)
+        {
+            return _context.Set<PatientVisit>().Include(pv => pv.Patient).FirstOrDefault(pv => pv.Id == id)!;
+        }
         public Doctor? ChangeDoctorStatus(string doctorId)
         {
             Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);

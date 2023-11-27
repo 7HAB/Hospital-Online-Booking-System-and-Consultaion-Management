@@ -203,7 +203,23 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
-       
+        #region update patient status
+        [HttpPut]
+        [Route("admins/updatePatientVisitStatus")]
+        public ActionResult<GetAllPatientsWithDateDto> UpdatePatientVisit(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            GetAllPatientsWithDateDto patientVisit = _adminManager.UpdateArrivedPatientStatus(updateArrivalPatientStatusDto);
+            if (patientVisit != null)
+            {
+                return patientVisit;
+            }
+            else
+            {
+                return NotFound(); 
+            }
+            
+        }
+        #endregion
 
         #region add week schedule
         [HttpPost]

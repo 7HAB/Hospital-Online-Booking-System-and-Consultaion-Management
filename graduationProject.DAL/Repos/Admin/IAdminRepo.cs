@@ -16,6 +16,7 @@ namespace graduationProject.DAL
         public Admin? GetAdminByPhoneNumber(string PhoneNumber);
         public Specialization GetSpecializationByAdmin(int? id);
         public void AddWeekSchedule(WeekSchedule schedule);
-
+        public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit);
+        public PatientVisit GetVisit(int id);
     }
 }
