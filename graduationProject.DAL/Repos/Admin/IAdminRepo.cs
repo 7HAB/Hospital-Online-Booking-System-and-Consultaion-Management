@@ -21,5 +21,7 @@ namespace graduationProject.DAL
 
         public WeekSchedule? GetWeekScheduleById(int id);
 
+        public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit);
+        public PatientVisit GetVisit(int id);
     }
 }
