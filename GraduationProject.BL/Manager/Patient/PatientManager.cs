@@ -61,7 +61,9 @@ namespace GraduationProject.BL
                 AnxityOrPanicDisorder = medicalHistory.AnxityOrPanicDisorder,
                 Depression = medicalHistory.Depression,
                 Allergies = medicalHistory.Allergies,
-                Other = medicalHistory.Other
+                Other = medicalHistory.Other,
+                Id = medicalHistory.Id,
+                PatientId = medicalHistory.PatientId
             };
 
         }
