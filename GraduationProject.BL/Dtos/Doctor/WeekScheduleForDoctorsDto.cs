@@ -10,9 +10,9 @@ namespace GraduationProject.BL
     {
         public int Id { get; set; }
         public DayOfWeek? DayOfWeek { get; set; }
-        public int? LimitOfPatients { get; set; } = 0;
-        public string? StartTime { get; set; }
-        public string? EndTime { get; set; }
+        public int LimitOfPatients { get; set; } = 0;
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
         public bool IsAvailable { get; set; }
 
     }

@@ -174,13 +174,14 @@ namespace GraduationProject.BL
                 Salary = doctor.Salary,
                 Description = doctor.Description,
                 SpecializationName = doctor.specialization.Name,
+                Status = doctor.Status,
                 WeekSchadual = doctor.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable,
                     LimitOfPatients = d.LimitOfPatients,
                 }).ToList(),

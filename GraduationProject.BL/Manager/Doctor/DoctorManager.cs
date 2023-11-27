@@ -40,8 +40,8 @@ namespace GraduationProject.BL
                          Id = d.Id,
                          DayOfWeek = d.DayOfWeek,
                          LimitOfPatients = d.LimitOfPatients,
-                         StartTime = d.StartTime?.ToShortTimeString(),
-                         EndTime = d.EndTime?.ToShortTimeString(),
+                         StartTime = d.StartTime.ToShortTimeString(),
+                         EndTime = d.EndTime.ToShortTimeString(),
                          IsAvailable = d.IsAvailable
                      }).ToList()
                 }).ToList()
@@ -69,8 +69,8 @@ namespace GraduationProject.BL
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
                 }).ToList()
             }).ToList();
@@ -94,8 +94,8 @@ namespace GraduationProject.BL
                 {
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
                 }).ToList(),
                 ImageFileName = dbDoctor.FileName,
@@ -130,8 +130,8 @@ namespace GraduationProject.BL
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable
                 }).ToList()
                 }).ToList()
@@ -150,8 +150,8 @@ namespace GraduationProject.BL
 
                     DayOfWeek = d.DayOfWeek,
                     IsAvailable = d.IsAvailable,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                 }).ToList()
             };
         }
@@ -198,10 +198,7 @@ namespace GraduationProject.BL
                     {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
-
-
-
-                        if (weekSchedule != null && doctor.Status)
+                         if (weekSchedule != null && doctor.Status)
                         {
                             VisitCount visitCount = new VisitCount
                             {
@@ -415,8 +412,8 @@ namespace GraduationProject.BL
                {
                    Id = d.Id,
                    DayOfWeek = d.DayOfWeek,
-                   StartTime = d.StartTime?.ToShortTimeString(),
-                   EndTime = d.EndTime?.ToShortTimeString(),
+                   StartTime = d.StartTime.ToShortTimeString(),
+                   EndTime = d.EndTime.ToShortTimeString(),
                    IsAvailable = d.IsAvailable
                }).ToList(),
                     ImageFileName = doctor.FileName,
