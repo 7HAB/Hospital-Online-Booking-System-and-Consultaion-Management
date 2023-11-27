@@ -479,7 +479,7 @@ namespace graduation_project.Controllers.Doctors
             {
                 return NotFound();
             }
-            return StatusCode(StatusCodes.Status202Accepted);
+            return Ok();
         }
         #endregion
 
