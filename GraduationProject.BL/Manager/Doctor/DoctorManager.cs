@@ -192,10 +192,7 @@ namespace GraduationProject.BL
                     {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
-
-
-
-                        if (weekSchedule != null && doctor.Status)
+                         if (weekSchedule != null && doctor.Status)
                         {
                             VisitCount visitCount = new VisitCount
                             {

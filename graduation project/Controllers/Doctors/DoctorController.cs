@@ -361,7 +361,7 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region Add Visit Count Records
         [HttpPost]
-        [Route("addVisitCount/{Startdate}/{EndDate}")]
+        [Route("addVisitCount/{Startdate}")]
         public ActionResult AddVisitCountRecords(DateTime Startdate, DateTime EndDate)
         {
             _doctorManager.AddVisitCountRecords(Startdate,EndDate);
@@ -403,14 +403,14 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region UpdatePatientVisit
         [HttpPut]
-        [Authorize(Policy = "DoctorPolicy")]
+        //[Authorize(Policy = "DoctorPolicy")]
         [Route("PatientVisit")]
         public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
         {
             bool result = _doctorManager.UpdatePatientVisit(updateDto);
             if (!result)
             {
-                return NotFound();
+                return Ok();
             }
             return StatusCode(StatusCodes.Status202Accepted);
         }
@@ -520,7 +520,7 @@ namespace graduation_project.Controllers.Doctors
             {
                 return NotFound();
             }
-            return StatusCode(StatusCodes.Status202Accepted);
+            return Ok();
         }
         #endregion
 

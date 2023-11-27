@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +49,15 @@ namespace graduation_project.Controllers.Admins
             return _adminManager.GetAllSpecializations();
         }
         #endregion
+        #region get week schedule record by id
+        [HttpGet]
+        [Route("weekScheduleRecord/{id}")]
+        public ActionResult<WeekScheduleForDoctorsDto> GetWeekScheduleRecordById(int id)
+        {
+            return _adminManager.GetWeekScheduleById(id);
+        }
+        #endregion
+
         #region admin login
         [HttpPost]
         [Route("Admins/login")]
@@ -103,6 +113,19 @@ namespace graduation_project.Controllers.Admins
 
             #endregion
 
+        }
+        #endregion
+        #region Update week schedule record With Id
+        [HttpPut]
+        [Route("admins/updateWeekSchedule/{id}")]
+        public IActionResult UpdateWeekSchedule(WeekScheduleForDoctorsDto? week, int id)
+        {
+            WeekSchedule weekSchedule = _adminManager.UpdateWeekScheduleRecord(week,id);
+            if (weekSchedule == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
         #endregion
         #region admin register
