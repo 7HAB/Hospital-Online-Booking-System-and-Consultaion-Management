@@ -214,5 +214,59 @@ namespace graduation_project.Controllers.Admins
             return Ok();
         }
         #endregion
+
+
+
+
+
+        #region Get Top Rated Doctors
+        [HttpGet]
+        [Route("AverageRateForDoctors")]
+        public IActionResult GetAverageRateForEachDoctor()
+        {
+            //List<Doctor> allDrs = _adminManager.GetAverageRateForEachDoctor();
+           return Ok(_adminManager.GetAverageRateForEachDoctor()) ;
+        }
+        #endregion
+
+        #region Get Number Of Patient for a day
+        [HttpGet]
+        [Route("NumberOfPatientForADay")]
+        public IActionResult  GetNumberOfPatientForADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Available Doctors For a Day
+        [HttpGet]
+        [Route("NumberOfAvailableDoctorsForADay")]
+        public IActionResult GetNumberOfAvailableDoctorInADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfAvailableDoctorInADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Number of Doctors for a period
+        [HttpGet]
+        [Route("NumberOfDoctorsForAPeriod")]
+        public IActionResult GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForAPeriod(startDate, endDate);
+            return Ok(counter);
+        }
+        #endregion
+
+
+        #region GetHighDemandSpecialization
+        [HttpGet]
+        [Route("PatientVisitsInAPeriodAndSpecialization")]
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId)
+        {
+            return _adminManager.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
+        }
+        #endregion
     }
 }

@@ -17,5 +17,17 @@ namespace graduationProject.DAL
         public Specialization GetSpecializationByAdmin(int? id);
         public void AddWeekSchedule(WeekSchedule schedule);
 
+        public List<Doctor> GetAverageRateForEachDoctor();
+
+        public int GetNumberOfPatientsForADay(DateTime date);
+
+        public int GetNumberOfAvailableDoctorInADay(DateTime date);
+
+        public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate);
+
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId);
+
+
+
     }
 }

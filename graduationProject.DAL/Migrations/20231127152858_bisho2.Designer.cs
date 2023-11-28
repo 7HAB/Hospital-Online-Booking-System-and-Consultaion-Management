@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231125055028_salma")]
-    partial class salma
+    [Migration("20231127152858_bisho2")]
+    partial class bisho2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -270,7 +270,7 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime>("EndTime")
+                    b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
@@ -279,7 +279,8 @@ namespace graduationProject.DAL.Migrations
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("StartTime")
+                    b.Property<DateTime?>("StartTime")
+                        .IsRequired()
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -496,6 +497,9 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("AssistantPhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("AverageRate")
+                        .HasColumnType("float");
+
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
 
@@ -518,8 +522,8 @@ namespace graduationProject.DAL.Migrations
                     b.Property<int?>("SpecializationId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
 
                     b.Property<string>("StoredFileName")
                         .HasColumnType("nvarchar(max)");

@@ -18,6 +18,8 @@ namespace graduationProject.DAL
         public Doctor? GetDoctorByPhoneNumber(string phoneNumber);
         public List<PatientVisit> GetMutualVisits(string? patientPhone, string? doctorPhone);
 
+
+
         //void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
 

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class salma : Migration
+    public partial class bisho1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -231,7 +231,7 @@ namespace graduationProject.DAL.Migrations
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -373,7 +373,7 @@ namespace graduationProject.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     LimitOfPatients = table.Column<int>(type: "int", nullable: false),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
