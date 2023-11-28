@@ -96,6 +96,12 @@ namespace graduationProject.DAL
             _context.SaveChanges();
         }
         #endregion
+        #region get reception by phone number
+        public Reception? GetReceptionByPhoneNumber(string PhoneNumber) 
+        {
+            return _context?.Set<Reception>().FirstOrDefault(r => r.PhoneNumber == PhoneNumber);
+        }
+        #endregion
     }
 
 }

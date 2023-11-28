@@ -247,10 +247,24 @@ namespace GraduationProject.BL
                 id = patientVisit.Id,
                 PatientId = patientVisit.PatientId,
                 Name = patientVisit.Patient?.Name,
+                PatientPhoneNumber = patientVisit.Patient?.PhoneNumber,
                 VisitStatus = patientVisit.VisitStatus,
                 ArrivalTime = patientVisit.ArrivalTime.ToShortTimeString(),
                 VisitStartTime = patientVisit.VisitStartTime.ToShortTimeString(),
                 VisitEndTime = patientVisit.VisitEndTime.ToShortTimeString(),
+            };
+        }
+        #endregion
+        #region get reception by phone number
+        public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber)
+        {
+            Reception? dbReception = _unitOfWork.adminRepo.GetReceptionByPhoneNumber(phoneNumber);
+            if (dbReception == null) { return null! ; }
+            return new GetReceptionByPhoneNumberDto
+            {
+                Id = dbReception.Id,
+                Name = dbReception.Name!,
+                PhoneNumber = dbReception.PhoneNumber!
             };
         }
         #endregion
