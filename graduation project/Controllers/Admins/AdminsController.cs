@@ -175,6 +175,18 @@ namespace graduation_project.Controllers.Admins
             return Ok();
         }
         #endregion
+
+        #region Update Admin with phone 
+        [HttpPut]
+        [Route("admins/updateAdmin/{phone}")]
+        public IActionResult UpdateAdmin (UpdateAdminByIdDto updateAdmin , string phone) 
+        {
+            Admin? admin = _adminManager.UpdateAdminByPhone(updateAdmin , phone);
+            if (admin == null) { return NotFound(); }
+            return Ok();
+
+        }
+        #endregion
         #region GetDoctorById For Admin
         [HttpGet]
         [Route("admin/getDoctorForAdmin/{DoctorId}")]

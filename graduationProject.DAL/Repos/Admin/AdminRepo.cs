@@ -56,6 +56,13 @@ namespace graduationProject.DAL
         }
         #endregion
 
+        #region update admin by id
+        public void UpdateAdminByPhone(Admin admin)
+        {
+            _context.Set<Admin>().Update(admin);
+        }
+        #endregion
+
         #region get week schedule record by id
         public WeekSchedule? GetWeekScheduleById(int id)
         {

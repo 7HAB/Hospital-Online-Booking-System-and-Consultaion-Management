@@ -23,5 +23,7 @@ namespace graduationProject.DAL
 
         public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit);
         public PatientVisit GetVisit(int id);
+        public void UpdateAdminByPhone(Admin admin);
+
     }
 }
