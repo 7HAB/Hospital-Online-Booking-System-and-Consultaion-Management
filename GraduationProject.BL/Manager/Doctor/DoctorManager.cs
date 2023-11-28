@@ -164,6 +164,7 @@ namespace GraduationProject.BL
                 id = pv.Id,
                 PatientId = pv.PatientId,
                 Name = pv?.Patient?.Name,
+                PatientPhoneNumber = pv?.Patient?.PhoneNumber,
                 VisitStatus = pv?.VisitStatus,
                 ArrivalTime = pv?.ArrivalTime.ToShortTimeString()!,
                 VisitStartTime = pv?.VisitStartTime.ToShortTimeString()!,
