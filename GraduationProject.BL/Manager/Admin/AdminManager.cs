@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -167,7 +168,7 @@ namespace GraduationProject.BL
             return new GetDoctorByIDForAdminDto
             {
                 ID = doctor.Id,
-                DateOfBirth = doctor.DateOfBirth,
+                DateOfBirth = doctor.DateOfBirth.ToLongDateString(),
                 Name = doctor.Name,
                 PhoneNumber = doctor.PhoneNumber,
                 Title = doctor.Title,
@@ -208,6 +209,63 @@ namespace GraduationProject.BL
                 };
                 _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
             }
+        }
+        #endregion
+        #region update patient status
+        public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            PatientVisit patientVisit = _unitOfWork.adminRepo.GetVisit(updateArrivalPatientStatusDto.Id);
+            if (patientVisit == null)
+            {
+                return null!;
+            }
+            if(updateArrivalPatientStatusDto.VisitStatus == "Arrived")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = DateTime.Now;
+                patientVisit.VisitStartTime = patientVisit.VisitStartTime;
+                patientVisit.VisitEndTime = patientVisit.VisitEndTime;
+            }
+            else if (updateArrivalPatientStatusDto.VisitStatus == "inProgress")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = patientVisit.ArrivalTime;
+                patientVisit.VisitStartTime = DateTime.Now;
+                patientVisit.VisitEndTime = patientVisit.VisitEndTime;
+            }
+            else if(updateArrivalPatientStatusDto.VisitStatus == "done")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = patientVisit.ArrivalTime;
+                patientVisit.VisitStartTime = patientVisit.VisitStartTime;
+                patientVisit.VisitEndTime = DateTime.Now;
+            }
+            _unitOfWork.adminRepo.UpdateArrivedPatientStatus(patientVisit);
+            _unitOfWork.SaveChanges();
+            return new GetAllPatientsWithDateDto
+            {
+                id = patientVisit.Id,
+                PatientId = patientVisit.PatientId,
+                Name = patientVisit.Patient?.Name,
+                PatientPhoneNumber = patientVisit.Patient?.PhoneNumber,
+                VisitStatus = patientVisit.VisitStatus,
+                ArrivalTime = patientVisit.ArrivalTime.ToShortTimeString(),
+                VisitStartTime = patientVisit.VisitStartTime.ToShortTimeString(),
+                VisitEndTime = patientVisit.VisitEndTime.ToShortTimeString(),
+            };
+        }
+        #endregion
+        #region get reception by phone number
+        public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber)
+        {
+            Reception? dbReception = _unitOfWork.adminRepo.GetReceptionByPhoneNumber(phoneNumber);
+            if (dbReception == null) { return null! ; }
+            return new GetReceptionByPhoneNumberDto
+            {
+                Id = dbReception.Id,
+                Name = dbReception.Name!,
+                PhoneNumber = dbReception.PhoneNumber!
+            };
         }
         #endregion
     }

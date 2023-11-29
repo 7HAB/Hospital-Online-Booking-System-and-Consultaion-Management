@@ -38,6 +38,15 @@ namespace graduationProject.DAL
             return doctorToUpdate;
         }
 
+        public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit )
+        {
+            _context.Set<PatientVisit>().Update(patientVisit);
+            return patientVisit;
+        }
+        public PatientVisit GetVisit(int id)
+        {
+            return _context.Set<PatientVisit>().Include(pv => pv.Patient).FirstOrDefault(pv => pv.Id == id)!;
+        }
         #region update week schedule record
         public void UpdateWeekScheduleRecord (WeekSchedule schedule)
         {
@@ -85,6 +94,12 @@ namespace graduationProject.DAL
 
             _context.Set<WeekSchedule>().Add(schedule);
             _context.SaveChanges();
+        }
+        #endregion
+        #region get reception by phone number
+        public Reception? GetReceptionByPhoneNumber(string PhoneNumber) 
+        {
+            return _context?.Set<Reception>().FirstOrDefault(r => r.PhoneNumber == PhoneNumber);
         }
         #endregion
     }

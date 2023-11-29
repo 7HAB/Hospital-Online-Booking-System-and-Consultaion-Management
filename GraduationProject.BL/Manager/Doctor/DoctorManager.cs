@@ -159,23 +159,18 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId)
         {
-            var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
-            List<GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
-            foreach (var patient in patients)
+            List<PatientVisit> patientVisits = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
+            return patientVisits.Select(pv => new GetAllPatientsWithDateDto
             {
-                var patientListItem = new GetAllPatientsWithDateDto
-                {
-                    PatientId = patient.Id,
-                    Name = patient.Name,
-                    DateOfBirth = patient.DateOfBirth,
-                    Gender = patient.Gender,
-                };
-                if (patientListItem != null)
-                {
-                    patientsWithDateDtosList.Add(patientListItem);
-                }
-            }
-            return patientsWithDateDtosList;
+                id = pv.Id,
+                PatientId = pv.PatientId,
+                Name = pv?.Patient?.Name,
+                PatientPhoneNumber = pv?.Patient?.PhoneNumber,
+                VisitStatus = pv?.VisitStatus,
+                ArrivalTime = pv?.ArrivalTime.ToShortTimeString()!,
+                VisitStartTime = pv?.VisitStartTime.ToShortTimeString()!,
+                VisitEndTime = pv?.VisitEndTime.ToShortTimeString()!,
+            }).ToList();
         }
         #region Add Visit Count Records
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate)
@@ -427,7 +422,7 @@ namespace GraduationProject.BL
                 return new GetDoctorByPhoneDto
                 {
                     ID = doctor.Id,
-                    DateOfBirth = doctor.DateOfBirth,
+                    DateOfBirth = doctor.DateOfBirth.ToLongDateString(),
                     Name = doctor.Name,
                     PhoneNumber = phoneNumber,
                     Title = doctor.Title,

@@ -24,5 +24,7 @@ namespace GraduationProject.BL
         public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id);
 
 
+        public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto);
+        public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber);
     }
 }

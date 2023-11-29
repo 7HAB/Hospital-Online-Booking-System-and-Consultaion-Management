@@ -12,13 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-<<<<<<<< HEAD:graduationProject.DAL/Migrations/20231127145324_salma.Designer.cs
-    [Migration("20231127145324_salma")]
-    partial class salma
-========
-    [Migration("20231125155517_m1-mayar")]
-    partial class m1mayar
->>>>>>>> master:graduationProject.DAL/Migrations/20231125155517_m1-mayar.Designer.cs
+    [Migration("20231124134057_m1-heba")]
+    partial class m1heba
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -268,7 +263,7 @@ namespace graduationProject.DAL.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("DayOfWeek")
+                    b.Property<int>("DayOfWeek")
                         .HasColumnType("int");
 
                     b.Property<string>("DoctorId")
@@ -455,7 +450,7 @@ namespace graduationProject.DAL.Migrations
                     b.Property<string>("DoctorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int?>("LimitOfPatients")
+                    b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
                     b.Property<int>("WeekScheduleId")

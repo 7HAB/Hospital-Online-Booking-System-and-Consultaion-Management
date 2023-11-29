@@ -226,7 +226,23 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
-       
+        #region update patient status
+        [HttpPut]
+        [Route("admins/updatePatientVisitStatus")]
+        public ActionResult<GetAllPatientsWithDateDto> UpdatePatientVisit(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            GetAllPatientsWithDateDto patientVisit = _adminManager.UpdateArrivedPatientStatus(updateArrivalPatientStatusDto);
+            if (patientVisit != null)
+            {
+                return patientVisit;
+            }
+            else
+            {
+                return NotFound(); 
+            }
+            
+        }
+        #endregion
 
         #region add week schedule
         [HttpPost]
@@ -237,5 +253,16 @@ namespace graduation_project.Controllers.Admins
             return Ok();
         }
         #endregion
+        #region get reception by phone number
+        [HttpGet]
+        [Route("Reception/{PhoneNumber}")]
+        public ActionResult<GetReceptionByPhoneNumberDto> GetReceptionByPhoneNumber(string PhoneNumber)
+        {
+            GetReceptionByPhoneNumberDto reception = _adminManager.GetReceptionByPhoneNumber(PhoneNumber);
+            if (reception == null) { return NotFound(); }
+            return reception!;
+        }
+        #endregion
+
     }
 }
