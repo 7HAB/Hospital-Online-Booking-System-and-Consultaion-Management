@@ -11,5 +11,7 @@ namespace graduationProject.DAL
         public MedicaHistory? GetById(int? id);
 
         public void UpdateMedicaHistory(MedicaHistory MedicaHistory);
+
+        public void AddMedicaHistory(MedicaHistory MedicaHistory);
     }
 }
