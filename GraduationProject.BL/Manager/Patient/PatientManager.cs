@@ -158,6 +158,34 @@ namespace GraduationProject.BL
 
         }
         #endregion
+
+        #region DeletePatientVisit
+        public void DeletePatientVisit(int? id)
+        {
+   
+
+            PatientVisit patientVisit = _unitOfWork.patientVisitRepo.GetVisitById(id);
+
+            if (patientVisit == null)
+            {
+                return;
+            }
+
+            VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(patientVisit.DateOfVisit, patientVisit.DoctorId);
+
+            if (visitCount != null)
+            {
+                visitCount.ActualNoOfPatients--;
+
+                _unitOfWork.visitCountRepo.AddOrUpdateVisitCount(visitCount);
+            }
+
+            _unitOfWork.patientVisitRepo.DeletePatientVisit(id);
+
+            _unitOfWork.SaveChanges();
+        }
+        #endregion
+
     }
 
 }
