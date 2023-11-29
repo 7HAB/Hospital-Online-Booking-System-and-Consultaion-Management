@@ -392,12 +392,13 @@ namespace graduation_project.Controllers.Doctors
             {
                
                 VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
-                visitCounts.Add(visitCount);
-            }
+                
+            
             if (visitCounts == null)
             {
                 return NotFound();
             }
+            else { visitCounts.Add(visitCount); }}
             return Ok(visitCounts);
         }
         #endregion

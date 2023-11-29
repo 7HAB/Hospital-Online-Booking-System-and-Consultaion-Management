@@ -101,6 +101,7 @@ namespace GraduationProject.BL
             {
                 doctor.UserName = updateDoctor.PhoneNumber;
                 doctor.PhoneNumber = updateDoctor.PhoneNumber;
+                doctor.NormalizedUserName = updateDoctor.PhoneNumber;
                 doctor.Name = updateDoctor.Name;
                 doctor.Title = updateDoctor.Title;
                 doctor.Salary = updateDoctor.Salary;
@@ -140,7 +141,7 @@ namespace GraduationProject.BL
         }
         #endregion
         #region update admin by id
-        public Admin UpdateAdminByPhone (UpdateAdminByIdDto adminDto, string phone)
+        public Admin UpdateAdminByPhone (UpdateAdminByPhoneDto adminDto, string phone)
         {
             Admin? admin = _unitOfWork.adminRepo.GetAdminByPhoneNumber(phone);
             if(admin == null) { return null; }
@@ -150,6 +151,7 @@ namespace GraduationProject.BL
                 admin.Name = adminDto.Name;
                 admin.PhoneNumber = adminDto.PhoneNumber;
                 admin.UserName = adminDto.PhoneNumber;
+                admin.NormalizedUserName = adminDto.PhoneNumber;
                 _unitOfWork.adminRepo.UpdateAdminByPhone(admin);
                 _unitOfWork.SaveChanges();
             }

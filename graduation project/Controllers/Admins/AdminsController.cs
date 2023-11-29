@@ -152,7 +152,7 @@ namespace graduation_project.Controllers.Admins
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Admin"),
-            new Claim(ClaimTypes.Name, user.UserName)
+            
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -179,7 +179,7 @@ namespace graduation_project.Controllers.Admins
         #region Update Admin with phone 
         [HttpPut]
         [Route("admins/updateAdmin/{phone}")]
-        public IActionResult UpdateAdmin (UpdateAdminByIdDto updateAdmin , string phone) 
+        public IActionResult UpdateAdmin (UpdateAdminByPhoneDto updateAdmin , string phone) 
         {
             Admin? admin = _adminManager.UpdateAdminByPhone(updateAdmin , phone);
             if (admin == null) { return NotFound(); }
