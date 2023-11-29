@@ -101,6 +101,7 @@ namespace GraduationProject.BL
             {
                 doctor.UserName = updateDoctor.PhoneNumber;
                 doctor.PhoneNumber = updateDoctor.PhoneNumber;
+                doctor.NormalizedUserName = updateDoctor.PhoneNumber;
                 doctor.Name = updateDoctor.Name;
                 doctor.Title = updateDoctor.Title;
                 doctor.Salary = updateDoctor.Salary;
@@ -139,7 +140,24 @@ namespace GraduationProject.BL
             return week;
         }
         #endregion
-
+        #region update admin by id
+        public Admin UpdateAdminByPhone (UpdateAdminByPhoneDto adminDto, string phone)
+        {
+            Admin? admin = _unitOfWork.adminRepo.GetAdminByPhoneNumber(phone);
+            if(admin == null) { return null; }
+            if (admin != null)
+            {
+                admin.Id = adminDto.Id;
+                admin.Name = adminDto.Name;
+                admin.PhoneNumber = adminDto.PhoneNumber;
+                admin.UserName = adminDto.PhoneNumber;
+                admin.NormalizedUserName = adminDto.PhoneNumber;
+                _unitOfWork.adminRepo.UpdateAdminByPhone(admin);
+                _unitOfWork.SaveChanges();
+            }
+            return admin;
+        }
+        #endregion
         public WeekScheduleForDoctorsDto GetWeekScheduleById (int id)
         {
             WeekSchedule? weekSchedule = _unitOfWork.adminRepo.GetWeekScheduleById(id);

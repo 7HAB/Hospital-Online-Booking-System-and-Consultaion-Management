@@ -216,7 +216,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Doctor"),
-            new Claim(ClaimTypes.Name, user.UserName)
+           // new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -307,7 +307,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Reception"),
-            new Claim(ClaimTypes.Name, user.UserName)
+        //    new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -392,12 +392,13 @@ namespace graduation_project.Controllers.Doctors
             {
                
                 VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
-                visitCounts.Add(visitCount);
-            }
+                
+            
             if (visitCounts == null)
             {
                 return NotFound();
             }
+            else { visitCounts.Add(visitCount); }}
             return Ok(visitCounts);
         }
         #endregion

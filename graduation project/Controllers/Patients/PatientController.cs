@@ -101,7 +101,7 @@ namespace graduation_project.Controllers
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id),
         new Claim(ClaimTypes.Role, "Patient"),
-        new Claim(ClaimTypes.Name, user.UserName)
+     //   new Claim(ClaimTypes.Name, user.UserName)
     };
 
             await _userManager.AddClaimsAsync(user, claimsList);

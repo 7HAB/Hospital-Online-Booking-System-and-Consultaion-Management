@@ -40,8 +40,16 @@ namespace graduationProject.DAL
                 var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
                 if (existingDoctor != null)
                 {
-                    //DeleteImage(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingDoctor.StoredFileName));
-                    DeleteImage(existingDoctor.StoredFileName);
+                    //
+                    //
+                    //
+                    //
+                    //Image(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingDoctor.StoredFileName));
+                    
+                    
+                    
+                    
+                    Image(existingDoctor.StoredFileName);
 
                     existingDoctor.FileName = doctor.FileName;
                     existingDoctor.StoredFileName = doctor.StoredFileName;
