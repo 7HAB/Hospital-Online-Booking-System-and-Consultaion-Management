@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
@@ -164,6 +165,7 @@ namespace GraduationProject.BL
                 id = pv.Id,
                 PatientId = pv.PatientId,
                 Name = pv?.Patient?.Name,
+                PatientPhoneNumber = pv?.Patient?.PhoneNumber,
                 VisitStatus = pv?.VisitStatus,
                 ArrivalTime = pv?.ArrivalTime.ToShortTimeString()!,
                 VisitStartTime = pv?.VisitStartTime.ToShortTimeString()!,
@@ -382,8 +384,36 @@ namespace GraduationProject.BL
             return true;
         }
         #endregion
-        #region GetDoctroByPhone
-        public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
+        #region AddMedicalHistroy
+        public void AddMedicaHistory(AddMedicalHistroyDto AddMedicaHistoryDto)
+        {
+            MedicaHistory medicaHistory = new MedicaHistory
+            {
+                PatientId = AddMedicaHistoryDto.PatientId,
+                Asthma = AddMedicaHistoryDto.Asthma,
+                LowBloodPressure = AddMedicaHistoryDto.LowBloodPressure,
+                HighBloodPressure = AddMedicaHistoryDto.HighBloodPressure,
+                Diabetes = AddMedicaHistoryDto.Diabetes,
+                pregnancy = AddMedicaHistoryDto.pregnancy,
+                MartialStatus = AddMedicaHistoryDto.MartialStatus,
+                Allergies = AddMedicaHistoryDto.Allergies,
+                Depression = AddMedicaHistoryDto.Depression,
+                AnxityOrPanicDisorder = AddMedicaHistoryDto.AnxityOrPanicDisorder,
+                HeartDisease = AddMedicaHistoryDto.HeartDisease,
+                Medication = AddMedicaHistoryDto.Medication,
+                previousSurgeries = AddMedicaHistoryDto.previousSurgeries,
+                BloodGroup = AddMedicaHistoryDto.BloodGroup,
+                Other = AddMedicaHistoryDto.Other,
+                Hepatitis = AddMedicaHistoryDto.Hepatitis,
+
+            };
+            _unitOfWork.medicalHistoryRepo.AddMedicaHistory(medicaHistory);
+            _unitOfWork.SaveChanges();
+
+        }
+            #endregion
+            #region GetDoctroByPhone
+            public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
             {
                 Doctor? doctor = _unitOfWork.doctorRepo.GetDoctorByPhoneNumber(phoneNumber);
 

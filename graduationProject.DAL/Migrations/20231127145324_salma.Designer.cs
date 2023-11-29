@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using graduationProject.DAL;
 
@@ -11,9 +12,16 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    partial class HospitalContextModelSnapshot : ModelSnapshot
+<<<<<<<< HEAD:graduationProject.DAL/Migrations/20231127145324_salma.Designer.cs
+    [Migration("20231127145324_salma")]
+    partial class salma
+========
+    [Migration("20231125155517_m1-mayar")]
+    partial class m1mayar
+>>>>>>>> master:graduationProject.DAL/Migrations/20231125155517_m1-mayar.Designer.cs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -267,7 +275,7 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("EndTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
@@ -276,8 +284,7 @@ namespace graduationProject.DAL.Migrations
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartTime")
-                        .IsRequired()
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

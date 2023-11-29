@@ -10,6 +10,9 @@ namespace graduationProject.DAL
     {
         public PatientVisit? GetById(int? id);
         public void AddPatientVisit(PatientVisit patientVisit);
-        public void UpdatePatientVisit(PatientVisit patientVisit); 
+        public void UpdatePatientVisit(PatientVisit patientVisit);
+        public PatientVisit GetVisitById(int? id);
+
+        public void DeletePatientVisit(int? id);
     }
 }

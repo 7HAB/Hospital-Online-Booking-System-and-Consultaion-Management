@@ -25,5 +25,6 @@ namespace graduationProject.DAL
         public PatientVisit GetVisit(int id);
         public void UpdateAdminByPhone(Admin admin);
 
+        public Reception? GetReceptionByPhoneNumber(string PhoneNumber);
     }
 }

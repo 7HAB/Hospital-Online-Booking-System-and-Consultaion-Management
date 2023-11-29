@@ -12,6 +12,7 @@ namespace GraduationProject.BL
         public int id {  get; set; }
         public string? PatientId { get; set; }
         public string? Name { get; set; }
+        public string? PatientPhoneNumber { get; set; }
         public String? VisitStatus { get; set; }
         public string ArrivalTime { get; set; }
         public string VisitStartTime { get; set; }

@@ -524,6 +524,16 @@ namespace graduation_project.Controllers.Doctors
             return Ok();
         }
         #endregion
+        # region AddMedicaHistory
+        [HttpPost]
+        [Route("MedicalHistory")]
+        public ActionResult AddMedicaHistory(AddMedicalHistroyDto addMedicalHistroyDto)
+        {
+            _doctorManager.AddMedicaHistory(addMedicalHistroyDto);
+            return Ok();
+        }
+   
+        #endregion
 
     }
 
