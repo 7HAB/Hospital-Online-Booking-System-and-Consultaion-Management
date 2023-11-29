@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -118,6 +119,45 @@ namespace GraduationProject.BL
             return doctor;
         }
         #endregion
+
+        #region update week schedule record 
+        public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id)
+        {
+            WeekSchedule? week = _unitOfWork.adminRepo.GetWeekScheduleById(id);
+            if (week == null) { return null; }
+            if (week != null)
+            {
+                week.Id = id;
+                week.LimitOfPatients = weekSchedule.LimitOfPatients;
+                week.StartTime = DateTime.Parse(weekSchedule.StartTime);
+                week.EndTime = DateTime.Parse(weekSchedule.EndTime);
+                week.IsAvailable = weekSchedule.IsAvailable;
+                week.DayOfWeek = weekSchedule.DayOfWeek;
+                _unitOfWork.adminRepo.UpdateWeekScheduleRecord(week);
+                _unitOfWork.SaveChanges();
+            }
+            return week;
+        }
+        #endregion
+
+        public WeekScheduleForDoctorsDto GetWeekScheduleById (int id)
+        {
+            WeekSchedule? weekSchedule = _unitOfWork.adminRepo.GetWeekScheduleById(id);
+            if (weekSchedule == null) 
+            {
+                return null;
+            }
+            return new WeekScheduleForDoctorsDto
+            {
+                Id = id,
+                DayOfWeek = weekSchedule.DayOfWeek,
+                LimitOfPatients = weekSchedule.LimitOfPatients,
+                IsAvailable = weekSchedule.IsAvailable,
+                StartTime = weekSchedule?.StartTime.ToString(),
+                EndTime = weekSchedule?.EndTime.ToString(),
+            };
+
+        }
         #region Get Doctor By ID For Admin
         public GetDoctorByIDForAdminDto GetDoctorByIdForAdmin(string id)
         {
@@ -128,20 +168,21 @@ namespace GraduationProject.BL
             return new GetDoctorByIDForAdminDto
             {
                 ID = doctor.Id,
-                DateOfBirth = doctor.DateOfBirth,
+                DateOfBirth = doctor.DateOfBirth.ToLongDateString(),
                 Name = doctor.Name,
                 PhoneNumber = doctor.PhoneNumber,
                 Title = doctor.Title,
                 Salary = doctor.Salary,
                 Description = doctor.Description,
                 SpecializationName = doctor.specialization.Name,
+                Status = doctor.Status,
                 WeekSchadual = doctor.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
                     Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
-                    StartTime = d.StartTime?.ToShortTimeString(),
-                    EndTime = d.EndTime?.ToShortTimeString(),
+                    StartTime = d.StartTime.ToShortTimeString(),
+                    EndTime = d.EndTime.ToShortTimeString(),
                     IsAvailable = d.IsAvailable,
                     LimitOfPatients = d.LimitOfPatients,
                 }).ToList(),
@@ -154,16 +195,77 @@ namespace GraduationProject.BL
         #region Add Week Schedule
         public void AddWeekSchedule(AddWeekScheduleDto addWeekSchedule)
         {
-            WeekSchedule weekSchedule = new WeekSchedule
+            for (int i = 0; i < 7; i++)
             {
-                DayOfWeek = addWeekSchedule.DayOfWeek,
-                LimitOfPatients = addWeekSchedule.LimitOfPatients,
-                StartTime = addWeekSchedule.StartTime,
-                EndTime = addWeekSchedule.EndTime,
-                DoctorId = addWeekSchedule.DoctorId,
-                IsAvailable = addWeekSchedule.IsAvailable,
+                
+                WeekSchedule weekSchedule = new WeekSchedule
+                {
+                    DayOfWeek = addWeekSchedule.DayOfWeek+i,
+                    LimitOfPatients = addWeekSchedule.LimitOfPatients,
+                    StartTime = addWeekSchedule.StartTime,
+                    EndTime = addWeekSchedule.EndTime,
+                    DoctorId = addWeekSchedule.DoctorId,
+                    IsAvailable = addWeekSchedule.IsAvailable,
+                };
+                _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
+            }
+        }
+        #endregion
+        #region update patient status
+        public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            PatientVisit patientVisit = _unitOfWork.adminRepo.GetVisit(updateArrivalPatientStatusDto.Id);
+            if (patientVisit == null)
+            {
+                return null!;
+            }
+            if(updateArrivalPatientStatusDto.VisitStatus == "Arrived")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = DateTime.Now;
+                patientVisit.VisitStartTime = patientVisit.VisitStartTime;
+                patientVisit.VisitEndTime = patientVisit.VisitEndTime;
+            }
+            else if (updateArrivalPatientStatusDto.VisitStatus == "inProgress")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = patientVisit.ArrivalTime;
+                patientVisit.VisitStartTime = DateTime.Now;
+                patientVisit.VisitEndTime = patientVisit.VisitEndTime;
+            }
+            else if(updateArrivalPatientStatusDto.VisitStatus == "done")
+            {
+                patientVisit.VisitStatus = updateArrivalPatientStatusDto.VisitStatus;
+                patientVisit.ArrivalTime = patientVisit.ArrivalTime;
+                patientVisit.VisitStartTime = patientVisit.VisitStartTime;
+                patientVisit.VisitEndTime = DateTime.Now;
+            }
+            _unitOfWork.adminRepo.UpdateArrivedPatientStatus(patientVisit);
+            _unitOfWork.SaveChanges();
+            return new GetAllPatientsWithDateDto
+            {
+                id = patientVisit.Id,
+                PatientId = patientVisit.PatientId,
+                Name = patientVisit.Patient?.Name,
+                PatientPhoneNumber = patientVisit.Patient?.PhoneNumber,
+                VisitStatus = patientVisit.VisitStatus,
+                ArrivalTime = patientVisit.ArrivalTime.ToShortTimeString(),
+                VisitStartTime = patientVisit.VisitStartTime.ToShortTimeString(),
+                VisitEndTime = patientVisit.VisitEndTime.ToShortTimeString(),
             };
-            _unitOfWork.adminRepo.AddWeekSchedule(weekSchedule);
+        }
+        #endregion
+        #region get reception by phone number
+        public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber)
+        {
+            Reception? dbReception = _unitOfWork.adminRepo.GetReceptionByPhoneNumber(phoneNumber);
+            if (dbReception == null) { return null! ; }
+            return new GetReceptionByPhoneNumberDto
+            {
+                Id = dbReception.Id,
+                Name = dbReception.Name!,
+                PhoneNumber = dbReception.PhoneNumber!
+            };
         }
         #endregion
     }

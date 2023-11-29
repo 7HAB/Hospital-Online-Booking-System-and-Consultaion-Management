@@ -24,5 +24,7 @@ namespace GraduationProject.BL
         public bool Depression { get; set; }
         public bool Allergies { get; set; }
         public String? Other { get; set; }
+        public int Id { get; set; }
+        public string? PatientId { get; set; }
     }
 }
