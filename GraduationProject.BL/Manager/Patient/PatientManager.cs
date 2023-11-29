@@ -125,7 +125,7 @@ namespace GraduationProject.BL
             PatientVisit pv = new PatientVisit
             {
                 PatientId = addPatientVisitDto.PatientId,
-                DateOfVisit = addPatientVisitDto.DateOfVisit,
+                DateOfVisit = DateTime.Parse(addPatientVisitDto.DateOfVisit),
                 DoctorId = addPatientVisitDto.DoctorId,
             };
             _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
@@ -141,7 +141,7 @@ namespace GraduationProject.BL
                 VisitCount AddVisitCount = new VisitCount
                 {
                     DoctorId = addPatientVisitDto.DoctorId,
-                    Date = addPatientVisitDto.DateOfVisit,
+                    Date = DateTime.Parse(addPatientVisitDto.DateOfVisit),
                     LimitOfPatients = weekSchedule.LimitOfPatients,
                     WeekScheduleId = weekSchedule.Id,
                     ActualNoOfPatients = 1,

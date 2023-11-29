@@ -568,7 +568,10 @@ namespace graduationProject.DAL.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .On
+                        
+                        
+                        (DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 

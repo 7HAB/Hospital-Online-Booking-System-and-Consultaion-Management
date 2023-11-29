@@ -102,7 +102,10 @@ namespace graduationProject.DAL.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        on
+                        
+                        
+                        : ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
