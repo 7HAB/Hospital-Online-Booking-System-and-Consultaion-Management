@@ -23,5 +23,10 @@ namespace graduationProject.DAL
             _context.Set<MedicaHistory>().Update(MedicaHistory);
         }
 
+        public void AddMedicaHistory(MedicaHistory MedicaHistory)
+        {
+            _context.Set<MedicaHistory>().Add(MedicaHistory);
+        }
+
     }
 }
