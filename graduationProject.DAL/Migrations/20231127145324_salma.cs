@@ -231,7 +231,7 @@ namespace graduationProject.DAL.Migrations
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Status = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -350,7 +350,7 @@ namespace graduationProject.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActualNoOfPatients = table.Column<int>(type: "int", nullable: false),
-                    LimitOfPatients = table.Column<int>(type: "int", nullable: false),
+                    LimitOfPatients = table.Column<int>(type: "int", nullable: true),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     WeekScheduleId = table.Column<int>(type: "int", nullable: false),
                     Day = table.Column<int>(type: "int", nullable: true)
@@ -371,7 +371,7 @@ namespace graduationProject.DAL.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DayOfWeek = table.Column<int>(type: "int", nullable: false),
+                    DayOfWeek = table.Column<int>(type: "int", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
