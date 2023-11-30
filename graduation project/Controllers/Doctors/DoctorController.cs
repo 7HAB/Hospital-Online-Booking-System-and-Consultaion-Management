@@ -204,7 +204,8 @@ namespace graduation_project.Controllers.Doctors
                 AssistantName = registerDto.AssistantName,
                 AssistantPhoneNumber = registerDto.AssistantPhoneNumber,
                 AssistantDateOfBirth = registerDto.AssistantDateOfBirth,
-                SpecializationId = registerDto.SpecializationId
+                SpecializationId = registerDto.SpecializationId,
+                Status = false
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
@@ -394,11 +395,12 @@ namespace graduation_project.Controllers.Doctors
                 VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
                 
             
-            if (visitCounts == null)
+            if (visitCount == null)
             {
                 return NotFound();
             }
-            else { visitCounts.Add(visitCount); }}
+            else { visitCounts.Add(visitCount); }
+            }
             return Ok(visitCounts);
         }
         #endregion

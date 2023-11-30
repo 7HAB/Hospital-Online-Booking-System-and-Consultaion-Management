@@ -49,7 +49,7 @@ namespace graduationProject.DAL
                     
                     
                     
-                    Image(existingDoctor.StoredFileName);
+                    //Image(existingDoctor.StoredFileName);
 
                     existingDoctor.FileName = doctor.FileName;
                     existingDoctor.StoredFileName = doctor.StoredFileName;
