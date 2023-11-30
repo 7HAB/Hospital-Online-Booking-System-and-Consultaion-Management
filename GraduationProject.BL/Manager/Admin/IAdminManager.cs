@@ -20,6 +20,19 @@ namespace GraduationProject.BL
 
         public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
         public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
+
+        public List<GetTopRatedDoctorsDto> GetAverageRateForEachDoctor();
+
+        public int GetNumberOfPatientsForADay(DateTime date);
+
+        public int GetNumberOfAvailableDoctorInADay(DateTime date);
+
+        public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate);
+
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId);
+        public List<GetDoctorsVisitsNumberDto> GetDoctorsPatientVisitsNumber();
+
+
         public WeekScheduleForDoctorsDto GetWeekScheduleById(int id);
         public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id);
 

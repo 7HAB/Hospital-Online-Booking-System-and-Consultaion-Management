@@ -1,6 +1,7 @@
 ﻿using graduationProject.DAL;
 using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
+using GraduationProject.BL.Dtos.Doctor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -37,7 +38,7 @@ namespace GraduationProject.BL
                     Status = d.Status,
                     AssistantID = d.AssistantID,
                     AssistantName = d.AssistantName,
-                    AssistantPhoneNumber= d.AssistantPhoneNumber,
+                    AssistantPhoneNumber = d.AssistantPhoneNumber,
                     AssistantDateOfBirth = d.DateOfBirth.ToShortDateString(),
                 }).ToList()
             }).ToList();
@@ -78,7 +79,7 @@ namespace GraduationProject.BL
             Doctor? doctor = _unitOfWork.adminRepo.ChangeDoctorStatus(doctorId);
             if (doctor != null)
             {
-                if(doctor.Status == true)
+                if (doctor.Status == true)
                 {
                     doctor.Status = false;
                 }
@@ -88,7 +89,7 @@ namespace GraduationProject.BL
                 }
                 _unitOfWork.SaveChanges();
             }
-            return doctor;   
+            return doctor;
         }
         #endregion
         #region Update Doctor by Id
@@ -286,5 +287,76 @@ namespace GraduationProject.BL
             };
         }
         #endregion
+
+        #region Get Top Rated Doctors
+        public List<GetTopRatedDoctorsDto> GetAverageRateForEachDoctor()
+        {
+            List<Doctor> allDoctors = _unitOfWork.adminRepo.GetAverageRateForEachDoctor();
+
+            List<GetTopRatedDoctorsDto> topRatedDoctors = allDoctors
+                .Select(doctor => new GetTopRatedDoctorsDto
+                {
+                    Id = doctor.Id,
+                    Name = doctor.Name,
+                    SpecializationId = doctor.SpecializationId,
+                    AverageRate = doctor.AverageRate,
+                    patientVisits = doctor.patientVisits,
+                })
+                .ToList();
+
+            return topRatedDoctors;
+        }
+
+        #endregion
+
+        #region Get Number Of Patients For a day
+        public int GetNumberOfPatientsForADay(DateTime date)
+        {
+            return _unitOfWork.adminRepo.GetNumberOfPatientsForADay(date);
+        }
+        #endregion
+
+        #region Get Available Doctors For a Day
+        public int GetNumberOfAvailableDoctorInADay(DateTime date)
+        {
+            return _unitOfWork.adminRepo.GetNumberOfAvailableDoctorInADay(date);
+        }
+        #endregion
+
+        #region Get Number of Patients for a period
+        public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate)
+        {
+            return _unitOfWork.adminRepo.GetNumberOfPatientsForAPeriod(startDate, endDate);
+        }
+        #endregion
+
+        #region GetHighDemandSpecialization
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId)
+        {
+            return _unitOfWork.adminRepo.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
+        }
+        #endregion
+        #region GetDoctorsPatientVisitsNumber
+        public List<GetDoctorsVisitsNumberDto> GetDoctorsPatientVisitsNumber()
+        {
+            List<Doctor> doctors= _unitOfWork.adminRepo.GetDoctorsPatientVisitsNumber();
+            return doctors.Select(x => new GetDoctorsVisitsNumberDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                patientVisits = x.patientVisits?.Select(x => new PatientVisitsForDoctorsDto
+                {
+                    Id = x.Id,
+                    doctorId = x.DoctorId,
+                    patientId = x.PatientId
+                 }).ToList()
+
+
+            }).ToList();
+            
+        }
+        #endregion
+
+
     }
 }

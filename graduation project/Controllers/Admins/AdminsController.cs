@@ -2,6 +2,8 @@
 using graduationProject.DAL.Data.Models;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
+using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -25,11 +27,14 @@ namespace graduation_project.Controllers.Admins
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AdminsController(IConfiguration configuration,
-            UserManager<IdentityUser> userManager, IAdminManager adminManager)
+            UserManager<IdentityUser> userManager, IAdminManager adminManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _userManager = userManager;
             _adminManager = adminManager;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
+
         }
         #region Get Admin By Phone Number
         [HttpGet]
@@ -196,17 +201,17 @@ namespace graduation_project.Controllers.Admins
             if (GetDoctorById == null)
                 return NotFound("Doctor not found");
 
-            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
 
-            //baseUrl = baseUrl.TrimEnd('/');
+            baseUrl = baseUrl.TrimEnd('/');
 
-            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
-            //// Remove the wwwroot part from the URL
-            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
 
 
 
-            //GetDoctorById.ImageUrl = imageUrl;
+            GetDoctorById.ImageUrl = imageUrl;
 
             return GetDoctorById;
         }
@@ -264,6 +269,74 @@ namespace graduation_project.Controllers.Admins
             _adminManager.AddWeekSchedule(addWeekScheduleDto);
             return Ok();
         }
+        #endregion
+
+
+
+
+
+        #region Get Top Rated Doctors
+        [HttpGet]
+        [Route("AverageRateForDoctors")]
+        public IActionResult GetAverageRateForEachDoctor()
+        {
+            //List<Doctor> allDrs = _adminManager.GetAverageRateForEachDoctor();
+           return Ok(_adminManager.GetAverageRateForEachDoctor()) ;
+        }
+        #endregion
+
+        #region Get Number Of Patient for a day
+        [HttpGet]
+        [Route("NumberOfPatientForADay")]
+        public IActionResult  GetNumberOfPatientForADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Available Doctors For a Day
+        [HttpGet]
+        [Route("NumberOfAvailableDoctorsForADay")]
+        public IActionResult GetNumberOfAvailableDoctorInADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfAvailableDoctorInADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Number of Doctors for a period
+        [HttpGet]
+        [Route("NumberOfDoctorsForAPeriod")]
+        public IActionResult GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForAPeriod(startDate, endDate);
+            return Ok(counter);
+        }
+        #endregion
+
+
+        #region GetHighDemandSpecialization
+        [HttpGet]
+        [Route("PatientVisitsInAPeriodAndSpecialization")]
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId)
+        {
+            return _adminManager.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
+        }
+        #endregion
+
+        #region PatientVisitsForDoctors
+        [HttpGet]
+        [Route("doctors-visits-number")]
+        public ActionResult<List<GetDoctorsVisitsNumberDto>?> GetDoctorsVisitsNumber()
+        {
+            List<GetDoctorsVisitsNumberDto>? getVisitsNumberDto = _adminManager.GetDoctorsPatientVisitsNumber();
+
+            if (getVisitsNumberDto == null) { return NotFound(); }
+
+            return getVisitsNumberDto;
+        }
+
         #endregion
         #region get reception by phone number
         [HttpGet]
