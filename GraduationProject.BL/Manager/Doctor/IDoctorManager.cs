@@ -22,7 +22,7 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
-        Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles);
+        public  Task<Doctor> UploadDoctorImage(string doctorId, IFormFile imageFile);
 
         //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
