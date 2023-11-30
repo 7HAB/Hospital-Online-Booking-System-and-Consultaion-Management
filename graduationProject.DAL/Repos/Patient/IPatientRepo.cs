@@ -15,7 +15,7 @@ namespace graduationProject.DAL
         public MedicaHistory? GetMedicaHistoryByPhoneNumber(string phoneNumber);
         //public List<PatientVisit>?  GetPatientVisitsByPhoneNumber(string phoneNumber);
         public Patient? GetPatientVisitsByPhoneNumber(string phoneNumber);
-        public List<Patient> GetAllPatientsByDate(DateTime date, string doctorId);
+        public List<PatientVisit> GetAllPatientsByDate(DateTime date, string doctorId);
         public Patient? GetPatientForDoctor(string patientId);
 
     }

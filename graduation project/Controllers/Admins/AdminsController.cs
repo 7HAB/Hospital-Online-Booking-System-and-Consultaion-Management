@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
@@ -53,6 +54,15 @@ namespace graduation_project.Controllers.Admins
             return _adminManager.GetAllSpecializations();
         }
         #endregion
+        #region get week schedule record by id
+        [HttpGet]
+        [Route("weekScheduleRecord/{id}")]
+        public ActionResult<WeekScheduleForDoctorsDto> GetWeekScheduleRecordById(int id)
+        {
+            return _adminManager.GetWeekScheduleById(id);
+        }
+        #endregion
+
         #region admin login
         [HttpPost]
         [Route("Admins/login")]
@@ -110,6 +120,19 @@ namespace graduation_project.Controllers.Admins
 
         }
         #endregion
+        #region Update week schedule record With Id
+        [HttpPut]
+        [Route("admins/updateWeekSchedule/{id}")]
+        public IActionResult UpdateWeekSchedule(WeekScheduleForDoctorsDto? week, int id)
+        {
+            WeekSchedule weekSchedule = _adminManager.UpdateWeekScheduleRecord(week,id);
+            if (weekSchedule == null)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+        #endregion
         #region admin register
 
         [HttpPost]
@@ -134,7 +157,7 @@ namespace graduation_project.Controllers.Admins
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Admin"),
-            new Claim(ClaimTypes.Name, user.UserName)
+            
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -155,6 +178,18 @@ namespace graduation_project.Controllers.Admins
                 return NotFound();
             }
             return Ok();
+        }
+        #endregion
+
+        #region Update Admin with phone 
+        [HttpPut]
+        [Route("admins/updateAdmin/{phone}")]
+        public IActionResult UpdateAdmin (UpdateAdminByPhoneDto updateAdmin , string phone) 
+        {
+            Admin? admin = _adminManager.UpdateAdminByPhone(updateAdmin , phone);
+            if (admin == null) { return NotFound(); }
+            return Ok();
+
         }
         #endregion
         #region GetDoctorById For Admin
@@ -208,7 +243,23 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
-       
+        #region update patient status
+        [HttpPut]
+        [Route("admins/updatePatientVisitStatus")]
+        public ActionResult<GetAllPatientsWithDateDto> UpdatePatientVisit(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            GetAllPatientsWithDateDto patientVisit = _adminManager.UpdateArrivedPatientStatus(updateArrivalPatientStatusDto);
+            if (patientVisit != null)
+            {
+                return patientVisit;
+            }
+            else
+            {
+                return NotFound(); 
+            }
+            
+        }
+        #endregion
 
         #region add week schedule
         [HttpPost]
@@ -287,5 +338,16 @@ namespace graduation_project.Controllers.Admins
         }
 
         #endregion
+        #region get reception by phone number
+        [HttpGet]
+        [Route("Reception/{PhoneNumber}")]
+        public ActionResult<GetReceptionByPhoneNumberDto> GetReceptionByPhoneNumber(string PhoneNumber)
+        {
+            GetReceptionByPhoneNumberDto reception = _adminManager.GetReceptionByPhoneNumber(PhoneNumber);
+            if (reception == null) { return NotFound(); }
+            return reception!;
+        }
+        #endregion
+
     }
 }

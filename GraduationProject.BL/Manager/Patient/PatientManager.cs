@@ -61,7 +61,9 @@ namespace GraduationProject.BL
                 AnxityOrPanicDisorder = medicalHistory.AnxityOrPanicDisorder,
                 Depression = medicalHistory.Depression,
                 Allergies = medicalHistory.Allergies,
-                Other = medicalHistory.Other
+                Other = medicalHistory.Other,
+                Id = medicalHistory.Id,
+                PatientId = medicalHistory.PatientId
             };
 
         }
@@ -123,7 +125,7 @@ namespace GraduationProject.BL
             PatientVisit pv = new PatientVisit
             {
                 PatientId = addPatientVisitDto.PatientId,
-                DateOfVisit = addPatientVisitDto.DateOfVisit,
+                DateOfVisit = DateTime.Parse(addPatientVisitDto.DateOfVisit),
                 DoctorId = addPatientVisitDto.DoctorId,
             };
             _unitOfWork.patientVisitRepo.AddPatientVisit(pv);
@@ -139,7 +141,7 @@ namespace GraduationProject.BL
                 VisitCount AddVisitCount = new VisitCount
                 {
                     DoctorId = addPatientVisitDto.DoctorId,
-                    Date = addPatientVisitDto.DateOfVisit,
+                    Date = DateTime.Parse(addPatientVisitDto.DateOfVisit),
                     LimitOfPatients = weekSchedule.LimitOfPatients,
                     WeekScheduleId = weekSchedule.Id,
                     ActualNoOfPatients = 1,
@@ -156,6 +158,34 @@ namespace GraduationProject.BL
 
         }
         #endregion
+
+        #region DeletePatientVisit
+        public void DeletePatientVisit(int? id)
+        {
+   
+
+            PatientVisit patientVisit = _unitOfWork.patientVisitRepo.GetVisitById(id);
+
+            if (patientVisit == null)
+            {
+                return;
+            }
+
+            VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(patientVisit.DateOfVisit, patientVisit.DoctorId);
+
+            if (visitCount != null)
+            {
+                visitCount.ActualNoOfPatients--;
+
+                _unitOfWork.visitCountRepo.AddOrUpdateVisitCount(visitCount);
+            }
+
+            _unitOfWork.patientVisitRepo.DeletePatientVisit(id);
+
+            _unitOfWork.SaveChanges();
+        }
+        #endregion
+
     }
 
 }

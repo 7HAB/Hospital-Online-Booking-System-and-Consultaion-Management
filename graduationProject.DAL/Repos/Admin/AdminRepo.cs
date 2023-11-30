@@ -42,6 +42,38 @@ namespace graduationProject.DAL
             return doctorToUpdate;
         }
 
+        public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit )
+        {
+            _context.Set<PatientVisit>().Update(patientVisit);
+            return patientVisit;
+        }
+        public PatientVisit GetVisit(int id)
+        {
+            return _context.Set<PatientVisit>().Include(pv => pv.Patient).FirstOrDefault(pv => pv.Id == id)!;
+        }
+        #region update week schedule record
+        public void UpdateWeekScheduleRecord (WeekSchedule schedule)
+        {
+
+            _context.Set<WeekSchedule>().Update(schedule);
+            _context.SaveChanges();
+        }
+        #endregion
+
+        #region update admin by id
+        public void UpdateAdminByPhone(Admin admin)
+        {
+            _context.Set<Admin>().Update(admin);
+        }
+        #endregion
+
+        #region get week schedule record by id
+        public WeekSchedule? GetWeekScheduleById(int id)
+        {
+            return _context.Set<WeekSchedule>().FirstOrDefault(w => w.Id == id);
+
+        }
+        #endregion
         public Doctor? ChangeDoctorStatus(string doctorId)
         {
             Doctor? doctorToUpdate = _context.Set<Doctor>().FirstOrDefault(d => d.Id == doctorId);
@@ -143,6 +175,12 @@ namespace graduationProject.DAL
                 .Include(d => d.visitCounts)
                 .ToList();
         }
+        #region get reception by phone number
+        public Reception? GetReceptionByPhoneNumber(string PhoneNumber) 
+        {
+            return _context?.Set<Reception>().FirstOrDefault(r => r.PhoneNumber == PhoneNumber);
+        }
+        #endregion
     }
 
     }

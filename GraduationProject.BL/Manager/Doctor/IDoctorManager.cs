@@ -36,6 +36,8 @@ namespace GraduationProject.BL
 
         public bool UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto);
 
+        public void AddMedicaHistory(AddMedicalHistroyDto AddMedicaHistoryDto);
+
 
     }
 }

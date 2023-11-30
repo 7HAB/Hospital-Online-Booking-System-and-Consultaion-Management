@@ -101,7 +101,7 @@ namespace graduation_project.Controllers
     {
         new Claim(ClaimTypes.NameIdentifier, user.Id),
         new Claim(ClaimTypes.Role, "Patient"),
-        new Claim(ClaimTypes.Name, user.UserName)
+     //   new Claim(ClaimTypes.Name, user.UserName)
     };
 
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -185,6 +185,24 @@ namespace graduation_project.Controllers
             _patientManager.AddPatientVisit(addPatientVisitDto);
             return StatusCode(StatusCodes.Status201Created);
         }
+        #endregion
+        #region DeletePatientVisit
+        [HttpDelete]
+        [Route("deletepatientvisit/{id}")]
+
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                _patientManager.DeletePatientVisit(id);
+                return NoContent(); 
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal Server Error"); 
+            }
+        }
+
         #endregion
     }
 }

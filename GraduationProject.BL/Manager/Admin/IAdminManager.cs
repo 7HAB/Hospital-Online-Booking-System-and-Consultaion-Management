@@ -1,4 +1,5 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,5 +33,12 @@ namespace GraduationProject.BL
         public List<GetDoctorsVisitsNumberDto> GetDoctorsPatientVisitsNumber();
 
 
+        public WeekScheduleForDoctorsDto GetWeekScheduleById(int id);
+        public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id);
+
+        public Admin UpdateAdminByPhone(UpdateAdminByPhoneDto adminDto, string phone);
+
+        public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto);
+        public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber);
     }
 }

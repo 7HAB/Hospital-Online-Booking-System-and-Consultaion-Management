@@ -204,7 +204,8 @@ namespace graduation_project.Controllers.Doctors
                 AssistantName = registerDto.AssistantName,
                 AssistantPhoneNumber = registerDto.AssistantPhoneNumber,
                 AssistantDateOfBirth = registerDto.AssistantDateOfBirth,
-                SpecializationId = registerDto.SpecializationId
+                SpecializationId = registerDto.SpecializationId,
+                Status = false
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
@@ -216,7 +217,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Doctor"),
-            new Claim(ClaimTypes.Name, user.UserName)
+           // new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -307,7 +308,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Reception"),
-            new Claim(ClaimTypes.Name, user.UserName)
+        //    new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -361,7 +362,7 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region Add Visit Count Records
         [HttpPost]
-        [Route("addVisitCount/{Startdate}/{EndDate}")]
+        [Route("addVisitCount/{Startdate}")]
         public ActionResult AddVisitCountRecords(DateTime Startdate, DateTime EndDate)
         {
             _doctorManager.AddVisitCountRecords(Startdate,EndDate);
@@ -392,11 +393,13 @@ namespace graduation_project.Controllers.Doctors
             {
                
                 VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
-                visitCounts.Add(visitCount);
-            }
-            if (visitCounts == null)
+                
+            
+            if (visitCount == null)
             {
                 return NotFound();
+            }
+            else { visitCounts.Add(visitCount); }
             }
             return Ok(visitCounts);
         }
@@ -520,8 +523,18 @@ namespace graduation_project.Controllers.Doctors
             {
                 return NotFound();
             }
-            return StatusCode(StatusCodes.Status202Accepted);
+            return Ok();
         }
+        #endregion
+        # region AddMedicaHistory
+        [HttpPost]
+        [Route("MedicalHistory")]
+        public ActionResult AddMedicaHistory(AddMedicalHistroyDto addMedicalHistroyDto)
+        {
+            _doctorManager.AddMedicaHistory(addMedicalHistroyDto);
+            return Ok();
+        }
+   
         #endregion
 
     }
