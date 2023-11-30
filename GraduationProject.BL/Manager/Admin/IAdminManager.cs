@@ -29,6 +29,7 @@ namespace GraduationProject.BL
         public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate);
 
         public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId);
+        public List<GetDoctorsVisitsNumberDto> GetDoctorsPatientVisitsNumber();
 
 
     }

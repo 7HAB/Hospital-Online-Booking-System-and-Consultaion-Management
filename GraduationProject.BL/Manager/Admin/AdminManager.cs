@@ -1,6 +1,7 @@
 ﻿using graduationProject.DAL;
 using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
+using GraduationProject.BL.Dtos.Doctor;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -215,5 +216,27 @@ namespace GraduationProject.BL
             return _unitOfWork.adminRepo.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
         }
         #endregion
+        #region GetDoctorsPatientVisitsNumber
+        public List<GetDoctorsVisitsNumberDto> GetDoctorsPatientVisitsNumber()
+        {
+            List<Doctor> doctors= _unitOfWork.adminRepo.GetDoctorsPatientVisitsNumber();
+            return doctors.Select(x => new GetDoctorsVisitsNumberDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                patientVisits = x.patientVisits?.Select(x => new PatientVisitsForDoctorsDto
+                {
+                    Id = x.Id,
+                    doctorId = x.DoctorId,
+                    patientId = x.PatientId
+                 }).ToList()
+
+
+            }).ToList();
+            
+        }
+        #endregion
+
+
     }
 }

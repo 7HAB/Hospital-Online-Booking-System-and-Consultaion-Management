@@ -1,6 +1,8 @@
 ﻿using graduationProject.DAL;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
+using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -24,11 +26,14 @@ namespace graduation_project.Controllers.Admins
         private readonly IHttpContextAccessor _httpContextAccessor;
 
         public AdminsController(IConfiguration configuration,
-            UserManager<IdentityUser> userManager, IAdminManager adminManager)
+            UserManager<IdentityUser> userManager, IAdminManager adminManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _userManager = userManager;
             _adminManager = adminManager;
+            _webHostEnvironment = webHostEnvironment;
+            _httpContextAccessor = httpContextAccessor;
+
         }
         #region Get Admin By Phone Number
         [HttpGet]
@@ -161,17 +166,17 @@ namespace graduation_project.Controllers.Admins
             if (GetDoctorById == null)
                 return NotFound("Doctor not found");
 
-            //var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
 
-            //baseUrl = baseUrl.TrimEnd('/');
+            baseUrl = baseUrl.TrimEnd('/');
 
-            //var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
-            //// Remove the wwwroot part from the URL
-            //imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
 
 
 
-            //GetDoctorById.ImageUrl = imageUrl;
+            GetDoctorById.ImageUrl = imageUrl;
 
             return GetDoctorById;
         }
@@ -267,6 +272,20 @@ namespace graduation_project.Controllers.Admins
         {
             return _adminManager.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
         }
+        #endregion
+
+        #region PatientVisitsForDoctors
+        [HttpGet]
+        [Route("doctors-visits-number")]
+        public ActionResult<List<GetDoctorsVisitsNumberDto>?> GetDoctorsVisitsNumber()
+        {
+            List<GetDoctorsVisitsNumberDto>? getVisitsNumberDto = _adminManager.GetDoctorsPatientVisitsNumber();
+
+            if (getVisitsNumberDto == null) { return NotFound(); }
+
+            return getVisitsNumberDto;
+        }
+
         #endregion
     }
 }

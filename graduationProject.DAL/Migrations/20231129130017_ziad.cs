@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-    public partial class bisho1 : Migration
+    public partial class ziad : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -231,7 +231,8 @@ namespace graduationProject.DAL.Migrations
                     AssistantName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantPhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AssistantDateOfBirth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Status = table.Column<bool>(type: "bit", nullable: false)
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    AverageRate = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

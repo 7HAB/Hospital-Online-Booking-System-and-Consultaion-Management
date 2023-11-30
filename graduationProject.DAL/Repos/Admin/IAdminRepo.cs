@@ -26,6 +26,8 @@ namespace graduationProject.DAL
         public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate);
 
         public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId);
+        public List<Doctor> GetDoctorsPatientVisitsNumber();
+
 
 
 

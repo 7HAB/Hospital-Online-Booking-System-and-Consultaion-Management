@@ -90,6 +90,8 @@ namespace graduationProject.DAL
                         SpecializationId = doctor.SpecializationId,
                         VisitCount = doctor.visitCounts,
                         PatientVisit = doctor.patientVisits,
+                        
+
                         Rate = visit.Rate ?? 0
                     })
                 .GroupBy(result => result.DoctorId)
@@ -134,6 +136,13 @@ namespace graduationProject.DAL
             return patientVisits;
         }
 
+        public List<Doctor> GetDoctorsPatientVisitsNumber()
+        {
+            return _context.Set<Doctor>()
+                .Include(d => d.patientVisits)
+                .Include(d => d.visitCounts)
+                .ToList();
+        }
     }
 
     }

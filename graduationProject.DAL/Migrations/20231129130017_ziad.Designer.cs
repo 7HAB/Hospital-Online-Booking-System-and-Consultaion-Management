@@ -12,8 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-    [Migration("20231126162502_bisho1")]
-    partial class bisho1
+    [Migration("20231129130017_ziad")]
+    partial class ziad
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -496,6 +496,9 @@ namespace graduationProject.DAL.Migrations
 
                     b.Property<string>("AssistantPhoneNumber")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("AverageRate")
+                        .HasColumnType("float");
 
                     b.Property<string>("ContentType")
                         .HasColumnType("nvarchar(max)");
