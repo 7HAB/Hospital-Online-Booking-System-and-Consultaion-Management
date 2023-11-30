@@ -12,13 +12,8 @@ using graduationProject.DAL;
 namespace graduationProject.DAL.Migrations
 {
     [DbContext(typeof(HospitalContext))]
-<<<<<<<< HEAD:graduationProject.DAL/Migrations/20231129130017_ziad.Designer.cs
-    [Migration("20231129130017_ziad")]
-    partial class ziad
-========
-    [Migration("20231130073621_m4-heba")]
-    partial class m4heba
->>>>>>>> master:graduationProject.DAL/Migrations/20231130073621_m4-heba.Designer.cs
+    [Migration("20231130155301_m5-heba")]
+    partial class m5heba
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -275,7 +270,7 @@ namespace graduationProject.DAL.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<DateTime?>("EndTime")
+                    b.Property<DateTime>("EndTime")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsAvailable")
@@ -284,8 +279,7 @@ namespace graduationProject.DAL.Migrations
                     b.Property<int>("LimitOfPatients")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("StartTime")
-                        .IsRequired()
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");

@@ -6,11 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace graduationProject.DAL.Migrations
 {
     /// <inheritdoc />
-<<<<<<<< HEAD:graduationProject.DAL/Migrations/20231129130017_ziad.cs
-    public partial class ziad : Migration
-========
-    public partial class m4heba : Migration
->>>>>>>> master:graduationProject.DAL/Migrations/20231130073621_m4-heba.cs
+    public partial class m5heba : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -378,7 +374,7 @@ namespace graduationProject.DAL.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     DayOfWeek = table.Column<int>(type: "int", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     LimitOfPatients = table.Column<int>(type: "int", nullable: false),
                     DoctorId = table.Column<string>(type: "nvarchar(450)", nullable: false)
