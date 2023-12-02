@@ -8,6 +8,7 @@ namespace GraduationProject.BL.Dtos
 {
     public class GetPatientVisitDto
     {
+        public string? PatientId { get; set; }
         public string? Name { get; set; }
         
 

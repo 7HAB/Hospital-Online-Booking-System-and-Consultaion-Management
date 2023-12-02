@@ -100,6 +100,17 @@ namespace graduation_project.Controllers.Doctors
         {
             GetDoctorByPhoneDto? doctor = _doctorManager.getDoctorByPhoneDTO(phoneNumber);
             if (doctor == null) { return NotFound(); }
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            baseUrl = baseUrl.TrimEnd('/');
+
+            var imageUrl = $"{baseUrl}/{doctor.ImageStoredFileName}";
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+
+
+
+            doctor.ImageUrl = imageUrl;
             return Ok(doctor);
         }
 

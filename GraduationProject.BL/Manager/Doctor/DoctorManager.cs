@@ -276,13 +276,13 @@ namespace GraduationProject.BL
                 .Select(s => new GetPatientVisitsChildDTO
                 {
                     Comments = s.Comments,
-                    ArrivalTime = s.ArrivalTime,
+                    ArrivalTime = s.ArrivalTime.ToShortTimeString(),
                     Prescription = s.Prescription,
-                    DateOfVisit = s.DateOfVisit,
+                    DateOfVisit = s.DateOfVisit.ToShortDateString(),
                     Symptoms = s.Symptoms,
                     VisitStatus = s.VisitStatus,
-                    VisitEndTime = s.VisitEndTime,
-                    VisitStartTime = s.VisitStartTime
+                    VisitEndTime = s.VisitEndTime.ToShortTimeString(),
+                    VisitStartTime = s.VisitStartTime.ToShortTimeString()
 
                 }).ToList()
             };
@@ -465,13 +465,13 @@ namespace GraduationProject.BL
 
 
                         Comments = s.Comments,
-                        ArrivalTime = s.ArrivalTime,
+                        ArrivalTime = s.ArrivalTime.ToShortTimeString(),
                         Prescription = s.Prescription,
-                        DateOfVisit = s.DateOfVisit,
+                        DateOfVisit = s.DateOfVisit.ToShortDateString(),
                         Symptoms = s.Symptoms,
                         VisitStatus = s.VisitStatus,
-                        VisitEndTime = s.VisitEndTime,
-                        VisitStartTime = s.VisitStartTime
+                        VisitEndTime = s.VisitEndTime.ToShortTimeString(),
+                        VisitStartTime = s.VisitStartTime.ToShortTimeString()
 
                     }).ToList();
 
