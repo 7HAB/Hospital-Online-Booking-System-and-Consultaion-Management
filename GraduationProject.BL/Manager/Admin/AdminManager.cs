@@ -2,6 +2,7 @@
 using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
@@ -58,6 +59,9 @@ namespace GraduationProject.BL
                 Id = dbAdmin.Id,
                 Name = dbAdmin.Name,
                 SpecializationName = specialization.Name,
+                ImageFileName = dbAdmin.FileName,
+                ImageStoredFileName = dbAdmin.StoredFileName,
+                ImageContentType = dbAdmin.ContentType,
             };
 
         }
@@ -121,6 +125,51 @@ namespace GraduationProject.BL
             return doctor;
         }
         #endregion
+
+        #region UploadImage
+        public async Task<Admin> UploadAdminImage(string adminId, IFormFile imageFile)
+        {
+            if (imageFile == null || imageFile.Length == 0)
+            {
+                return null;
+            }
+
+
+            var fileExtension = Path.GetExtension(imageFile.FileName);
+            var fakeFileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
+            var storedFileName = "wwwroot/" + "AdminImages/" + fakeFileName;
+            var directory = Path.GetDirectoryName(storedFileName);
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), storedFileName);
+
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(fileStream);
+            }
+
+            Admin admin = new Admin
+            {
+                Id = adminId,
+                FileName = imageFile.FileName,
+                ContentType = imageFile.ContentType,
+                StoredFileName = storedFileName,
+            };
+
+            _unitOfWork.adminRepo.UploadAdminImage(admin);
+            _unitOfWork.SaveChanges();
+
+            return admin;
+        }
+    
+
+
+    #endregion
+
+
 
         #region update week schedule record 
         public WeekSchedule UpdateWeekScheduleRecord(WeekScheduleForDoctorsDto weekSchedule, int id)

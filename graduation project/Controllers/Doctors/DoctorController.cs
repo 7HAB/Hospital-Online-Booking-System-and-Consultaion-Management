@@ -443,15 +443,14 @@ namespace graduation_project.Controllers.Doctors
         [HttpPost]
       //  [Authorize(Policy = "DoctorPolicy")]
         [Route("doctors/uploadimage/{doctorId}")]
-        public async Task<IActionResult> UploadImage(string doctorId, IFormFile imageFiles)
+        public async Task<IActionResult> UploadImage(string doctorId, IFormFile imageFile)
         {
             try
             {
-                Doctor uploadedDoctors = await _doctorManager.UploadDoctorImage(doctorId, imageFiles);
-
-                if (uploadedDoctors != null)
+                Doctor uploadedDoctor = await _doctorManager.UploadDoctorImage(doctorId, imageFile);
+                if (uploadedDoctor != null)
                 {
-                    return Ok(uploadedDoctors);
+                    return Ok(uploadedDoctor);
                 }
                 else
                 {

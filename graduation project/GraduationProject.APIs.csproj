@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\UploadImages\" />
+	  <Folder Include="wwwroot\AdminImages\" />
+
   </ItemGroup>
 
 </Project>

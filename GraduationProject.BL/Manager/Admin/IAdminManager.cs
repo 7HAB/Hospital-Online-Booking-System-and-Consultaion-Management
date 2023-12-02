@@ -2,6 +2,8 @@
 using graduationProject.DAL.Data.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Http;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,8 @@ namespace GraduationProject.BL
         public Doctor ChangeDoctorStatus(string doctorId);
 
         public void AddSpecialization(AddSpecializationDto? specialization);
+
+        Task<Admin> UploadAdminImage(string adminId, IFormFile imageFile);
 
         public GetAdminByPhoneNumberDto GetAdminByPhoneNumber(string phoneNumber);
         public List<GetAllSpecializationForAdminDto> GetAllSpecializations();
@@ -40,5 +44,6 @@ namespace GraduationProject.BL
 
         public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto);
         public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber);
+
     }
 }

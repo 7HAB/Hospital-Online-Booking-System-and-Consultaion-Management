@@ -26,6 +26,7 @@ namespace graduation_project.Controllers.Admins
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+
         public AdminsController(IConfiguration configuration,
             UserManager<IdentityUser> userManager, IAdminManager adminManager, IWebHostEnvironment webHostEnvironment, IHttpContextAccessor httpContextAccessor)
         {
@@ -43,6 +44,15 @@ namespace graduation_project.Controllers.Admins
         {
             GetAdminByPhoneNumberDto? Admin = _adminManager.GetAdminByPhoneNumber(phoneNumber);
             if(Admin == null) { return NotFound(); }
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            baseUrl = baseUrl.TrimEnd('/');
+
+            var imageUrl = $"{baseUrl}/{Admin.ImageStoredFileName}";
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+            Admin.ImageUrl = imageUrl;
+
+
             return Admin;
         }
         #endregion
@@ -347,6 +357,34 @@ namespace graduation_project.Controllers.Admins
             if (reception == null) { return NotFound(); }
             return reception!;
         }
+        #endregion
+
+        #region UploadImages
+
+        [HttpPost]
+        // [Authorize(Policy = "DoctorPolicy")]
+        [Route("admins/uploadimage/{adminId}")]
+        public async Task<IActionResult> UploadImage(string adminId, IFormFile imageFile)
+        {
+            try
+            {
+                Admin uploadedAdmin = await _adminManager.UploadAdminImage(adminId, imageFile);
+
+                if (uploadedAdmin != null)
+                {
+                    return Ok(uploadedAdmin);
+                }
+                else
+                {
+                    return BadRequest("No file provided or an error occurred during upload.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
         #endregion
 
     }

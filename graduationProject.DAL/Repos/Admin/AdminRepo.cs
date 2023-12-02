@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System;
+using System.Numerics;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -181,6 +182,39 @@ namespace graduationProject.DAL
             return _context?.Set<Reception>().FirstOrDefault(r => r.PhoneNumber == PhoneNumber);
         }
         #endregion
+
+        public void UploadAdminImage(Admin admin)
+        {
+            {
+                var existingAdmin = _context.Set<Admin>().Find(admin.Id);
+                DeleteImage(existingAdmin.StoredFileName);
+
+                existingAdmin.FileName = admin.FileName;
+                existingAdmin.StoredFileName = admin.StoredFileName;
+                existingAdmin.ContentType = admin.ContentType;
+
+
+                _context.SaveChanges();
+            }
+
+        }
+
+        public void DeleteImage(string storedFileName)
+        {
+            if (storedFileName == null)
+            {
+                return;
+            }
+
+            var imagePath = Path.Combine("AdminImages", storedFileName);
+            var fullPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", imagePath);
+
+            if (System.IO.File.Exists(fullPath))
+            {
+                System.IO.File.Delete(fullPath);
+            }
+        }
     }
+
 
     }

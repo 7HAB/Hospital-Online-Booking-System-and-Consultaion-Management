@@ -38,7 +38,7 @@ namespace graduationProject.DAL
         public PatientVisit UpdateArrivedPatientStatus(PatientVisit patientVisit);
         public PatientVisit GetVisit(int id);
         public void UpdateAdminByPhone(Admin admin);
-
+        void UploadAdminImage(Admin admin);
         public Reception? GetReceptionByPhoneNumber(string PhoneNumber);
     }
 }

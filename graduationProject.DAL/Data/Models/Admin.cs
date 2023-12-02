@@ -13,6 +13,11 @@ namespace graduationProject.DAL
         public string? Name { get; set; }
         public int? SpecializationId { get; set; } = 0;
         public Specialization? Specialization { get; set; }
+        #region uploadImages
+        public string? FileName { get; set; }
+        public string? StoredFileName { get; set; }
+        public string? ContentType { get; set; }
+        #endregion
         public ICollection<Reception> Receptions { get; set; } = new List<Reception>();
     }
 }
