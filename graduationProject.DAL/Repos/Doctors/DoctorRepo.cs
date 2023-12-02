@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using graduationProject.DAL.Data.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,10 +31,23 @@ namespace graduationProject.DAL
         }
         public List<Specialization> GetAllSpecializations()
         {
-            return _context.Set<Specialization>().Include(s => s.Doctors).ToList();
+            return _context.Set<Specialization>().Include(s => s.Doctors).ThenInclude(d => d.weeks).ToList();
         }
         public void UploadDoctorImage(Doctor doctor)
         {
+            var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
+            if (existingDoctor != null)
+            {
+                //
+                //
+                //
+                //
+                //Image(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", existingDoctor.StoredFileName));
+
+
+
+
+                //Image(existingDoctor.StoredFileName);
             var existingDoctor = _context.Set<Doctor>().Find(doctor.Id);
             DeleteImage(existingDoctor.StoredFileName);
 
@@ -42,10 +56,17 @@ namespace graduationProject.DAL
             existingDoctor.ContentType = doctor.ContentType;
 
 
+         
             _context.SaveChanges();
         }
 
+        #region GetDoctorByPhone
+        public Doctor? GetDoctorByPhoneNumber(string phoneNumber)
+        {
+            return _context.Set<Doctor>().Include(d => d.specialization).Include(d => d.weeks).FirstOrDefault(x => x.PhoneNumber == phoneNumber);
+        }
 
+        #endregion
         public void DeleteImage(string storedFileName)
         {
             if (storedFileName == null)
@@ -62,7 +83,16 @@ namespace graduationProject.DAL
             }
         }
 
+        public List<PatientVisit> GetMutualVisits(string? patientPhone, string? doctorPhone)
+        {
+            Doctor? dr = _context.Set<Doctor>().FirstOrDefault(x => x.PhoneNumber == doctorPhone);
+            Patient? pt = _context.Set<Patient>().FirstOrDefault(x => x.PhoneNumber == patientPhone);
+            string? doctorId = dr?.Id;
+            string? patientId = pt?.Id;
+            return _context.Set<PatientVisit>().Where(x => x.PatientId == patientId && x.DoctorId == doctorId).ToList();        
+         }
 
+        
         //    public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
         //{
         //    var existingDoctor = _context.Set<Doctor>().Find(doctorId);

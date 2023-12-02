@@ -3,9 +3,11 @@ using graduationProject.DAL.Data.Models;
 using GraduationProject.BL.Dtos;
 using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,7 +33,18 @@ namespace GraduationProject.BL
                 DoctorsForAllSpecializations = s.Doctors.Select(d => new DoctorsForAllSpecializations
                 {
                     Id = d.Id,
-                    Name = d.Name
+                    Name = d.Name,
+                    Status = d.Status,
+                    WeekSchadual = d.weeks
+                     .Select(d => new WeekScheduleForDoctorsDto
+                     {
+                         Id = d.Id,
+                         DayOfWeek = d.DayOfWeek,
+                         LimitOfPatients = d.LimitOfPatients,
+                         StartTime = d.StartTime.ToShortTimeString(),
+                         EndTime = d.EndTime.ToShortTimeString(),
+                         IsAvailable = d.IsAvailable
+                     }).ToList()
                 }).ToList()
             }).ToList();
         }
@@ -49,7 +62,8 @@ namespace GraduationProject.BL
                 SpecializationName = d.specialization.Name,
                 ImageFileName = d.FileName,
                 ImageStoredFileName = d.StoredFileName,
-                ImageContentType = d.ContentType, 
+                ImageContentType = d.ContentType,
+                Status = d.Status,
                 WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
@@ -68,7 +82,6 @@ namespace GraduationProject.BL
             Doctor? dbDoctor = _unitOfWork.doctorRepo.GetById(id);
             if (dbDoctor is null)
                 return null!;
-
 
             return new GetDoctorByIDDto
             {
@@ -92,6 +105,7 @@ namespace GraduationProject.BL
             };
         }
 
+
         public List<GetDoctorsBySpecializationDto> GetDoctorsBySpecialization(int id)
         {
             var dbSpecializationDoctors = _unitOfWork.doctorRepo.GetDoctorsBySpecialization(id);
@@ -110,10 +124,11 @@ namespace GraduationProject.BL
                     ImageFileName = d.FileName,
                     ImageStoredFileName = d.StoredFileName,
                     ImageContentType = d.ContentType,
+                    Status = d.Status,
                     WeekSchadual = d.weeks
                 .Select(d => new WeekScheduleForDoctorsDto
                 {
-                    Id= d.Id,
+                    Id = d.Id,
                     DayOfWeek = d.DayOfWeek,
                     LimitOfPatients = d.LimitOfPatients,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -133,7 +148,7 @@ namespace GraduationProject.BL
                 Name = doctor.Name,
                 WeekSchedule = doctor.weeks.Select(d => new GetAllWeekScheduleChildDto
                 {
-                    
+
                     DayOfWeek = d.DayOfWeek,
                     IsAvailable = d.IsAvailable,
                     StartTime = d.StartTime.ToShortTimeString(),
@@ -144,79 +159,74 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId)
         {
-            var patients = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
-            List<GetAllPatientsWithDateDto> patientsWithDateDtosList = new List<GetAllPatientsWithDateDto>();
-            foreach (var patient in patients)
+            List<PatientVisit> patientVisits = _unitOfWork.patientRepo.GetAllPatientsByDate(date, DoctorId);
+            return patientVisits.Select(pv => new GetAllPatientsWithDateDto
             {
-                var patientListItem = new GetAllPatientsWithDateDto
-                {
-                    PatientId = patient.Id,
-                    Name = patient.Name,
-                    DateOfBirth = patient.DateOfBirth,
-                    Gender = patient.Gender,
-                };
-                if (patientListItem != null)
-                {
-                    patientsWithDateDtosList.Add(patientListItem);
-                }
-            }
-            return patientsWithDateDtosList;
+                id = pv.Id,
+                PatientId = pv.PatientId,
+                Name = pv?.Patient?.Name,
+                PatientPhoneNumber = pv?.Patient?.PhoneNumber,
+                VisitStatus = pv?.VisitStatus,
+                ArrivalTime = pv?.ArrivalTime.ToShortTimeString()!,
+                VisitStartTime = pv?.VisitStartTime.ToShortTimeString()!,
+                VisitEndTime = pv?.VisitEndTime.ToShortTimeString()!,
+            }).ToList();
         }
         #region Add Visit Count Records
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate)
         {
             List<Doctor> doctors = _unitOfWork.doctorRepo.GetAll();
-            
+
             DateTime start = StartDate;
             DateTime end = EndDate;
-            int count = end.Day- start.Day;
-            DateTime now =DateTime.Now.Date;
+            TimeSpan difference = end.Subtract(start);
+            double days = difference.TotalDays;
+            DateTime now = DateTime.Now.Date;
             foreach (Doctor doctor in doctors)
             {
-                    for (int j = 0; j <= count; j++)
-                    {
-                  
+                for (int j = 0; j <= days; j++)
+                {
+
 
                     DayOfWeek Day = start.AddDays(j).DayOfWeek;
-                         VisitCount v = _unitOfWork.visitCountRepo.GetCount(start.AddDays(j), doctor.Id);
-                      if (v == null && StartDate>=now)
-                         {
+                    VisitCount v = _unitOfWork.visitCountRepo.GetCount(start.AddDays(j), doctor.Id);
+                    if (v == null && StartDate >= now)
+                    {
                         WeekSchedule? weekSchedule = _unitOfWork.visitCountRepo.GetWeekSchedule(Day, doctor.Id);
 
-
-                        if (start.Year == StartDate.Year)
+                         if (weekSchedule != null && doctor.Status)
                         {
-                            if (weekSchedule != null)
+                            VisitCount visitCount = new VisitCount
                             {
-                                VisitCount visitCount = new VisitCount
-                                {
-                                    DoctorId = doctor.Id,
-                                    Date = start.AddDays(j),
-                                    LimitOfPatients = weekSchedule.LimitOfPatients,
-                                    WeekScheduleId = weekSchedule.Id,
-                                    ActualNoOfPatients = 0,
-                                    Day = weekSchedule.DayOfWeek,
+                                DoctorId = doctor.Id,
+                                Date = start.AddDays(j),
+                                LimitOfPatients = weekSchedule.LimitOfPatients,
+                                WeekScheduleId = weekSchedule.Id,
+                                ActualNoOfPatients = 0,
+                                Day = weekSchedule.DayOfWeek,
 
-                                };
+                            };
 
 
-                                _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
-                                _unitOfWork.SaveChanges();
+                            _unitOfWork.visitCountRepo.AddVisitCountRecords(visitCount);
+                            _unitOfWork.SaveChanges();
 
-                            }
                         }
-
                     }
+
+
                 }
             }
 
         }
         #endregion
+
+
         #region get visit count
         public VisitCountDto GetVisitCount(DateTime date, string doctorId)
         {
             VisitCount visitCount = _unitOfWork.visitCountRepo.GetCount(date, doctorId);
-            if(visitCount == null) { return null; }
+            if (visitCount == null) { return null; }
             return new VisitCountDto
             {
                 Id = visitCount.Id,
@@ -288,6 +298,7 @@ namespace GraduationProject.BL
             _unitOfWork.SaveChanges();
             return true;
         }
+
         #region UploadImage
         public async Task<Doctor> UploadDoctorImage(string doctorId, IFormFile imageFile)
         {
@@ -325,45 +336,171 @@ namespace GraduationProject.BL
 
             return doctor;
         }
-    }
 
         #endregion
+        #region UpdateMedical History
+        public bool UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto)
+        {
 
-        //#region UpdateImge
-        //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
-        //{
-        //    if (string.IsNullOrEmpty(doctorId) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(contentType))
-        //    {
-        //        return;
-        //    }
+            MedicaHistory? dbVisit = _unitOfWork.medicalHistoryRepo.GetById(updateDto.Id);
+            if (dbVisit == null)
+            {
+                return false;
+            }
+            dbVisit.MartialStatus = updateDto.MartialStatus;
+            dbVisit.MartialStatus = updateDto.MartialStatus;
+            dbVisit.pregnancy = updateDto.pregnancy;
+            dbVisit.BloodGroup = updateDto.BloodGroup;
+            dbVisit.previousSurgeries = updateDto.previousSurgeries;
+            dbVisit.Medication = updateDto.Medication;
+            dbVisit.Smoker = updateDto.Smoker;
+            dbVisit.Diabetes = updateDto.Diabetes;
+            dbVisit.HighBloodPressure = updateDto.HighBloodPressure;
+            dbVisit.LowBloodPressure = updateDto.LowBloodPressure;
+            dbVisit.Asthma = updateDto.Asthma;
+            dbVisit.Hepatitis = updateDto.Hepatitis;
+            dbVisit.HeartDisease = updateDto.HeartDisease;
+            dbVisit.AnxityOrPanicDisorder = updateDto.AnxityOrPanicDisorder;
+            dbVisit.Depression = updateDto.Depression;
+            dbVisit.Allergies = updateDto.Allergies;
+            dbVisit.Other = updateDto.Other;
 
-        //    // Assuming the original location is in the "UploadImages" folder
-        //    var originalFilePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadImages", storedFileName);
+            _unitOfWork.medicalHistoryRepo.UpdateMedicaHistory(dbVisit);
+            _unitOfWork.SaveChanges();
+            return true;
+        }
+        #endregion
+        #region AddMedicalHistroy
+        public void AddMedicaHistory(AddMedicalHistroyDto AddMedicaHistoryDto)
+        {
+            MedicaHistory medicaHistory = new MedicaHistory
+            {
+                PatientId = AddMedicaHistoryDto.PatientId,
+                Asthma = AddMedicaHistoryDto.Asthma,
+                LowBloodPressure = AddMedicaHistoryDto.LowBloodPressure,
+                HighBloodPressure = AddMedicaHistoryDto.HighBloodPressure,
+                Diabetes = AddMedicaHistoryDto.Diabetes,
+                pregnancy = AddMedicaHistoryDto.pregnancy,
+                MartialStatus = AddMedicaHistoryDto.MartialStatus,
+                Allergies = AddMedicaHistoryDto.Allergies,
+                Depression = AddMedicaHistoryDto.Depression,
+                AnxityOrPanicDisorder = AddMedicaHistoryDto.AnxityOrPanicDisorder,
+                HeartDisease = AddMedicaHistoryDto.HeartDisease,
+                Medication = AddMedicaHistoryDto.Medication,
+                previousSurgeries = AddMedicaHistoryDto.previousSurgeries,
+                BloodGroup = AddMedicaHistoryDto.BloodGroup,
+                Other = AddMedicaHistoryDto.Other,
+                Hepatitis = AddMedicaHistoryDto.Hepatitis,
 
-        //    // Create a new unique file name for the moved file
-        //    var fakeFileName = Path.GetRandomFileName();
-        //    var newStoredFileName = Path.Combine("UploadImages", fakeFileName);
+            };
+            _unitOfWork.medicalHistoryRepo.AddMedicaHistory(medicaHistory);
+            _unitOfWork.SaveChanges();
 
-        //    var newFilePath = Path.Combine(Directory.GetCurrentDirectory(), newStoredFileName);
+        }
+            #endregion
+            #region GetDoctroByPhone
+            public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber)
+            {
+                Doctor? doctor = _unitOfWork.doctorRepo.GetDoctorByPhoneNumber(phoneNumber);
 
-        //    var directory = Path.GetDirectoryName(newFilePath);
-        //    if (!Directory.Exists(directory))
-        //    {
-        //        Directory.CreateDirectory(directory);
-        //    }
+                if (doctor == null) { return null; }
 
-        //    using (FileStream originalFileStream = new FileStream(originalFilePath, FileMode.Open))
-        //    {
-        //        using (FileStream newFileStream = new FileStream(newFilePath, FileMode.Create))
-        //        {
-        //            originalFileStream.CopyTo(newFileStream);
-        //        }
-        //    }
+                return new GetDoctorByPhoneDto
+                {
+                    ID = doctor.Id,
+                    DateOfBirth = doctor.DateOfBirth.ToLongDateString(),
+                    Name = doctor.Name,
+                    PhoneNumber = phoneNumber,
+                    Title = doctor.Title,
+                    Salary = doctor.Salary,
+                    Description = doctor.Description,
+                    SpecializationName = doctor.specialization.Name,
+                    Status = doctor.Status,
+                    WeekSchadual = doctor.weeks
 
-        //    _unitOfWork.doctorRepo.UpdateDoctorImage(doctorId, fileName, newStoredFileName, contentType);
-        //    _unitOfWork.SaveChanges();
-        //}
-        //#endregion
+               .Select(d => new WeekScheduleForDoctorsDto
+               {
+                   Id = d.Id,
+                   DayOfWeek = d.DayOfWeek,
+                   StartTime = d.StartTime.ToShortTimeString(),
+                   EndTime = d.EndTime.ToShortTimeString(),
+                   IsAvailable = d.IsAvailable
+               }).ToList(),
+                    ImageFileName = doctor.FileName,
+                    ImageStoredFileName = doctor.StoredFileName,
+                    ImageContentType = doctor.ContentType,
+                };
+
+
+            }
+
+
+            #endregion
+
+            #region GetMutualVisits
+            public List<GetPatientVisitsChildDTO> GetMutualVisits(string? patientPhone, string? doctorPhone)
+            {
+                List<PatientVisit> patientVisit = _unitOfWork.doctorRepo.GetMutualVisits(patientPhone, doctorPhone);
+                return patientVisit.Select(s =>
+                    new GetPatientVisitsChildDTO
+                    {
+                        Id = s.Id,
+                        PatientId = s.PatientId,
+                        DoctorId = s.DoctorId,
+                        Review = s.Review,
+
+
+                        Comments = s.Comments,
+                        ArrivalTime = s.ArrivalTime,
+                        Prescription = s.Prescription,
+                        DateOfVisit = s.DateOfVisit,
+                        Symptoms = s.Symptoms,
+                        VisitStatus = s.VisitStatus,
+                        VisitEndTime = s.VisitEndTime,
+                        VisitStartTime = s.VisitStartTime
+
+                    }).ToList();
+
+
+            }
+        
+            #endregion
+
+            //#region UpdateImge
+            //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType)
+            //{
+            //    if (string.IsNullOrEmpty(doctorId) || string.IsNullOrEmpty(fileName) || string.IsNullOrEmpty(contentType))
+            //    {
+            //        return;
+            //    }
+
+            //    // Assuming the original location is in the "UploadImages" folder
+            //    var originalFilePath = Path.Combine(Directory.GetCurrentDirectory(), "UploadImages", storedFileName);
+
+            //    // Create a new unique file name for the moved file
+            //    var fakeFileName = Path.GetRandomFileName();
+            //    var newStoredFileName = Path.Combine("UploadImages", fakeFileName);
+
+            //    var newFilePath = Path.Combine(Directory.GetCurrentDirectory(), newStoredFileName);
+
+            //    var directory = Path.GetDirectoryName(newFilePath);
+            //    if (!Directory.Exists(directory))
+            //    {
+            //        Directory.CreateDirectory(directory);
+            //    }
+
+            //    using (FileStream originalFileStream = new FileStream(originalFilePath, FileMode.Open))
+            //    {
+            //        using (FileStream newFileStream = new FileStream(newFilePath, FileMode.Create))
+            //        {
+            //            originalFileStream.CopyTo(newFileStream);
+            //        }
+            //    }
+
+            //    _unitOfWork.doctorRepo.UpdateDoctorImage(doctorId, fileName, newStoredFileName, contentType);
+            //    _unitOfWork.SaveChanges();
+            //}
+            //#endregion
+        }
     }
-
-    
+   

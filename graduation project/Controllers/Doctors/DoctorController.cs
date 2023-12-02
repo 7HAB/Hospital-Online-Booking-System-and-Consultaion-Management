@@ -90,9 +90,18 @@ namespace graduation_project.Controllers.Doctors
 
             return GetDoctorById;
         }
+        #endregion
 
 
-
+        #region GetDoctorByPhone
+        [HttpGet]
+        [Route("doctor/{phoneNumber}")]
+        public ActionResult<GetDoctorByPhoneDto> GetAdminByPhone(string phoneNumber)
+        {
+            GetDoctorByPhoneDto? doctor = _doctorManager.getDoctorByPhoneDTO(phoneNumber);
+            if (doctor == null) { return NotFound(); }
+            return Ok(doctor);
+        }
 
 
         #endregion
@@ -122,8 +131,9 @@ namespace graduation_project.Controllers.Doctors
 
         [HttpPost]
         [Route("Doctor/login")]
+
         //=> /api/users/static-login
-        public async Task<ActionResult<TokenDto>> Login(LoginDto credentials)
+        public async Task<ActionResult<TokenDto>> Login(LoginDto credentials )
         {
             #region Username and Password verification
 
@@ -137,15 +147,22 @@ namespace graduation_project.Controllers.Doctors
             bool isPasswordCorrect = await _userManager.CheckPasswordAsync(user, credentials.Password);
             if (!isPasswordCorrect)
             {
-                //  return Unauthorized();
                 return Unauthorized("Invalid password");
             }
-
+            
             #endregion
 
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+            
+            if(roleClaim.Value != "Doctor")
+            {
+                return Unauthorized("You are not a doctor");
+            }
+            
+            
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
@@ -176,7 +193,6 @@ namespace graduation_project.Controllers.Doctors
         {
             var user = new Doctor
             {
-
                 Name = registerDto.Name,
                 PhoneNumber = registerDto.PhoneNumber,
                 UserName = registerDto.PhoneNumber,
@@ -188,7 +204,8 @@ namespace graduation_project.Controllers.Doctors
                 AssistantName = registerDto.AssistantName,
                 AssistantPhoneNumber = registerDto.AssistantPhoneNumber,
                 AssistantDateOfBirth = registerDto.AssistantDateOfBirth,
-                SpecializationId = registerDto.SpecializationId
+                SpecializationId = registerDto.SpecializationId,
+                Status = false
             };
             var creationResult = await _userManager.CreateAsync(user, registerDto.Password);
             if (!creationResult.Succeeded)
@@ -200,7 +217,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Doctor"),
-            new Claim(ClaimTypes.Name, user.UserName)
+           // new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -237,6 +254,13 @@ namespace graduation_project.Controllers.Doctors
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (roleClaim.Value != "Reception")
+            {
+                return Unauthorized("You are not a Reception");
+            }
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
@@ -284,7 +308,7 @@ namespace graduation_project.Controllers.Doctors
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Reception"),
-            new Claim(ClaimTypes.Name, user.UserName)
+        //    new Claim(ClaimTypes.Name, user.UserName)
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -338,7 +362,7 @@ namespace graduation_project.Controllers.Doctors
         #endregion
         #region Add Visit Count Records
         [HttpPost]
-        [Route("addVisitCount/{Startdate}/{EndDate}")]
+        [Route("addVisitCount/{Startdate}")]
         public ActionResult AddVisitCountRecords(DateTime Startdate, DateTime EndDate)
         {
             _doctorManager.AddVisitCountRecords(Startdate,EndDate);
@@ -369,28 +393,49 @@ namespace graduation_project.Controllers.Doctors
             {
                
                 VisitCountDto visitCount = _doctorManager.GetVisitCount(date.AddDays(i), DoctorId);
-                visitCounts.Add(visitCount);
-            }
-            if (visitCounts == null)
+                
+            
+            if (visitCount == null)
             {
                 return NotFound();
+            }
+            else { visitCounts.Add(visitCount); }
             }
             return Ok(visitCounts);
         }
         #endregion
         #region UpdatePatientVisit
         [HttpPut]
-        [Authorize(Policy = "DoctorPolicy")]
+        //[Authorize(Policy = "DoctorPolicy")]
         [Route("PatientVisit")]
         public ActionResult UpdatePatientVisit(UpdatePatientVisitDto updateDto)
         {
             bool result = _doctorManager.UpdatePatientVisit(updateDto);
             if (!result)
             {
-                return NotFound();
+                return Ok();
             }
             return StatusCode(StatusCodes.Status202Accepted);
         }
+        #endregion
+        #region getmutualvisits
+        [HttpGet]
+        [Route("mutualvisits")]
+        public IActionResult GetMutualVisits(string patientPhone, string doctorPhone)
+        {
+            List<GetPatientVisitsChildDTO> mutualVisits = _doctorManager.GetMutualVisits(patientPhone, doctorPhone);
+
+            if (mutualVisits.Count == 0)
+            {
+                return NoContent(); 
+            }
+
+            return Ok(mutualVisits);
+        }
+
+
+
+
         #endregion
         #region UploadImages
 
@@ -469,6 +514,29 @@ namespace graduation_project.Controllers.Doctors
 
 
 
+        #endregion
+        #region UpdateMedicalHistory
+        [HttpPut]
+        [Route("MedicalHistory")]
+        public ActionResult UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto)
+        {
+            bool result = _doctorManager.UpdateMedicalHistory(updateDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+            return Ok();
+        }
+        #endregion
+        # region AddMedicaHistory
+        [HttpPost]
+        [Route("MedicalHistory")]
+        public ActionResult AddMedicaHistory(AddMedicalHistroyDto addMedicalHistroyDto)
+        {
+            _doctorManager.AddMedicaHistory(addMedicalHistroyDto);
+            return Ok();
+        }
+   
         #endregion
 
     }

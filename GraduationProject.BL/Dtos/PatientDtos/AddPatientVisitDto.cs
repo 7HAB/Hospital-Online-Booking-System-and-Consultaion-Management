@@ -8,7 +8,7 @@ namespace GraduationProject.BL
 {
     public class AddPatientVisitDto
     {
-        public DateTime DateOfVisit { get; set; }
+        public string DateOfVisit { get; set; }
         public string? DoctorId { get; set; }
         public string? PatientId { get; set; }
         public int? WeekSchedule {  get; set; }

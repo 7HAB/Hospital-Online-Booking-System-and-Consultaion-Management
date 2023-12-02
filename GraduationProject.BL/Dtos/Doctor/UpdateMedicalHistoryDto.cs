@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GraduationProject.BL 
-{ 
-    public class GetMedicalHistoryByPhoneDto
+namespace GraduationProject.BL
+{
+    public class UpdateMedicalHistoryDto
     {
+        public int Id { get; set; }
+        public string? PatientId { get; set; }
         public bool MartialStatus { get; set; }
         public bool? pregnancy { get; set; }
         public string? BloodGroup { get; set; }
@@ -24,7 +26,6 @@ namespace GraduationProject.BL
         public bool Depression { get; set; }
         public bool Allergies { get; set; }
         public String? Other { get; set; }
-        public int Id { get; set; }
-        public string? PatientId { get; set; }
+
     }
 }

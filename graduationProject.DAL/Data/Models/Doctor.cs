@@ -36,13 +36,16 @@ namespace graduationProject.DAL
 
         public DateTime AssistantDateOfBirth { get; set; }
 
-        public string? Status { get; set; } = "Active";
+        public Boolean Status { get; set; } = true;
 
+        public double AverageRate { get; set; }
 
         public ICollection<PatientVisit> patientVisits { get; set; } = new HashSet<PatientVisit>();
         public ICollection<WeekSchedule> weeks { get; set; } = new HashSet<WeekSchedule>();
         public Specialization? specialization {  get; set; }
 
         public ICollection<VisitCount> visitCounts { get; set; } = new HashSet<VisitCount>();
+
+
     }
 }

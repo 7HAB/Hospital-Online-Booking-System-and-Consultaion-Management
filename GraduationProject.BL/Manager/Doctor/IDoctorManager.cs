@@ -22,14 +22,21 @@ namespace GraduationProject.BL
 
         public List<GetAllPatientsWithDateDto> GetAllPatientsWithDate(DateTime date, string DoctorId);
         public GetPatientForDoctorDto? GetPatientForDoctorId(string id);
-        Task<Doctor> UploadDoctorImage(string doctorId, IFormFile imageFile);
+        public  Task<Doctor> UploadDoctorImage(string doctorId, IFormFile imageFile);
 
         //public void UpdateDoctorImage(string doctorId, string fileName, string storedFileName, string contentType);
 
+        public GetDoctorByPhoneDto? getDoctorByPhoneDTO(string phoneNumber);
 
         public void AddVisitCountRecords(DateTime StartDate, DateTime EndDate);
 
+        public List<GetPatientVisitsChildDTO> GetMutualVisits(string? patientPhone, string? doctorPhone);
 
+
+
+        public bool UpdateMedicalHistory(UpdateMedicalHistoryDto updateDto);
+
+        public void AddMedicaHistory(AddMedicalHistroyDto AddMedicaHistoryDto);
 
 
     }

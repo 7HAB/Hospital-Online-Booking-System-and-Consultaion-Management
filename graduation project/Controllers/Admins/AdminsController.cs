@@ -1,6 +1,9 @@
 ﻿using graduationProject.DAL;
+using graduationProject.DAL.Data.Models;
 using GraduationProject.BL;
 using GraduationProject.BL.Dtos;
+using Microsoft.AspNetCore.Hosting;
+using GraduationProject.BL.Dtos.Doctor;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -33,6 +36,7 @@ namespace graduation_project.Controllers.Admins
             _adminManager = adminManager;
             _webHostEnvironment = webHostEnvironment;
             _httpContextAccessor = httpContextAccessor;
+
         }
         #region Get Admin By Phone Number
         [HttpGet]
@@ -61,6 +65,15 @@ namespace graduation_project.Controllers.Admins
             return _adminManager.GetAllSpecializations();
         }
         #endregion
+        #region get week schedule record by id
+        [HttpGet]
+        [Route("weekScheduleRecord/{id}")]
+        public ActionResult<WeekScheduleForDoctorsDto> GetWeekScheduleRecordById(int id)
+        {
+            return _adminManager.GetWeekScheduleById(id);
+        }
+        #endregion
+
         #region admin login
         [HttpPost]
         [Route("Admins/login")]
@@ -88,6 +101,14 @@ namespace graduation_project.Controllers.Admins
             #region Generate Token
 
             var claimsList = await _userManager.GetClaimsAsync(user);
+
+            var roleClaim = claimsList.FirstOrDefault(c => c.Type == ClaimTypes.Role);
+
+            if (roleClaim.Value != "Admin")
+            {
+                return Unauthorized("You are not an Admin");
+            }
+
             string secretKey = _configuration.GetValue<string>("SecretKey")!;
             var algorithm = SecurityAlgorithms.HmacSha256Signature;
 
@@ -108,6 +129,19 @@ namespace graduation_project.Controllers.Admins
 
             #endregion
 
+        }
+        #endregion
+        #region Update week schedule record With Id
+        [HttpPut]
+        [Route("admins/updateWeekSchedule/{id}")]
+        public IActionResult UpdateWeekSchedule(WeekScheduleForDoctorsDto? week, int id)
+        {
+            WeekSchedule weekSchedule = _adminManager.UpdateWeekScheduleRecord(week,id);
+            if (weekSchedule == null)
+            {
+                return NotFound();
+            }
+            return Ok();
         }
         #endregion
         #region admin register
@@ -134,7 +168,7 @@ namespace graduation_project.Controllers.Admins
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id),
             new Claim(ClaimTypes.Role, "Admin"),
-            new Claim(ClaimTypes.Name, user.UserName)
+            
         //    new Claim(ClaimTypes.MobilePhone, user.PhoneNumber)
         };
             await _userManager.AddClaimsAsync(user, claimsList);
@@ -152,9 +186,45 @@ namespace graduation_project.Controllers.Admins
             Doctor? doctor = _adminManager.UpdateDoctorById(updateDoctor , doctorId);
             if (doctor == null)
             {
-                return Content("Null Record");
+                return NotFound();
             }
-            return Content("Updated");
+            return Ok();
+        }
+        #endregion
+
+        #region Update Admin with phone 
+        [HttpPut]
+        [Route("admins/updateAdmin/{phone}")]
+        public IActionResult UpdateAdmin (UpdateAdminByPhoneDto updateAdmin , string phone) 
+        {
+            Admin? admin = _adminManager.UpdateAdminByPhone(updateAdmin , phone);
+            if (admin == null) { return NotFound(); }
+            return Ok();
+
+        }
+        #endregion
+        #region GetDoctorById For Admin
+        [HttpGet]
+        [Route("admin/getDoctorForAdmin/{DoctorId}")]
+        public ActionResult<GetDoctorByIDForAdminDto> GetDoctorById(string DoctorId)
+        {
+            GetDoctorByIDForAdminDto? GetDoctorById = _adminManager.GetDoctorByIdForAdmin(DoctorId);
+            if (GetDoctorById == null)
+                return NotFound("Doctor not found");
+
+            var baseUrl = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host.Value}";
+
+            baseUrl = baseUrl.TrimEnd('/');
+
+            var imageUrl = $"{baseUrl}/{GetDoctorById.ImageStoredFileName}";
+            // Remove the wwwroot part from the URL
+            imageUrl = imageUrl.Replace("wwwroot/", string.Empty);
+
+
+
+            GetDoctorById.ImageUrl = imageUrl;
+
+            return GetDoctorById;
         }
         #endregion
         #region ChangeStatus
@@ -184,6 +254,111 @@ namespace graduation_project.Controllers.Admins
 
         #endregion
 
+        #region update patient status
+        [HttpPut]
+        [Route("admins/updatePatientVisitStatus")]
+        public ActionResult<GetAllPatientsWithDateDto> UpdatePatientVisit(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto)
+        {
+            GetAllPatientsWithDateDto patientVisit = _adminManager.UpdateArrivedPatientStatus(updateArrivalPatientStatusDto);
+            if (patientVisit != null)
+            {
+                return patientVisit;
+            }
+            else
+            {
+                return NotFound(); 
+            }
+            
+        }
+        #endregion
+
+        #region add week schedule
+        [HttpPost]
+        [Route("/addWeekSchedule")]
+        public ActionResult AddWeekSchedule (AddWeekScheduleDto addWeekScheduleDto)
+        {
+            _adminManager.AddWeekSchedule(addWeekScheduleDto);
+            return Ok();
+        }
+        #endregion
+
+
+
+
+
+        #region Get Top Rated Doctors
+        [HttpGet]
+        [Route("AverageRateForDoctors")]
+        public IActionResult GetAverageRateForEachDoctor()
+        {
+            //List<Doctor> allDrs = _adminManager.GetAverageRateForEachDoctor();
+           return Ok(_adminManager.GetAverageRateForEachDoctor()) ;
+        }
+        #endregion
+
+        #region Get Number Of Patient for a day
+        [HttpGet]
+        [Route("NumberOfPatientForADay")]
+        public IActionResult  GetNumberOfPatientForADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Available Doctors For a Day
+        [HttpGet]
+        [Route("NumberOfAvailableDoctorsForADay")]
+        public IActionResult GetNumberOfAvailableDoctorInADay(DateTime date)
+        {
+            int counter = _adminManager.GetNumberOfAvailableDoctorInADay(date);
+            return Ok(counter);
+        }
+        #endregion
+
+        #region Get Number of Doctors for a period
+        [HttpGet]
+        [Route("NumberOfDoctorsForAPeriod")]
+        public IActionResult GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate)
+        {
+            int counter = _adminManager.GetNumberOfPatientsForAPeriod(startDate, endDate);
+            return Ok(counter);
+        }
+        #endregion
+
+
+        #region GetHighDemandSpecialization
+        [HttpGet]
+        [Route("PatientVisitsInAPeriodAndSpecialization")]
+        public List<PatientVisit> GetPatientVisitsInAPeriodAndSpecialization(DateTime startDate, DateTime endDate, int specializationId)
+        {
+            return _adminManager.GetPatientVisitsInAPeriodAndSpecialization(startDate, endDate, specializationId);
+        }
+        #endregion
+
+        #region PatientVisitsForDoctors
+        [HttpGet]
+        [Route("doctors-visits-number")]
+        public ActionResult<List<GetDoctorsVisitsNumberDto>?> GetDoctorsVisitsNumber()
+        {
+            List<GetDoctorsVisitsNumberDto>? getVisitsNumberDto = _adminManager.GetDoctorsPatientVisitsNumber();
+
+            if (getVisitsNumberDto == null) { return NotFound(); }
+
+            return getVisitsNumberDto;
+        }
+
+        #endregion
+        #region get reception by phone number
+        [HttpGet]
+        [Route("Reception/{PhoneNumber}")]
+        public ActionResult<GetReceptionByPhoneNumberDto> GetReceptionByPhoneNumber(string PhoneNumber)
+        {
+            GetReceptionByPhoneNumberDto reception = _adminManager.GetReceptionByPhoneNumber(PhoneNumber);
+            if (reception == null) { return NotFound(); }
+            return reception!;
+        }
+        #endregion
         #region UploadImages
 
         [HttpPost]
