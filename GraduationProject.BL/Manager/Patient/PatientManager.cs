@@ -81,6 +81,7 @@ namespace GraduationProject.BL
 
             return new GetPatientVisitDto
             {
+                PatientId = patient.Id,
                 Name = patient.Name,
 
                 PatientVisits = patient.PatientVisits.Select(p => new GetPatientVisitsChildDTO
@@ -90,14 +91,15 @@ namespace GraduationProject.BL
                     Rate = p.Rate,
                     Review = p.Review,
                     DoctorId = p.DoctorId,
-                    DateOfVisit = p.DateOfVisit,
+                    DateOfVisit = p.DateOfVisit.ToShortDateString(),
                     Comments = p.Comments,
                     Symptoms = p.Symptoms,
                     VisitStatus = p.VisitStatus,
-                    ArrivalTime = p.ArrivalTime,
-                    VisitStartTime = p.VisitStartTime,
-                    VisitEndTime = p.VisitEndTime,
-                    Prescription = p.Prescription
+                    ArrivalTime = p.ArrivalTime.ToShortTimeString(),
+                    VisitStartTime = p.VisitStartTime.ToShortDateString(),
+                    VisitEndTime = p.VisitEndTime.ToShortDateString(),
+                    Prescription = p.Prescription,
+                    DoctorName = p.Doctor.Name
 
 
                 }).ToList()
