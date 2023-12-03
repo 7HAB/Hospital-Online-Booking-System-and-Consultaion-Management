@@ -300,41 +300,50 @@ namespace GraduationProject.BL
         }
 
         #region UploadImage
-        public async Task<Doctor> UploadDoctorImage(string doctorId, IFormFile imageFile)
+        public async Task<List<Doctor>> UploadDoctorImage(string doctorId, List<IFormFile> imageFiles)
         {
-            if (imageFile == null || imageFile.Length == 0)
+            if (imageFiles == null || imageFiles.Count == 0)
             {
-                return null;
+                return new List<Doctor>();
+            }
+            List<Doctor> doctors = new List<Doctor>();
+            foreach (var file in imageFiles)
+            {
+                if(file.Length > 0)
+                {
+                    var fileExtension = Path.GetExtension(file.FileName);
+                    var fakeFileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
+                    var storedFileName = "wwwroot/" + "UploadImages/" + fakeFileName;
+                    var directory = Path.GetDirectoryName(storedFileName);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+                    Doctor doctor = new Doctor
+                    {
+                        Id = doctorId,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        StoredFileName = storedFileName,
+                    };
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), storedFileName);
+
+                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.CopyToAsync(fileStream);
+                    }
+                    doctors.Add(doctor);
+
+
+                }
             }
 
-            var fileExtension = Path.GetExtension(imageFile.FileName);
-            var fakeFileName = $"{Guid.NewGuid().ToString()}{fileExtension}";
-            var storedFileName = "wwwroot/" + "UploadImages/" + fakeFileName;
-            var directory = Path.GetDirectoryName(storedFileName);
-            if (!Directory.Exists(directory))
-            {
-                Directory.CreateDirectory(directory);
-            }
 
-            var filePath = Path.Combine(Directory.GetCurrentDirectory(), storedFileName);
-
-            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(fileStream);
-            }
-
-            Doctor doctor = new Doctor
-            {
-                Id = doctorId,
-                FileName = imageFile.FileName,
-                ContentType = imageFile.ContentType,
-                StoredFileName = storedFileName,
-            };
-
-            _unitOfWork.doctorRepo.UploadDoctorImage(doctor);
+            _unitOfWork.doctorRepo.UploadDoctorImage(doctors);
             _unitOfWork.SaveChanges();
 
-            return doctor;
+            return doctors;
+
         }
 
         #endregion
