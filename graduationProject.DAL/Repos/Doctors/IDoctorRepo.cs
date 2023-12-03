@@ -14,7 +14,7 @@ namespace graduationProject.DAL
         public List<Specialization> GetDoctorsBySpecialization(int SpeializationId);
         public List<Specialization> GetAllSpecializations();
 
-        void UploadDoctorImage(Doctor doctor);
+        public void UploadDoctorImage(List<Doctor> doctors);
         public Doctor? GetDoctorByPhoneNumber(string phoneNumber);
         public List<PatientVisit> GetMutualVisits(string? patientPhone, string? doctorPhone);
 
