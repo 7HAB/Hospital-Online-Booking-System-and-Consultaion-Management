@@ -386,6 +386,17 @@ namespace graduation_project.Controllers.Admins
         }
 
         #endregion
+        #region get rate and review by doctor id and date
+        [HttpGet]
+        [Route("RateAndReview/{id}")]
+        public ActionResult<List<GetRateAndReviewDto>> GetRateAndReviewByDocIdAndDate(DateTime date , string id)
+        {
+            List<GetRateAndReviewDto> getRateAndReview = _adminManager.GetRateAndReviewByDocIdAndDate(date , id);
+            if (getRateAndReview == null) { return NotFound(); }
+            else { return Ok(getRateAndReview); };
+        }
+        #endregion
+
 
     }
 }

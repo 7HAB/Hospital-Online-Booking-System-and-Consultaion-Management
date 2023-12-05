@@ -214,7 +214,13 @@ namespace graduationProject.DAL
                 System.IO.File.Delete(fullPath);
             }
         }
+        #region get rate and review by doctor Id and date
+        public List<PatientVisit> GetVisitRateAndReview(DateTime date , string DoctorId)
+        {
+            return _context.Set<PatientVisit>().Include(pv => pv.Patient).Where(pv => pv.DateOfVisit == date && pv.DoctorId == DoctorId).ToList()!;
+        }
+        #endregion
     }
 
 
-    }
+}
