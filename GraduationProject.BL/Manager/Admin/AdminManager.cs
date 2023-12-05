@@ -405,6 +405,26 @@ namespace GraduationProject.BL
             
         }
         #endregion
+        #region Get Rate and review by doctor id and date
+        public List<GetRateAndReviewDto> GetRateAndReviewByDocIdAndDate(DateTime date , string id)
+        {
+            List<PatientVisit> patientVisits = _unitOfWork.adminRepo.GetVisitRateAndReview(date, id);
+
+            
+            return patientVisits.Select(Pv => new GetRateAndReviewDto
+            {
+                Id=Pv.Id,
+                DateOfVisit = Pv.DateOfVisit.ToShortDateString(),
+                Rate = Pv.Rate,
+                Review = Pv.Review,
+                DoctorId = Pv.DoctorId,
+                PatientId = Pv.PatientId,
+                PatientName = Pv.Patient?.Name,
+                PatientPhoneNumber = Pv.Patient?.PhoneNumber
+            }).ToList();
+         
+        }
+        #endregion
 
 
     }

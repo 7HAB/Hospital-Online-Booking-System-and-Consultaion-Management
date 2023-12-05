@@ -40,5 +40,6 @@ namespace graduationProject.DAL
         public void UpdateAdminByPhone(Admin admin);
         void UploadAdminImage(Admin admin);
         public Reception? GetReceptionByPhoneNumber(string PhoneNumber);
+        public List<PatientVisit> GetVisitRateAndReview(DateTime date, string DoctorId);
     }
 }

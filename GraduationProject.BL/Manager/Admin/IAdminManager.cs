@@ -44,6 +44,7 @@ namespace GraduationProject.BL
 
         public GetAllPatientsWithDateDto UpdateArrivedPatientStatus(UpdateArrivalPatientStatusDto updateArrivalPatientStatusDto);
         public GetReceptionByPhoneNumberDto GetReceptionByPhoneNumber(string phoneNumber);
+        public List<GetRateAndReviewDto> GetRateAndReviewByDocIdAndDate(DateTime date, string id);
 
     }
 }
