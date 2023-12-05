@@ -123,9 +123,9 @@ namespace graduationProject.DAL
                         SpecializationId = doctor.SpecializationId,
                         VisitCount = doctor.visitCounts,
                         PatientVisit = doctor.patientVisits,
-                        
 
-                        Rate = visit.Rate ?? 0
+
+                        Rate = visit.Rate
                     })
                 .GroupBy(result => result.DoctorId)
                 .Select(group => new Doctor
@@ -135,7 +135,7 @@ namespace graduationProject.DAL
                     SpecializationId = group.First().SpecializationId,
                     visitCounts = group.First().VisitCount,
                     patientVisits = group.First().PatientVisit,
-                    AverageRate = group.Average(result => result.Rate)
+                    AverageRate = group.Average(result => result.Rate)??0.0
                 })
                 .ToList();
 
@@ -150,7 +150,7 @@ namespace graduationProject.DAL
 
         public int GetNumberOfAvailableDoctorInADay(DateTime date)
         {
-            return _context.Set<VisitCount>().Where(s => s.Date.Date == date.Date).Count();
+            return _context.Set<VisitCount>().Include(s=>s.WeekSchedule).Where(s => s.Date.Date == date.Date && s.LimitOfPatients!=0).Count();
         }
 
         public int GetNumberOfPatientsForAPeriod(DateTime startDate, DateTime endDate)
